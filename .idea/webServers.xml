@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="d4a5e57c-7e9e-4355-8df6-c3e0440b460a" name="Dev" url="https://portaledocente.mikehomelab.it">
+        <fileTransfer accessType="FTPS" host="webserver.homelab.dom" port="21212">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" enabledFtpsProtocols="TLSv1,TLSv1.1,TLSv1.2" passiveMode="true" shareSSLContext="true">
+              <option name="ftpsDisabledTls13" value="true" />
+            </advancedOptions>
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

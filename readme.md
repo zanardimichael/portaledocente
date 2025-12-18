@@ -11,8 +11,40 @@
 ## Risultati
 - caricamento risultati alunno e possibilità di ignorare alcuni esercizi e segnare parziali i vero-falso
 - calcolo voto basandosi su punteggio pieno o personalizzato
+- possibilità di inserimento di un'eventuale penalità (per continui richiami)
 
 ## Possibile struttura:
+
+### classe
+
+| name    | type        | altro                               | indice  |
+|---------|-------------|-------------------------------------|---------|
+| ID      | int(11)     | auto_increment                      | primary |
+| anno    | int(11)     | `//primo anno dell'anno scolastico` |
+| sezione | varchar(4)  |
+| note    | varchar(64) |
+
+### alunno
+
+| name      | type        | altro                               | indice  |
+|-----------|-------------|-------------------------------------|---------|
+| ID        | int(11)     | auto_increment                      | primary |
+| ID_classe | int(11)     |
+| nome      | varchar(64) |
+| cognome   | varchar(64) |
+| note      | varchar(64) |
+
+### verifica
+
+| name          | type         | altro                                                      | indice  |
+|---------------|--------------|------------------------------------------------------------|---------|
+| ID            | int(11)      | auto_increment                                             | primary |
+| ID_professore | int(11)      |
+| ID_materia    | int(11)      |
+| ID_verifica   | int(11)      | `//se impostato segnala che è una verifica personalizzata` |
+| titolo        | varchar(512) |
+| note          | varchar(64)  |
+| ordine        | tinyint(3)   |
 
 ### verofalso
 

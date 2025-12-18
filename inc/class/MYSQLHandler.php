@@ -1,0 +1,106 @@
+<?php
+	
+	class MYSQLHandler {
+		
+		public mysqli $connection;
+		
+		public function __construct($connection) {
+			$this->connection = $connection;
+		}
+		
+		/**
+		 * @param string $table
+		 * @param string $where
+		 * @param string|array $data data può essere una stringa tipo "id, nome, cognome" oppure un array di stringhe ["id", "nome","cognome"] oppure un array associativo di stringhe ["id" => "id", "nome" => "name", "cognome" => "surname"]
+		 * successivamente verrà convertito con as: "id as id, nome as name, cognome as surname
+		 * @return mysqli_result|false
+		 */
+		public function select(string $table, string $where = "", string|array $data = "*"): mysqli_result|false {
+			$data_required = $data;
+			if($data != "*"){
+				if(gettype($data) == "array"){
+					if(array_keys($data) !== range(0, count($data) - 1)){
+						foreach($data as $key => $value){
+							$data_required = "$key as $value, ";
+						}
+						$data_required = substr($data_required, 0, -2);
+					}else{
+						$data_required = implode(",", $data);
+					}
+				}
+			}
+			$sql = "SELECT $data_required FROM $table ".($where == "" ? "" : "WHERE $where");
+			$result = $this->query($sql);
+			if($this->connection->error){
+				$this->logError($this->connection->error, $this->connection->errno, $sql);
+				return false;
+			}
+			return $result;
+		}
+		
+		/**
+		 * @param string $table
+		 * @param string $where
+		 * @param array $data deve essere un array associativo: ["nome" => "Mario", "cognome" => "Rossi"]
+		 * @return mysqli_result|false
+		 */
+		public function update(string $table, string $where, array $data): mysqli_result|false {
+			$data_update = "";
+			foreach($data as $key => $value){
+				$data_update .= "$key='$value', ";
+			}
+			$data_update = substr($data_update, 0, -2);
+			$result = $this->query("UPDATE $table SET $data_update WHERE $where");
+			if($this->connection->error){
+				$this->logError($this->connection->error, $this->connection->errno);
+				return false;
+			}
+			return $result;
+		}
+		
+		/**
+		 * @param string $table
+		 * @param array $data deve essere un array associativo: ["nome" => "Mario", "cognome" => "Rossi"]
+		 * @return int|false se diverso da falso ritorna l'id della nuova riga
+		 */
+		public function insert(string $table, array $data): int|false {
+			$names_array = [];
+			$values_array = [];
+			foreach($data as $key => $value){
+				$names_array[] = $key;
+				$values_array[] = $value;
+			}
+			$names = implode(",", $names_array);
+			$values = implode(",", $values_array);
+			
+			$this->query("INSERT INTO $table ($names) VALUES ($values)");
+			if($this->connection->error){
+				$this->logError($this->connection->error, $this->connection->errno);
+				return false;
+			}
+			return $this->connection->insert_id;
+		}
+		
+		/**
+		 * @param string $table
+		 * @param string $where
+		 * @return mysqli_result|false
+		 */
+		public function delete(string $table, string $where): mysqli_result|false {
+			$result = $this->query("DELETE FROM $table WHERE $where");
+			if($this->connection->error){
+				$this->logError($this->connection->error, $this->connection->errno);
+				return false;
+			}
+			return $result;
+		}
+		
+		public function query($query) {
+			return $this->connection->query($query);
+		}
+		
+		public function logError($error, $errno, $vars = "") {
+			$vars = $this->connection->real_escape_string($vars);
+			$this->query("INSERT INTO log_error (errorCode, errorMessage, errorStackTrace, requestVars) VALUES ('$error', '$errno', '', '$vars') ");
+		}
+	}

@@ -38,4 +38,5 @@
 <script src="/js/datatables/dataTables.rowReorder.min.js"></script>
 <script src="/js/datatables/dataTables.buttons.min.js"></script>
 <script src="/js/datatables/dataTables.select.min.js"></script>
+<script src="/js/datatables.default.js"></script>
 <script src="/js/summernote.min.js"></script>

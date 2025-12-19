@@ -18,5 +18,20 @@
 			"script_js" => [
 				"/js/pages/classi.js"
 			]
+		],
+		"classi/nuova" => [
+			"url" => "/pages/classi/nuova",
+			"title" => "Nuova Classe",
+			"back_button" => true
+		],
+		"classi/modifica" => [
+			"url" => "/pages/classi/modifica",
+			"title" => "Modifica Classe",
+			"back_button" => true
+		],
+		"classi/elimina" => [
+			"url" => "/pages/classi/elimina",
+			"title" => "Elimina Classe",
+			"back_button" => true
 		]
 	];

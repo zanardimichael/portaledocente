@@ -61,7 +61,7 @@
 			<!--begin::Container-->
 			<div class="container-fluid">
 				<?php
-					include "list/dashboard.php";
+					include "page/dashboard.php";
 				?>
 			</div>
 			<!--end::Container-->

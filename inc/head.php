@@ -54,5 +54,6 @@
 	<link href="/css/datatables/buttons.dataTables.min.css" rel="stylesheet">
 	<link href="/css/datatables/select.dataTables.min.css" rel="stylesheet">
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/toastify.min.css" rel="stylesheet">
 	<link href="/css/summernote.min.css" rel="stylesheet">
 </head>

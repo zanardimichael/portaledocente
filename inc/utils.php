@@ -20,6 +20,14 @@
 		}
 		return false;
 	}
+	
+	function verifyAllPostVars(array $vars): bool{
+		return array_all($vars, fn($var) => isset($_POST[$var]));
+	}
+	
+	function verifyAllGetVars(array $vars): bool{
+		return array_all($vars, fn($var) => isset($_GET[$var]));
+	}
 
 	function exception_handler($e) {
 		global $db_host, $db_user, $db_pass, $db_schema;

@@ -20,8 +20,8 @@
 					<td><?php echo $classe->classe.$classe->sezione; ?></td>
 					<td><?php echo $classe->anno."/".$classe->anno+1; ?></td>
 					<td>
-						<button class="btn btn-primary"><i class="bi bi-pencil-square"></i></button>
-						<button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+						<a class="btn btn-primary" href="/pages/classi/modifica?id=<?php echo $classe->id; ?>"><i class="bi bi-pencil-square"></i></a>
+						<a class="btn btn-danger" href="/pages/classi/elimina?id=<?php echo $classe->id; ?>"><i class="bi bi-trash"></i></a>
 					</td>
 				</tr>
 				<?php

@@ -29,6 +29,7 @@
 				<?php
 
 					foreach ($pages as $page => $conf){
+                        if(count(explode("/", $page)) > 1) continue;
 						if($conf["separator"]){
 							echo "<li class=\"nav-header\">".strtoupper($conf["title"])."</li>";
 						}else{

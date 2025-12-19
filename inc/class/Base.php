@@ -1,6 +1,6 @@
 <?php
 	
-	require_once "MYSQLHandler.php";
+	require_once "MySQLHandler.php";
 
 abstract class Base {
 
@@ -9,7 +9,7 @@ abstract class Base {
 
 	public function getData($sql = "*"){
 		global $connection;
-		$mysql = new MYSQLHandler($connection);
+		$mysql = new MySQLHandler($connection);
 		$sqlSearch = "";
         if($sql == "id") {
             $sqlSearch = "id";
@@ -34,12 +34,9 @@ abstract class Base {
 	}
 
 	public function setData(string $name, string $value): bool{
-		global $connection;
-		$mysql = new MYSQLHandler($connection);
+		global $mysql;
 		
-		$mysql->update(static::$sqlTable, "id='$this->id'", [$name => $value]);
-		if(mysqli_error($connection) != null) return false;
-		return true;
+		return $mysql->update(static::$sqlTable, "id='$this->id'", [$name => $value]);
 	}
 
 

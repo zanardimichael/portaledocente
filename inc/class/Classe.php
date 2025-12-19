@@ -31,19 +31,33 @@
 		}
 		
 		/**
-		 * @param $object
-		 * @param $sql
+		 * @param bool $object
+		 * @param string $sql
 		 * @return Classe[]
 		 */
-		static function getAll($object = false, $sql = "*"){
-			global $connection;
-			$mysql = new MYSQLHandler($connection);
+		static function getAll(bool $object = false, string $sql = "*"): array {
+			global $mysql;
 			$array = [];
 			$result = $mysql->select(static::$sqlTable, "", "id");
 			while($row = mysqli_fetch_assoc($result)){
-				$object ? $array[] = new Classe($row["id"]) : $array[] = $row["id"];
+				$object ? $array[] = new Classe($row["id"], $sql) : $array[] = $row["id"];
 			}
 			return $array;
+		}
+		
+		static function create($data): bool{
+			global $mysql;
+			return $mysql->insert(static::$sqlTable, $data);
+		}
+		
+		static function edit($id, $data): bool{
+			global $mysql;
+			return $mysql->update(static::$sqlTable, "ID='$id'", $data);
+		}
+		
+		static function delete($id): bool{
+			global $mysql;
+			return $mysql->delete(static::$sqlTable, "ID='$id'");
 		}
 		
 		public function getTimestampCreazioneTime() : int {

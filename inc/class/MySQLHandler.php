@@ -1,6 +1,6 @@
 <?php
 	
-	class MYSQLHandler {
+	class MySQLHandler {
 		
 		public mysqli $connection;
 		
@@ -21,7 +21,7 @@
 				if(gettype($data) == "array"){
 					if(array_keys($data) !== range(0, count($data) - 1)){
 						foreach($data as $key => $value){
-							$data_required = "$key as $value, ";
+							$data_required = $this->connection->real_escape_string($key)." as ".$this->connection->real_escape_string($value).", ";
 						}
 						$data_required = substr($data_required, 0, -2);
 					}else{
@@ -42,12 +42,12 @@
 		 * @param string $table
 		 * @param string $where
 		 * @param array $data deve essere un array associativo: ["nome" => "Mario", "cognome" => "Rossi"]
-		 * @return mysqli_result|false
+		 * @return bool
 		 */
-		public function update(string $table, string $where, array $data): mysqli_result|false {
+		public function update(string $table, string $where, array $data): bool {
 			$data_update = "";
 			foreach($data as $key => $value){
-				$data_update .= "$key='$value', ";
+				$data_update .= $this->connection->real_escape_string($key)."='".$this->connection->real_escape_string($value)."', ";
 			}
 			$data_update = substr($data_update, 0, -2);
 			$result = $this->query("UPDATE $table SET $data_update WHERE $where");
@@ -67,8 +67,8 @@
 			$names_array = [];
 			$values_array = [];
 			foreach($data as $key => $value){
-				$names_array[] = $key;
-				$values_array[] = $value;
+				$names_array[] = $this->connection->real_escape_string($key);
+				$values_array[] = "'".$this->connection->real_escape_string($value)."'";
 			}
 			$names = implode(",", $names_array);
 			$values = implode(",", $values_array);
@@ -84,9 +84,9 @@
 		/**
 		 * @param string $table
 		 * @param string $where
-		 * @return mysqli_result|false
+		 * @return bool
 		 */
-		public function delete(string $table, string $where): mysqli_result|false {
+		public function delete(string $table, string $where): bool {
 			$result = $this->query("DELETE FROM $table WHERE $where");
 			if($this->connection->error){
 				$this->logError($this->connection->error, $this->connection->errno);

@@ -41,3 +41,4 @@
 <script src="/js/datatables.default.js"></script>
 <script src="/js/toastify.min.js"></script>
 <script src="/js/summernote.min.js"></script>
+<script src="/js/default.pages.js"></script>

@@ -17,22 +17,28 @@
 
 ### classe
 
-| name    | type        | altro                               | indice  |
-|---------|-------------|-------------------------------------|---------|
-| ID      | int(11)     | auto_increment                      | primary |
-| anno    | int(11)     | `//primo anno dell'anno scolastico` |
-| sezione | varchar(4)  |
-| note    | varchar(64) |
+| name                | type        | altro                               | indice  |
+|---------------------|-------------|-------------------------------------|---------|
+| ID                  | int(11)     | auto_increment                      | primary |
+| anno                | int(11)     | `//primo anno dell'anno scolastico` |
+| classe              | int(11)     |
+| sezione             | varchar(4)  |
+| note                | varchar(64) |
+| timestamp_modifica  | timestamp   |
+| timestamp_creazione | varchar(64) |
 
 ### alunno
 
-| name      | type        | altro                               | indice  |
-|-----------|-------------|-------------------------------------|---------|
-| ID        | int(11)     | auto_increment                      | primary |
-| ID_classe | int(11)     |
-| nome      | varchar(64) |
-| cognome   | varchar(64) |
-| note      | varchar(64) |
+| name                | type        | altro                               | indice  |
+|---------------------|-------------|-------------------------------------|---------|
+| ID                  | int(11)     | auto_increment                      | primary |
+| ID_classe           | int(11)     |
+| nome                | varchar(64) |
+| cognome             | varchar(64) |
+| email               | varchar(64) |
+| note                | varchar(64) |
+| timestamp_modifica  | timestamp   |
+| timestamp_creazione | timestamp   |
 
 ### verifica
 

@@ -111,15 +111,28 @@
 </div>
 <!--end::App Wrapper-->
 <!--begin::Script-->
+<script>
+    let createSuccess = false;
+    let deleteSuccess = false;
+    let updateSuccess = false;
+</script>
 <?php
     include "inc/script.php";
+
+    if(verifyAllGetVars(["createSuccess"])){
+        echo "<script> createSuccess = true; </script>";
+    }elseif(verifyAllGetVars(["deleteSuccess"])){
+        echo "<script> deleteSuccess = true; </script>";
+    }elseif(verifyAllGetVars(["updateSuccess"])){
+        echo "<script> updateSuccess = true; </script>";
+    }
 
     if ($pages[$current_page]["script_js"]) {
         foreach ($pages[$current_page]["script_js"] as $script) {
             echo "<script src=\"$script?v=$versione\"></script>";
         }
     } else {
-        echo "<script src=\"js/pages/$current_page.js?v=$versione\"></script>";
+        echo "<script src=\"/js/pages/$current_page.js?v=$versione\"></script>";
     }
 ?>
 <!--end::Script-->

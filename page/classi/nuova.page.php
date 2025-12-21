@@ -12,14 +12,14 @@
             $data["note"] = $_POST["note"];
         }
         if(Classe::create($data)){
-            echo "<script> location.href = \"/pages/classi\"</script>";
+            echo "<script> location.href = \"/pages/classi?createSuccess\"</script>";
         }else{
             echo '<script>
                     document.addEventListener("DOMContentLoaded", () => {
                         Toastify({
                             text: "Errore creazione",
-                            duration: 3000
-                            style: ["background": "red"]
+                            duration: 3000,
+                            style: {"background": "red"}
                         }).showToast();
                     })    
                 </script>';

@@ -33,5 +33,28 @@
 			"url" => "/pages/classi/elimina",
 			"title" => "Elimina Classe",
 			"back_button" => true
-		]
+		],
+		"alunni" => [
+			"url" => "/pages/alunni",
+			"title" => "Alunni",
+			"icon" => "bi bi-person-vcard",
+			"script_js" => [
+				"/js/pages/alunni.js"
+			]
+		],
+		"alunni/nuovo" => [
+			"url" => "/pages/alunni/nuovo",
+			"title" => "Nuovo Alunno",
+			"back_button" => true
+		],
+		"alunni/modifica" => [
+			"url" => "/pages/alunni/modifica",
+			"title" => "Modifica Alunno",
+			"back_button" => true
+		],
+		"alunni/elimina" => [
+			"url" => "/pages/alunni/elimina",
+			"title" => "Elimina Alunno",
+			"back_button" => true
+		],
 	];

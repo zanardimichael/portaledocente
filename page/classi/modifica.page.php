@@ -1,6 +1,7 @@
 <?php
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/utils.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Classe.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Alunno.php";
 	
 	$id = null;
 	if($_SERVER['REQUEST_METHOD'] == 'POST' and verifyAllPostVars(["id", "anno", "classe", "sezione"])){
@@ -13,14 +14,14 @@
 			$data["note"] = $_POST["note"];
 		}
 		if(Classe::edit($_POST["id"], $data)){
-			echo "<script> location.href = \"/pages/classi?editSuccess\"</script>";
+			echo "<script> location.href = \"/pages/classi?updateSuccess\"</script>";
 		}else{
 			echo '<script>
                     document.addEventListener("DOMContentLoaded", () => {
                         Toastify({
-                            text: "Errore modifica",
-                            duration: 3000
-                            style: ["background": "red"]
+                            text: "Errore creazione",
+                            duration: 3000,
+                            style: {"background": "red"}
                         }).showToast();
                     })
                 </script>';
@@ -118,5 +119,32 @@
 			<!--end::JavaScript-->
 		</div>
 		<!--end::Form Validation-->
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<div class="card card-info card-outline mb-4">
+			<div class="card-header"><div class="card-title">Alunni</div></div>
+			<div class="card-body">
+				<table class="table table-striped" id="alunni-table" style="max-height: 1000px;">
+					<thead>
+						<tr><th>Classe</th><th>Nome</th></tr>
+					</thead>
+					<tbody>
+					<?php
+						$alunni = $classe->getAlunni(true);
+						foreach($alunni as $classe){
+							?>
+							<tr>
+								<td><?php echo $classe->classe->getNomeClasse(); ?></td>
+								<td><?php echo $classe->getNomeCognome(); ?></td>
+							</tr>
+							<?php
+						}
+					?>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>

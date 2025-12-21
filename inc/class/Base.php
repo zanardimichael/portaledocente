@@ -6,7 +6,16 @@ abstract class Base {
 
 	static $sqlNames = [];
 	static $sqlTable = "";
-
+	
+	public int $id;
+	
+	public function __construct(?int $id, string|array $sql = "*") {
+		if ($id != null) {
+			$this->id = $id;
+			$this->getData($sql);
+		}
+	}
+	
 	public function getData($sql = "*"){
 		global $connection;
 		$mysql = new MySQLHandler($connection);

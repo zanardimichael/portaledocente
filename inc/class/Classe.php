@@ -79,4 +79,18 @@
 			}
 			return $alunni_array;
 		}
+		
+		public function getNumeroAlunni(): int|false {
+			global $mysql;
+			$result = $mysql->select(Alunno::$sqlTable, "ID_classe='".$this->id."'", ["COUNT(id)" => "conto"]);
+			
+			while($row = mysqli_fetch_assoc($result)){
+				return $row["conto"];
+			}
+			return false;
+		}
+		
+		public function getAnnoScolastico() {
+			return $this->anno."/".$this->anno+1;
+		}
 	}

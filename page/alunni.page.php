@@ -20,6 +20,7 @@
 					<td><?php echo $alunno->classe->getNomeClasse(); ?></td>
 					<td><?php echo $alunno->getNomeCognome(); ?></td>
 					<td>
+						<a class="btn btn-success" href="/pages/alunni/visualizza?id=<?php echo $alunno->id; ?>"><i class="bi bi-search"></i></a>
 						<a class="btn btn-primary" href="/pages/alunni/modifica?id=<?php echo $alunno->id; ?>"><i class="bi bi-pencil-square"></i></a>
 						<a class="btn btn-danger" href="/pages/alunni/elimina?id=<?php echo $alunno->id; ?>"><i class="bi bi-trash"></i></a>
 					</td>

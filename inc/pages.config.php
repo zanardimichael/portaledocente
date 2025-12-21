@@ -34,6 +34,11 @@
 			"title" => "Elimina Classe",
 			"back_button" => true
 		],
+		"classi/visualizza" => [
+			"url" => "/pages/classi/visualizza",
+			"title" => "Visualizza Classe",
+			"back_button" => true
+		],
 		"alunni" => [
 			"url" => "/pages/alunni",
 			"title" => "Alunni",
@@ -55,6 +60,11 @@
 		"alunni/elimina" => [
 			"url" => "/pages/alunni/elimina",
 			"title" => "Elimina Alunno",
+			"back_button" => true
+		],
+		"alunni/visualizza" => [
+			"url" => "/pages/alunni/visualizza",
+			"title" => "Visualizza Alunno",
 			"back_button" => true
 		],
 	];

@@ -70,7 +70,6 @@
 				if($response->getRiskAnalysis()->getScore() >= 0.6){
 
 					if($_POST["username"] != "" && $_POST["password"] != ""){
-                        echo Utente::verifyUserLogin($_POST["username"], $_POST["password"]);
 						if(Utente::verifyUserLogin($_POST["username"], $_POST["password"])){
 							header("Location: /");
 							return true;
@@ -103,7 +102,7 @@
 <!--begin::Head-->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Login | Gestione Canzoniere</title>
+	<title>Login | Portale Docente</title>
 	<!--begin::Accessibility Meta Tags-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 	<meta name="color-scheme" content="light dark" />
@@ -111,7 +110,7 @@
 	<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
 	<!--end::Accessibility Meta Tags-->
 	<!--begin::Primary Meta Tags-->
-	<meta name="title" content="Login | Gestione Canzoniere" />
+	<meta name="title" content="Login | Portale Docente" />
 	<!--end::Primary Meta Tags-->
 	<!--begin::Accessibility Features-->
 	<!-- Skip links will be dynamically added by accessibility.js -->

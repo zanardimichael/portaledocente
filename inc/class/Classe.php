@@ -1,5 +1,6 @@
 <?php
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Base.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Alunno.php";
 	
 	class Classe extends Base {
 		

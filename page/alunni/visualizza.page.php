@@ -32,6 +32,10 @@
 					<?php echo $alunno->classe->getNomeClasse(); ?>
 				</div>
 				<div class="mb-2">
+					<h5>Email</h5>
+					<?php echo $alunno->email."@issgreppi.it"; ?>
+				</div>
+				<div class="mb-2">
 					<h5>Note aggiuntive</h5>
 					<?php echo $alunno->note != "" ? $alunno->note : "-"; ?>
 				</div>

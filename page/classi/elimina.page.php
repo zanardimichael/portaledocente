@@ -34,10 +34,22 @@
 			<form action="" method="post">
 				<input type="hidden" name="id" value="<?php echo $classe->id; ?>">
 				<div class="card-body">
-					Sei sicuro di voler eliminare la classe <?php echo $classe->classe.$classe->sezione; ?>
+					<?php
+						$disabled = "";
+						if($classe->getNumeroAlunni() > 0) {
+							$disabled = "disabled";
+					?>
+						Attenzione! La classe contiene degli studenti, prima di eliminarla, rimuovere gli studenti associati.
+					<?php
+						} else {
+					?>
+						Sei sicuro di voler eliminare la classe <?php echo $classe->classe.$classe->sezione; ?>
+					<?php
+						}
+					?>
 				</div>
 				<div class="card-footer">
-					<button class="btn btn-danger" type="submit">Elimina</button>
+					<button class="btn btn-danger" type="submit" <?php echo $disabled; ?>>Elimina</button>
 				</div>
 			</form>
 		</div>

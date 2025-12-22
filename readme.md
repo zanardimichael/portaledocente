@@ -15,7 +15,7 @@
 
 ## Possibile struttura:
 
-### classe
+### classe <span style="color:green">(implementata)</span>
 
 | name                | type        | altro                               | indice  |
 |---------------------|-------------|-------------------------------------|---------|
@@ -27,7 +27,7 @@
 | timestamp_modifica  | timestamp   |
 | timestamp_creazione | varchar(64) |
 
-### alunno
+### alunno <span style="color:green">(implementata)</span>
 
 | name                | type        | altro                               | indice  |
 |---------------------|-------------|-------------------------------------|---------|

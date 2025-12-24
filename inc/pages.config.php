@@ -7,9 +7,9 @@
 			"icon" => "bi bi-speedometer",
 			"script_js" => []
 		],
-		"portaledocente" => [
+		"organigramma" => [
 			"separator" => true,
-			"title" => "Portale Docente",
+			"title" => "Organigramma",
 		],
 		"classi" => [
 			"url" => "/pages/classi",
@@ -66,5 +66,35 @@
 			"url" => "/pages/alunni/visualizza",
 			"title" => "Visualizza Alunno",
 			"back_button" => true
+		],
+		"professori" => [
+			"url" => "/pages/professori",
+			"title" => "Professori",
+			"icon" => "bi bi-person-badge",
+			"script_js" => [
+				"/js/pages/professori.js"
+			]
+		],
+		"professori/visualizza" => [
+			"url" => "/pages/professori/visualizza",
+			"title" => "Visualizza Professore",
+			"back_button" => true
+		],
+		"materie" => [
+			"url" => "/pages/materie",
+			"title" => "Materie",
+			"icon" => "bi bi-backpack",
+			"script_js" => [
+				"/js/pages/materie.js"
+			]
+		],
+		"materie/visualizza" => [
+			"url" => "/pages/materie/visualizza",
+			"title" => "Visualizza Materia",
+			"back_button" => true
+		],
+		"gestione-verifiche" => [
+			"separator" => true,
+			"title" => "Gestione verifiche",
 		],
 	];

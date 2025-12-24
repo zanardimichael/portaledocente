@@ -1,46 +1,51 @@
 <?php
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Base.php";
-	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Alunno.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Classe.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Utente.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Materia.php";
 	
-	class Classe extends Base {
+	class Professore extends Base {
 		
 		static $sqlNames = [
-			"id",
-			"anno",
-			"classe",
-			"sezione",
+			"ID",
+			"ID_utente",
 			"note",
 			"timestamp_modifica",
 			"timestamp_creazione"
 		];
 		
-		static $sqlTable = "classe";
+		static $sqlTable = "professore";
 		
 		public int $id;
-		public int $anno;
-		public int $classe;
-		public string $sezione;
-		public ?string $note;
+		public int $ID_utente;
+		public string $note;
 		public string $timestamp_modifica;
 		public string $timestamp_creazione;
 		
-		public function __construct(?int $id, $sql = "*"){
+		public function __construct(?int $id, array|string $sql = "*") {
 			parent::__construct($id, $sql);
 		}
 		
 		/**
 		 * @param bool $object
 		 * @param string|array $sql
-		 * @return Classe[]
+		 * @return Professore[]
 		 */
 		static function getAll(bool $object = false, string|array $sql = "*"): array {
 			global $mysql;
 			$array = [];
 			$result = $mysql->select(static::$sqlTable, "", "id");
 			while($row = mysqli_fetch_assoc($result)){
-				$object ? $array[] = new Classe($row["id"], $sql) : $array[] = $row["id"];
+				$object ? $array[] = new Professore($row["id"], $sql) : $array[] = $row["id"];
 			}
 			return $array;
+		}
+		
+		public function __get(string $name) {
+			if($name == "utente"){
+				return new Utente($this->ID_utente, "*");
+			}
+			return null;
 		}
 		
 		static function create($data): bool{
@@ -66,44 +71,29 @@
 			return strtotime($this->timestamp_modifica);
 		}
 		
-		public function getNomeClasse(): string {
-			return $this->classe.$this->sezione;
-		}
-		
-		public function getAlunni(bool $object = false): array {
+		/**
+		 * @param bool $object
+		 * @return Classe[]|int[]
+		 */
+		public function getClassi(bool $object = false): array {
 			global $mysql;
-			$alunni_array = [];
-			$alunni = $mysql->select(Alunno::$sqlTable, "ID_classe='".$this->id."'", ["id"]);
-			
-			while($row = mysqli_fetch_assoc($alunni)){
-				$alunni_array[] = $object ? new Alunno($row["id"]) : $row["id"];
-			}
-			return $alunni_array;
-		}
-		
-		public function getNumeroAlunni(): int|false {
-			global $mysql;
-			$result = $mysql->select(Alunno::$sqlTable, "ID_classe='".$this->id."'", ["COUNT(id)" => "conto"]);
-			
+			$classi = [];
+			$result = $mysql->select("materia_professore_classe", "ID_professore='$this->id'", "DISTINCT ID_classe");
 			while($row = mysqli_fetch_assoc($result)){
-				return $row["conto"];
+				$classi[] = $object ? new Classe($row["ID_classe"]) : $row["ID_classe"];
 			}
-			return false;
-		}
-		
-		public function getAnnoScolastico() {
-			return $this->anno."/".$this->anno+1;
+			return $classi;
 		}
 		
 		/**
 		 * @return array
 		 */
-		public function getProfessoriMaterie(): array {
+		public function getClassiMaterie(): array {
 			global $mysql;
 			$classi = [];
-			$result = $mysql->select("materia_professore_classe", "ID_classe='$this->id'", ["ID_professore", "ID_materia"]);
+			$result = $mysql->select("materia_professore_classe", "ID_professore='$this->id'", ["ID_classe", "ID_materia"]);
 			while($row = mysqli_fetch_assoc($result)){
-				$classi[$row["ID_materia"]][] = $row["ID_professore"];
+				$classi[$row["ID_classe"]][] = $row["ID_materia"];
 			}
 			return $classi;
 		}

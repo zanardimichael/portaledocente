@@ -40,6 +40,34 @@
 | timestamp_modifica  | timestamp   |
 | timestamp_creazione | timestamp   |
 
+### professore
+
+| name                | type        | altro                               | indice  |
+|---------------------|-------------|-------------------------------------|---------|
+| ID                  | int(11)     | auto_increment                      | primary |
+| ID_utente           | int(11)     |
+| note                | varchar(64) |
+| timestamp_modifica  | timestamp   |
+| timestamp_creazione | timestamp   |
+
+### materia
+
+| name                | type        | altro                               | indice  |
+|---------------------|-------------|-------------------------------------|---------|
+| ID                  | int(11)     | auto_increment                      | primary |
+| nome                | varchar(64) |
+| note                | varchar(64) |
+| timestamp_modifica  | timestamp   |
+| timestamp_creazione | timestamp   |
+
+### materia_professore_classe
+
+| name          | type    | altro | indice |
+|---------------|---------|-------|--------|
+| ID_materia    | int(11) |
+| ID_professore | int(11) |
+| ID_classe     | int(11) |
+
 ### verifica
 
 | name          | type         | altro                                                      | indice  |

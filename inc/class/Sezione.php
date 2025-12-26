@@ -1,7 +1,10 @@
 <?php
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Base.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verifica.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verofalso.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Rispostamultipla.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Rispostaaperta.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Esercizio.php";
 	
 	class Sezione extends Base {
 		
@@ -62,6 +65,20 @@
 			return $mysql->delete(static::$sqlTable, "ID='$id'");
 		}
 		
+		/**
+		 * @param int $ID_verifica
+		 * @return int
+		 */
+		public static function getUltimoOrdineVerifica(int $ID_verifica): int{
+			global $mysql;
+			
+			$ordine_sql = $mysql->select(static::$sqlTable, "ID_verifica='$ID_verifica' ORDER BY ordine DESC LIMIT 1", "ordine");
+			if($ordine_sql->num_rows == 0){
+				return 0;
+			}
+			return $ordine_sql->fetch_assoc()["ordine"];
+		}
+		
 		public function getTimestampCreazioneTime() : int {
 			return strtotime($this->timestamp_creazione);
 		}
@@ -87,6 +104,20 @@
 				$rispostamultipla_object = new Rispostamultipla($row["id"]);
 				$array[$row["ordine"]] = $rispostamultipla_object;
 				$array["punteggio"] += $rispostamultipla_object->punteggio;
+			}
+			
+			$rispostaaperta = $mysql->select(Rispostaaperta::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
+			while($row = mysqli_fetch_assoc($rispostaaperta)){
+				$rispostaaperta_object = new Rispostaaperta($row["id"]);
+				$array[$row["ordine"]] = $rispostaaperta_object;
+				$array["punteggio"] += $rispostaaperta_object->punteggio;
+			}
+			
+			$esercizio = $mysql->select(Esercizio::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
+			while($row = mysqli_fetch_assoc($esercizio)){
+				$esercizio_object = new Esercizio($row["id"]);
+				$array[$row["ordine"]] = $esercizio_object;
+				$array["punteggio"] += $esercizio_object->punteggio;
 			}
 			
 			return $array;

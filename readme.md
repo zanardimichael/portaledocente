@@ -136,26 +136,31 @@
 | timestamp_modifica  | timestamp    |
 | timestamp_creazione | timestamp    |
 
-### verifica_rispostaaperta
+### verifica_rispostaaperta <span style="color:green">(implementata)</span>
 
-| name        | type         | altro              | indice  |
-|-------------|--------------|--------------------|---------|
-| ID          | int(11)      | auto_increment     | primary |
-| ID_verifica | int(11)      |
-| ID_sezione  | int(11)      |
-| testo       | varchar(512) |
-| note        | varchar(64)  |
-| punteggio   | tinyint(2)   |
-| ordine      | tinyint(3)   |
+| name                | type         | altro              | indice  |
+|---------------------|--------------|--------------------|---------|
+| ID                  | int(11)      | auto_increment     | primary |
+| ID_verifica         | int(11)      |
+| ID_sezione          | int(11)      |
+| testo               | varchar(512) |
+| note                | varchar(64)  |
+| punteggio           | tinyint(2)   |
+| ordine              | tinyint(3)   |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |
 
-### verifica_esercizio
+### verifica_esercizio <span style="color:green">(implementata)</span>
 
-| name        | type         | altro              | indice  |
-|-------------|--------------|--------------------|---------|
-| ID          | int(11)      | auto_increment     | primary |
-| ID_verifica | int(11)      |
-| ID_sezione  | int(11)      |
-| testo       | varchar(512) |
-| note        | varchar(64)  |
-| punteggio   | tinyint(2)   |
-| ordine      | tinyint(3)   |
+| name                | type         | altro              | indice  |
+|---------------------|--------------|--------------------|---------|
+| ID                  | int(11)      | auto_increment     | primary |
+| ID_verifica         | int(11)      |
+| ID_sezione          | int(11)      |
+| titolo              | varchar(128) |
+| testo               | text         |
+| note                | varchar(64)  |
+| punteggio           | tinyint(2)   |
+| ordine              | tinyint(3)   |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |

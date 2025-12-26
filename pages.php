@@ -4,6 +4,7 @@
     require_once "./inc/utils.php";
     require_once "./inc/class/Utente.php";
 	require_once "./inc/class/Professore.php";
+	require_once "./inc/class/Message.php";
 
     global $categorie_js;
     global $autori_js;
@@ -128,6 +129,20 @@
     }elseif(verifyAllGetVars(["updateSuccess"])){
         echo "<script> updateSuccess = true; </script>";
     }
+	
+	/** @var ?Message $message */
+	global $message;
+	if(gettype($message) == "object" and get_class($message) == "Message"){
+		?>
+		<script>
+			Toastify({
+				text: "<?php echo $message->messaggio; ?>",
+				duration: 3000,
+				style: <?php echo json_encode($message->style); ?>,
+			}).showToast();
+		</script>
+		<?php
+	}
 
     if ($pages[$current_page]["script_js"]) {
         foreach ($pages[$current_page]["script_js"] as $script) {

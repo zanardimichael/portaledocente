@@ -108,6 +108,10 @@
 		"verifiche/modifica" => [
 			"url" => "/pages/verifiche/modifica",
 			"title" => "Modifica Verifica",
-			"back_button" => true
+			"back_button" => true,
+			"script_js" => [
+				"/js/pages/verifiche/modifica.js",
+				"/js/pages/verifiche/modifica/sezione.js"
+			]
 		],
 	];

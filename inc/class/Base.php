@@ -48,5 +48,10 @@ abstract class Base {
 		return $mysql->update(static::$sqlTable, "id='$this->id'", [$name => $value]);
 	}
 
+	static function exists(int $id): bool{
+		global $mysql;
+		
+		return $mysql->select(static::$sqlTable, "id='$id'", "COUNT(ID) as ids")->fetch_assoc()["ids"] == 1;
+	}
 
 }

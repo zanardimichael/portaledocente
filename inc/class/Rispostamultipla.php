@@ -45,9 +45,8 @@
 		 * @param string|array $sql
 		 * @return Rispostamultipla[]
 		 */
-		static function getAll(bool $object = false, string|array $sql = "*", $professore = true): array {
+		static function getAll(bool $object = false, string|array $sql = "*"): array {
 			global $mysql;
-			global $current_prof;
 			$array = [];
 			$result = $mysql->select(static::$sqlTable, "", "id");
 			while($row = mysqli_fetch_assoc($result)){
@@ -91,9 +90,8 @@
 								<span class="mt-1 d-inline-block">'.$risposta["testo"].($risposta["corretto"] ? " <b>Corretta</b>": "").'</span>
 								<div class="float-end">
 									<div class="btn-group btn-group-sm">
-										<button type="button" class="btn btn-sm btn-primary">Modifica</button>
-										<button type="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-chevron-down"></i></button>
-										<button type="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-chevron-up"></i></button>
+										<button type="button" class="btn btn-sm btn-primary modifica-risposta" id-risposta="'.$risposta["id"].'">Modifica</button>
+										<button type="button" class="btn btn-sm btn-danger elimina-risposta" id-risposta="'.$risposta["id"].'">Elimina</button>
 									</div>
 								</div>
 							</div>
@@ -102,7 +100,7 @@
 			}
 			
 			return '
-				<div class="col-12" id-rispostamultipla="'.$this->id.'">
+				<div class="col-12 esercizio" id-rispostamultipla="'.$this->id.'">
 					<div class="card card-success card-outline">
 						<div class="card-header">
 							<div class="card-title">
@@ -110,16 +108,16 @@
 							</div>
 							<div class="float-end">
 								<div class="btn-group btn-group-sm">
-									<button type="button" class="btn btn-sm btn-primary">Modifica</button>
-									<button type="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-chevron-down"></i></button>
-									<button type="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-chevron-up"></i></button>
+									<button type="button" class="btn btn-sm btn-primary modifica-esercizio" id-rispostamultipla="'.$this->id.'">Modifica</button>
+									<button type="button" class="btn btn-sm btn-danger elimina-esercizio" id-rispostamultipla="'.$this->id.'">Elimina</button>
+									<button type="button" class="btn btn-sm btn-outline-primary ordina-giu-esercizio" id-rispostamultipla="'.$this->id.'"><i class="bi bi-chevron-down"></i></button>
+									<button type="button" class="btn btn-sm btn-outline-primary ordina-su-esercizio" id-rispostamultipla="'.$this->id.'"><i class="bi bi-chevron-up"></i></button>
 								</div>
 							</div>
 						</div>
 						<div class="card-body">
 							<h5>'.$this->testo.'</h5>
-							<div>Punteggio: '.$this->punteggio.'</div>
-							<hr/>
+							<hr>
 							<h5 class="mb-3 mt-2">
 								Risposte
 								<div class="float-end">
@@ -127,6 +125,8 @@
 								</div>
 							</h5>
 							'.$risposte_txt.'
+							<hr>
+							<div>Punteggio: '.$this->punteggio.'</div>
 						</div>
 					</div>
 				</div>';

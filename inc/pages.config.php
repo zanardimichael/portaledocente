@@ -97,4 +97,17 @@
 			"separator" => true,
 			"title" => "Gestione verifiche",
 		],
+		"verifiche" => [
+			"url" => "/pages/verifiche",
+			"title" => "Verifiche",
+			"icon" => "bi bi-file-earmark-ruled",
+			"script_js" => [
+				"/js/pages/verifiche.js"
+			]
+		],
+		"verifiche/modifica" => [
+			"url" => "/pages/verifiche/modifica",
+			"title" => "Modifica Verifica",
+			"back_button" => true
+		],
 	];

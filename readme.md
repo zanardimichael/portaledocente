@@ -40,7 +40,7 @@
 | timestamp_modifica  | timestamp   |
 | timestamp_creazione | timestamp   |
 
-### professore
+### professore <span style="color:green">(implementata)</span>
 
 | name                | type        | altro                               | indice  |
 |---------------------|-------------|-------------------------------------|---------|
@@ -50,17 +50,17 @@
 | timestamp_modifica  | timestamp   |
 | timestamp_creazione | timestamp   |
 
-### materia
+### materia <span style="color:green">(implementata)</span>
 
-| name                | type        | altro                               | indice  |
-|---------------------|-------------|-------------------------------------|---------|
-| ID                  | int(11)     | auto_increment                      | primary |
-| nome                | varchar(64) |
-| note                | varchar(64) |
-| timestamp_modifica  | timestamp   |
-| timestamp_creazione | timestamp   |
+| name                | type         | altro                               | indice  |
+|---------------------|--------------|-------------------------------------|---------|
+| ID                  | int(11)      | auto_increment                      | primary |
+| nome                | varchar(128) |
+| note                | varchar(64)  |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |
 
-### materia_professore_classe
+### materia_professore_classe <span style="color:green">(implementata)</span>
 
 | name          | type    | altro | indice |
 |---------------|---------|-------|--------|
@@ -68,42 +68,62 @@
 | ID_professore | int(11) |
 | ID_classe     | int(11) |
 
-### verifica
+### verifica <span style="color:green">(implementata)</span>
 
-| name          | type         | altro                                                      | indice  |
-|---------------|--------------|------------------------------------------------------------|---------|
-| ID            | int(11)      | auto_increment                                             | primary |
-| ID_professore | int(11)      |
-| ID_materia    | int(11)      |
-| ID_verifica   | int(11)      | `//se impostato segnala che è una verifica personalizzata` |
-| titolo        | varchar(512) |
-| note          | varchar(64)  |
-| ordine        | tinyint(3)   |
+| name                | type         | altro                                                      | indice  |
+|---------------------|--------------|------------------------------------------------------------|---------|
+| ID                  | int(11)      | auto_increment                                             | primary |
+| ID_professore       | int(11)      |
+| ID_materia          | int(11)      |
+| ID_classe           | int(11)      |
+| ID_verifica         | int(11)      | `//se impostato segnala che è una verifica personalizzata` |
+| titolo              | varchar(128) |
+| note                | varchar(64)  |
+| ordine              | tinyint(3)   |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |
 
-### verofalso
+### verifica_sezione <span style="color:green">(implementata)</span>
 
-| name        | type         | altro                | indice  |
-|-------------|--------------|----------------------|---------|
-| ID          | int(11)      | auto_increment       | primary |
-| ID_verifica | int(11)      |
-| testo       | varchar(512) |
-| risultato   | tinyint(1)   | `//1 vero - 0 falso` |         |
-| note        | varchar(64)  |
-| punteggio   | tinyint(2)   |
-| ordine      | tinyint(3)   |
+| name                | type         | altro                | indice  |
+|---------------------|--------------|----------------------|---------|
+| ID                  | int(11)      | auto_increment       | primary |
+| ID_verifica         | int(11)      |
+| titolo              | varchar(128) |
+| ordine              | tinyint(3)   |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |
 
-### rispostamultipla
+### verifica_verofalso <span style="color:green">(implementata)</span>
 
-| name        | type         | altro                | indice  |
-|-------------|--------------|----------------------|---------|
-| ID          | int(11)      | auto_increment       | primary |
-| ID_verifica | int(11)      |
-| testo       | varchar(512) |
-| note        | varchar(64)  |
-| punteggio   | tinyint(2)   |
-| ordine      | tinyint(3)   |
+| name                | type         | altro                | indice  |
+|---------------------|--------------|----------------------|---------|
+| ID                  | int(11)      | auto_increment       | primary |
+| ID_verifica         | int(11)      |
+| ID_sezione          | int(11)      |
+| testo               | varchar(512) |
+| risultato           | tinyint(1)   | `//1 vero - 0 falso` |         |
+| note                | varchar(64)  |
+| punteggio           | tinyint(2)   |
+| ordine              | tinyint(3)   |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |
 
-### rispostamultipla_risposte
+### verifica_rispostamultipla <span style="color:green">(implementata)</span>
+
+| name                | type         | altro                | indice  |
+|---------------------|--------------|----------------------|---------|
+| ID                  | int(11)      | auto_increment       | primary |
+| ID_verifica         | int(11)      |
+| ID_sezione          | int(11)      |
+| testo               | varchar(512) |
+| note                | varchar(64)  |
+| punteggio           | tinyint(2)   |
+| ordine              | tinyint(3)   |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |
+
+### verifica_rispostamultipla_risposte <span style="color:green">(implementata)</span>
 
 | name                | type         | altro                    | indice  |
 |---------------------|--------------|--------------------------|---------|
@@ -113,24 +133,28 @@
 | corretto            | tinyint(1)   | `//1 corretto - 0 falso` | 
 | punteggio           | tinyint(2)   |
 | ordine              | tinyint(3)   |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |
 
-### rispostaaperta
+### verifica_rispostaaperta
 
 | name        | type         | altro              | indice  |
 |-------------|--------------|--------------------|---------|
 | ID          | int(11)      | auto_increment     | primary |
 | ID_verifica | int(11)      |
+| ID_sezione  | int(11)      |
 | testo       | varchar(512) |
 | note        | varchar(64)  |
 | punteggio   | tinyint(2)   |
 | ordine      | tinyint(3)   |
 
-### esercizio
+### verifica_esercizio
 
 | name        | type         | altro              | indice  |
 |-------------|--------------|--------------------|---------|
 | ID          | int(11)      | auto_increment     | primary |
 | ID_verifica | int(11)      |
+| ID_sezione  | int(11)      |
 | testo       | varchar(512) |
 | note        | varchar(64)  |
 | punteggio   | tinyint(2)   |

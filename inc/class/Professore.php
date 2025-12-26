@@ -97,4 +97,14 @@
 			}
 			return $classi;
 		}
+		
+		static function getProfessoreByUtenteID(int $id): Professore|false {
+			global $mysql;
+			$result = $mysql->select("professore", "ID_utente='$id'", ["id"]);
+			$professore = false;
+			while($row = mysqli_fetch_assoc($result)){
+				$professore = new Professore($row["id"]);
+			}
+			return $professore;
+		}
 	}

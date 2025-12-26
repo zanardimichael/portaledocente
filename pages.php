@@ -3,6 +3,7 @@
     global $versione;
     require_once "./inc/utils.php";
     require_once "./inc/class/Utente.php";
+	require_once "./inc/class/Professore.php";
 
     global $categorie_js;
     global $autori_js;
@@ -14,6 +15,7 @@
 
     /** @var Utente $utente Utente attivo */
     $utente = new Utente($userId, "*");
+	$current_prof = Professore::getProfessoreByUtenteID($userId);
 
     $debug = true;
 

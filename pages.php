@@ -17,6 +17,7 @@
     /** @var Utente $utente Utente attivo */
     $utente = new Utente($userId, "*");
 	$current_prof = Professore::getProfessoreByUtenteID($userId);
+	$message = new Message();
 
     $debug = true;
 
@@ -132,17 +133,7 @@
 	
 	/** @var ?Message $message */
 	global $message;
-	if(gettype($message) == "object" and get_class($message) == "Message"){
-		?>
-		<script>
-			Toastify({
-				text: "<?php echo $message->messaggio; ?>",
-				duration: 3000,
-				style: <?php echo json_encode($message->style); ?>,
-			}).showToast();
-		</script>
-		<?php
-	}
+	echo $message->render(true);
 
     if ($pages[$current_page]["script_js"]) {
         foreach ($pages[$current_page]["script_js"] as $script) {

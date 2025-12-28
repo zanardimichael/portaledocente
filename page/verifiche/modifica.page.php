@@ -5,51 +5,20 @@
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verofalso.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Rispostamultipla.php";
 	
+	/** @var Message $message */
+	global $message;
 	$id = null;
-	$message = null;
 	if(verifyAllGetVars(["id"])){
 		$id = $_GET["id"];
 	}else{
 		echo "<script> location.href = \"/pages/verifiche\"</script>";
 		exit();
 	}
-	if(verifyAllPostVars(["id", "type"])){
-		switch($_POST["type"]){
-			case "modifica-sezione":
-				if($_POST["id"] == 0){
-					if(verifyAllPostVars(["titolo", "ID_verifica"])) {
-						$ordine = Sezione::getUltimoOrdineVerifica($_POST["ID_verifica"]) + 1;
-						if(Sezione::create(["titolo" => $_POST["titolo"], "ordine" => $ordine, "ID_verifica" => $_POST["ID_verifica"]])){
-							$message = new Message("Sezione creata correttamente", []);
-							$message->setMessageType(MessageType::Success);
-						}else{
-							$message = new Message("Errore nel salvataggio della sezione", []);
-							$message->setMessageType(MessageType::Error);
-						}
-					}
-				}else{
-					if(verifyAllPostVars(["titolo"])) {
-						if(Sezione::edit($_POST["id"], ["titolo" => $_POST["titolo"]])) {
-							$message = new Message("Sezione modificata correttamente", []);
-							$message->setMessageType(MessageType::Success);
-						}else{
-							$message = new Message("Errore nel salvataggio della sezione", []);
-							$message->setMessageType(MessageType::Error);
-						}
-					}
-				}
-				break;
-			case "elimina-sezione":
-				if(Sezione::delete($_POST["id"])) {
-					$message = new Message("Sezione eliminata correttamente", []);
-					$message->setMessageType(MessageType::Success);
-				}else{
-					$message = new Message("Errore nell'eliminazione della sezione", []);
-					$message->setMessageType(MessageType::Error);
-				}
-				break;
-		}
+	
+	if($_SERVER["REQUEST_METHOD"] == "POST"){
+		include "modifica/postHandler.php";
 	}
+	
 	$verifica = new Verifica($id);
 	$punteggio_generale = 0;
 
@@ -135,19 +104,18 @@
 							<div class="row g-3 esercizi">
 								<div class="col-12"><div class="float-end"><button type="button" class="btn btn-sm btn-primary aggiungi-esercizio" id-sezione="<?php echo $sezione->id; ?>">Aggiungi esercizio</button></div></div>
 								<?php
-									$domande = $sezione->getDomande();
-									foreach ($domande as $ordine => $domanda) {
-										if($ordine != "punteggio") {
-											echo $domanda->render();
-										}
+									$domande_array = $sezione->getDomande();
+									$domande = $domande_array["domande"];
+									for($j = 1; $j <= count($domande); $j++) {
+										echo $domande[$j]->render();
 									}
-									$punteggio_generale += $domande["punteggio"];
+									$punteggio_generale += $domande_array["punteggio"];
 								?>
 							</div>
 						</div>
 						<div class="card-footer">
 							<button type="button" class="btn btn-sm btn-danger elimina-sezione" id-sezione="<?php echo $sezione->id; ?>">Elimina sezione</button>
-							<div class="float-end">Punteggio massimo: <?php echo $domande["punteggio"]; ?> punt<?php echo $domande["punteggio"] == "1"? "o" : "i"?></div>
+							<div class="float-end">Punteggio massimo: <?php echo $domande_array["punteggio"]; ?> punt<?php echo $domande_array["punteggio"] == "1"? "o" : "i"?></div>
 						</div>
 					</div>
 				</div>
@@ -157,7 +125,7 @@
 		?>
 		<div class="col-12">
 			<div class="float-end">
-				Punteggio verifica: <?php echo $punteggio_generale; ?> punt<?php echo $domande["punteggio"] == "1"? "o" : "i"?>
+				Punteggio verifica: <?php echo $punteggio_generale; ?> punt<?php echo $punteggio_generale == "1"? "o" : "i"?>
 			</div>
 		</div>
 	</div>

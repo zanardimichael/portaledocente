@@ -82,7 +82,7 @@
 		
 		public function render(): string {
 			return '
-				<div class="col-12 esercizio" id-verofalso="'.$this->id.'">
+				<div class="col-12 esercizio" id-verofalso="'.$this->id.'" ordine="'.$this->ordine.'">
 					<div class="card card-success card-outline">
 						<div class="card-header">
 							<div class="card-title">
@@ -90,8 +90,8 @@
 							</div>
 							<div class="float-end">
 								<div class="btn-group btn-group-sm">
-									<button type="button" class="btn btn-sm btn-primary modifica-esercizio" id-verofalso="'.$this->id.'">Modifica</button>
-									<button type="button" class="btn btn-sm btn-danger elimina-esercizio" id-verofalso="'.$this->id.'">Elimina</button>
+									<button type="button" class="btn btn-sm btn-primary modifica-verofalso" id-verofalso="'.$this->id.'">Modifica</button>
+									<button type="button" class="btn btn-sm btn-danger elimina-verofalso" id-verofalso="'.$this->id.'">Elimina</button>
 									<button type="button" class="btn btn-sm btn-outline-primary ordina-giu-esercizio" id-verofalso="'.$this->id.'"><i class="bi bi-chevron-down"></i></button>
 									<button type="button" class="btn btn-sm btn-outline-primary ordina-su-esercizio" id-verofalso="'.$this->id.'"><i class="bi bi-chevron-up"></i></button>
 								</div>

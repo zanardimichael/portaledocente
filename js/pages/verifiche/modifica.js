@@ -1,6 +1,50 @@
+let modal_general = null;
 
+let modal_general_init = () => {
+	modal_general._element.addEventListener('hidden.bs.modal', (e) => {
+		$("#form-general")[0].reset();
+	})
+}
 
 $(document).ready(() => {
+
+	$(".aggiungi-esercizio").on("click", (e) => {
+		if (modal_general == null) {
+			modal_general = new bootstrap.Modal("#modal-general");
+			modal_general_init();
+		}
+
+		let button = e.currentTarget;
+		let id = $(button).attr("id-sezione");
+
+		$("#form-general [name=ID_sezione]").val(id);
+
+		modal_general.show();
+	});
+
+	$("#form-general").on("submit", (e) => {
+		e.preventDefault();
+
+		if(e.currentTarget.checkValidity()) {
+
+			let id_sezione = $("#form-general [name=ID_sezione]").val();
+			let tipologia = $("#form-general [name=tipologia]").find(":selected").val();
+
+			switch (tipologia) {
+				case "verofalso":
+					modal_verofalso_init(id_sezione);
+					break;
+				case "rispostamultipla":
+					break;
+				case "rispostaaperta":
+					break;
+				case "esercizio":
+					break;
+			}
+
+			modal_general.hide();
+		}
+	});
 
 
 		// Example starter JavaScript for disabling form submissions if there are invalid fields

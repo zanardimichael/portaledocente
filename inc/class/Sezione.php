@@ -79,6 +79,24 @@
 			return $ordine_sql->fetch_assoc()["ordine"];
 		}
 		
+		public static function getUltimoOrdineSezione(int $ID_sezione) {
+			global $mysql;
+			
+			$mysql->escape($ID_sezione);
+			
+			$ordine_sql = $mysql->query("SELECT COALESCE(MAX(ordine), 0) AS max_ordine
+				FROM (
+				    SELECT ordine FROM verifica_verofalso WHERE ID_sezione = '$ID_sezione'
+				    UNION ALL
+				    SELECT ordine FROM verifica_rispostamultipla WHERE ID_sezione = '$ID_sezione'
+				    UNION ALL
+				    SELECT ordine FROM verifica_rispostaaperta WHERE ID_sezione = '$ID_sezione'
+				    UNION ALL
+				    SELECT ordine FROM verifica_esercizio WHERE ID_sezione = '$ID_sezione'
+				) AS tutte_le_domande;");
+			return $ordine_sql->fetch_assoc()["max_ordine"];
+		}
+		
 		public function getTimestampCreazioneTime() : int {
 			return strtotime($this->timestamp_creazione);
 		}
@@ -92,31 +110,32 @@
 			
 			$array = [];
 			$array["punteggio"] = 0;
+			$array["domande"] = [];
 			$verofalso = $mysql->select(Verofalso::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
 			while($row = mysqli_fetch_assoc($verofalso)){
 				$verofalso_object = new Verofalso($row["id"]);
-				$array[$row["ordine"]] = $verofalso_object;
+				$array["domande"][$row["ordine"]] = $verofalso_object;
 				$array["punteggio"] += $verofalso_object->punteggio;
 			}
 			
 			$rispostamultipla = $mysql->select(Rispostamultipla::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
 			while($row = mysqli_fetch_assoc($rispostamultipla)){
 				$rispostamultipla_object = new Rispostamultipla($row["id"]);
-				$array[$row["ordine"]] = $rispostamultipla_object;
+				$array["domande"][$row["ordine"]] = $rispostamultipla_object;
 				$array["punteggio"] += $rispostamultipla_object->punteggio;
 			}
 			
 			$rispostaaperta = $mysql->select(Rispostaaperta::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
 			while($row = mysqli_fetch_assoc($rispostaaperta)){
 				$rispostaaperta_object = new Rispostaaperta($row["id"]);
-				$array[$row["ordine"]] = $rispostaaperta_object;
+				$array["domande"][$row["ordine"]] = $rispostaaperta_object;
 				$array["punteggio"] += $rispostaaperta_object->punteggio;
 			}
 			
 			$esercizio = $mysql->select(Esercizio::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
 			while($row = mysqli_fetch_assoc($esercizio)){
 				$esercizio_object = new Esercizio($row["id"]);
-				$array[$row["ordine"]] = $esercizio_object;
+				$array["domande"][$row["ordine"]] = $esercizio_object;
 				$array["punteggio"] += $esercizio_object->punteggio;
 			}
 			

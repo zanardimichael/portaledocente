@@ -2,15 +2,12 @@
 	
 	class Message {
 		
-		public string $messaggio;
+		public string $message;
 		public array $style;
+		public int $duration = 3000;
+		public bool $show = false;
 		
-		public function __construct(string $messaggio, array $style) {
-			$this->messaggio = $messaggio;
-			$this->style = $style;
-		}
-		
-		public function setMessageType(MessageType $type): void {
+		public function setMessageType(MessageType $type): Message {
 			switch ($type){
 				case MessageType::Success:
 					$this->style["background"] = "var(--bs-success)";
@@ -25,6 +22,40 @@
 					$this->style["background"] = "var(--bs-info)";
 					break;
 			}
+			return $this;
+		}
+		
+		public function setMessage(string $message): Message {
+			$this->message = $message;
+			return $this;
+		}
+		
+		public function setDuration(int $time): Message {
+			$this->duration = $time;
+			return $this;
+		}
+		
+		public function show(): Message {
+			$this->show = true;
+			return $this;
+		}
+		
+		public function hide(): Message {
+			$this->show = false;
+			return $this;
+		}
+		
+		public function render(bool $script): string {
+			if($this->show) {
+				return ($script ? "<script>" : "").'
+						Toastify({
+							text: "'.$this->message.'",
+							duration: 3000,
+							style: '.json_encode($this->style).',
+						}).showToast();
+					'.($script ? "</script>" : "");
+			}
+			return "";
 		}
 	}
 	

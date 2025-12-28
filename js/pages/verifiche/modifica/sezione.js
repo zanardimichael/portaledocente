@@ -2,14 +2,22 @@ let modal_sezione = null;
 let modal_elimina_sezione = null;
 
 let modal_sezione_init = () => {
+	if (modal_sezione == null) {
+		modal_sezione = new bootstrap.Modal("#modal-sezione");
+	}
 	modal_sezione._element.addEventListener('hidden.bs.modal', (e) => {
 		$("#form-sezione")[0].reset();
+		$("#form-elimina-sezione [name=type]").val("modifica-sezione");
 	})
 }
 
 let modal_elimina_sezione_init = () => {
+	if (modal_elimina_sezione == null) {
+		modal_elimina_sezione = new bootstrap.Modal("#modal-elimina-sezione");
+	}
 	modal_elimina_sezione._element.addEventListener('hidden.bs.modal', (e) => {
 		$("#form-elimina-sezione")[0].reset();
+		$("#form-elimina-sezione [name=type]").val("elimina-sezione");
 	})
 }
 
@@ -20,10 +28,7 @@ $(document).ready(() => {
 		let button = e.currentTarget;
 		let id = $(button).attr("id-sezione");
 
-		if (modal_sezione == null) {
-			modal_sezione = new bootstrap.Modal("#modal-sezione");
-			modal_sezione_init();
-		}
+		modal_sezione_init();
 
 		$("#modal-sezione-titolo").text("Modifica Sezione");
 		$("#form-sezione [name=type]").val("modifica-sezione");
@@ -43,10 +48,7 @@ $(document).ready(() => {
 	});
 
 	$(".aggiungi-sezione").on("click", () => {
-		if (modal_sezione == null) {
-			modal_sezione = new bootstrap.Modal("#modal-sezione");
-			modal_sezione_init();
-		}
+		modal_sezione_init();
 
 		$("#form-sezione [name=id]").val(0);
 		$("#form-sezione [name=ID_verifica]").val(ID_verifica);
@@ -59,10 +61,7 @@ $(document).ready(() => {
 		let button = e.currentTarget;
 		let id = $(button).attr("id-sezione");
 
-		if (modal_elimina_sezione == null) {
-			modal_elimina_sezione = new bootstrap.Modal("#modal-elimina-sezione");
-			modal_elimina_sezione_init();
-		}
+		modal_elimina_sezione_init();
 
 		$("#form-elimina-sezione [name=id]").val(id);
 		$("#form-elimina-sezione [name=type]").val("elimina-sezione");

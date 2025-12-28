@@ -95,6 +95,10 @@
 			return $result;
 		}
 		
+		public function escape(&$string): void {
+			$string = $this->connection->real_escape_string($string);
+		}
+		
 		public function query($query) {
 			return $this->connection->query($query);
 		}

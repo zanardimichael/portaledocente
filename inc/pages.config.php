@@ -111,7 +111,8 @@
 			"back_button" => true,
 			"script_js" => [
 				"/js/pages/verifiche/modifica.js",
-				"/js/pages/verifiche/modifica/sezione.js"
+				"/js/pages/verifiche/modifica/sezione.js",
+				"/js/pages/verifiche/modifica/verofalso.js"
 			]
 		],
 	];

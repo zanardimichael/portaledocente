@@ -62,7 +62,10 @@
 		
 		static function delete($id): bool{
 			global $mysql;
-			return $mysql->delete(static::$sqlTable, "ID='$id'");
+			$sezione = new Sezione($id, ["ordine", "ID_verifica"]);
+			$delete = $mysql->delete(static::$sqlTable, "ID='$id'");
+			Sezione::updateOrdineSezione($sezione->ordine, $sezione->ID_verifica);
+			return $delete;
 		}
 		
 		/**
@@ -140,5 +143,20 @@
 			}
 			
 			return $array;
+		}
+		
+		static function updateOrdineEsercizi(int $ordineRimosso, $ID_sezione): void {
+			global $mysql;
+			
+			$mysql->update(Verofalso::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
+			$mysql->update(Rispostamultipla::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
+			$mysql->update(Rispostaaperta::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
+			$mysql->update(Esercizio::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
+		}
+		
+		static function updateOrdineSezione(int $ordineRimosso, $ID_verifica): void {
+			global $mysql;
+			
+			$mysql->update(Sezione::$sqlTable, "ordine > $ordineRimosso AND ID_verifica='$ID_verifica'", "ordine=ordine-1");
 		}
 	}

@@ -35,8 +35,10 @@ $(document).ready(() => {
 					modal_verofalso_init(id_sezione);
 					break;
 				case "rispostamultipla":
+					modal_rispostamultipla_init(id_sezione);
 					break;
 				case "rispostaaperta":
+					modal_rispostaaperta_init(id_sezione);
 					break;
 				case "esercizio":
 					break;

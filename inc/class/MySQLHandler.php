@@ -41,15 +41,19 @@
 		/**
 		 * @param string $table
 		 * @param string $where
-		 * @param array $data deve essere un array associativo: ["nome" => "Mario", "cognome" => "Rossi"]
+		 * @param string|array $data può essere un array associativo: ["nome" => "Mario", "cognome" => "Rossi"] oppure direttamente una stringa
 		 * @return bool
 		 */
-		public function update(string $table, string $where, array $data): bool {
+		public function update(string $table, string $where, array|string $data): bool {
 			$data_update = "";
-			foreach($data as $key => $value){
-				$data_update .= $this->connection->real_escape_string($key)."='".$this->connection->real_escape_string($value)."', ";
+			if(gettype($data) == "array") {
+				foreach ($data as $key => $value) {
+					$data_update .= $this->connection->real_escape_string($key) . "='" . $this->connection->real_escape_string($value) . "', ";
+				}
+				$data_update = substr($data_update, 0, -2);
+			}else{
+				$data_update = $this->connection->real_escape_string($data);
 			}
-			$data_update = substr($data_update, 0, -2);
 			$result = $this->query("UPDATE $table SET $data_update WHERE $where");
 			if($this->connection->error){
 				$this->logError($this->connection->error, $this->connection->errno);

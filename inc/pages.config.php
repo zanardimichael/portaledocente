@@ -112,7 +112,9 @@
 			"script_js" => [
 				"/js/pages/verifiche/modifica.js",
 				"/js/pages/verifiche/modifica/sezione.js",
-				"/js/pages/verifiche/modifica/verofalso.js"
+				"/js/pages/verifiche/modifica/verofalso.js",
+				"/js/pages/verifiche/modifica/rispostaaperta.js",
+				"/js/pages/verifiche/modifica/rispostamultipla.js"
 			]
 		],
 	];

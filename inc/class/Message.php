@@ -53,6 +53,9 @@
 							duration: 3000,
 							style: '.json_encode($this->style).',
 						}).showToast();
+					    if ( window.history.replaceState ) {
+					        window.history.replaceState( null, null, window.location.href );
+					    }
 					'.($script ? "</script>" : "");
 			}
 			return "";

@@ -49,6 +49,7 @@
 	function modificaVerofalso(): void {
 		global $message;
 		
+		// Se l'id è uguale a 0 aggiungo un nuovo verofalso
 		if($_POST["id"] == 0){
 			if(verifyAllPostVars(["testo", "ID_sezione", "risultato", "punteggio"])) {
 				$ID_sezione = $_POST["ID_sezione"];
@@ -95,6 +96,7 @@
 			}
 		}
 	}
+	
 	function eliminaVerofalso(): void {
 		global $message;
 		
@@ -109,12 +111,204 @@
 		}
 	}
 	
+	function modificaRispostaaperta(): void {
+		global $message;
+		
+		// Se l'id è uguale a 0 aggiungo una nuova risposta aperta
+		if($_POST["id"] == 0){
+			if(verifyAllPostVars(["testo", "ID_sezione", "punteggio"])) {
+				$ID_sezione = $_POST["ID_sezione"];
+				$sezione = new Sezione($ID_sezione, ["ID_verifica"]);
+				$ordine = Sezione::getUltimoOrdineSezione($ID_sezione) + 1;
+				$ID_verifica = $sezione->ID_verifica;
+				
+				if(Rispostaaperta::create([
+						"testo" => $_POST["testo"],
+						"ID_sezione" => $ID_sezione,
+						"ID_verifica" => $ID_verifica,
+						"punteggio" => $_POST["punteggio"],
+						"note" => $_POST["note"] ?? "",
+						"ordine" => $ordine]
+				)){
+					$message->setMessageType(MessageType::Success)
+						->setMessage("Domanda aperta creata correttamente")
+						->show();
+				}else{
+					$message->setMessageType(MessageType::Error)
+						->setMessage("Errore nel salvataggio della Domanda aperta")
+						->show();
+				}
+			}
+		}else{
+			if(verifyAllPostVars(["testo", "punteggio"])) {
+				if(Rispostaaperta::edit(
+					$_POST["id"],
+					[
+						"testo" => $_POST["testo"],
+						"punteggio" => $_POST["punteggio"],
+						"note" => $_POST["note"] ?? ""
+					])) {
+					$message->setMessageType(MessageType::Success)
+						->setMessage("Domanda aperta modificata correttamente")
+						->show();
+				}else{
+					$message->setMessageType(MessageType::Error)
+						->setMessage("Errore nel salvataggio della Domanda aperta")
+						->show();
+				}
+			}
+		}
+	}
+	
+	function eliminaRispostaaperta(): void {
+		global $message;
+		
+		if(Rispostaaperta::delete($_POST["id"])) {
+			$message->setMessageType(MessageType::Success)
+				->setMessage("Domanda aperta eliminata correttamente")
+				->show();
+		}else{
+			$message->setMessageType(MessageType::Error)
+				->setMessage("Errore nell'eliminazione della Domanda aperta")
+				->show();
+		}
+	}
+	
+	function modificaRispostamultipla(): void {
+		global $message;
+		
+		// Se l'id è uguale a 0 aggiungo una nuova risposta aperta
+		if($_POST["id"] == 0){
+			if(verifyAllPostVars(["testo", "ID_sezione", "punteggio"])) {
+				$ID_sezione = $_POST["ID_sezione"];
+				$sezione = new Sezione($ID_sezione, ["ID_verifica"]);
+				$ordine = Sezione::getUltimoOrdineSezione($ID_sezione) + 1;
+				$ID_verifica = $sezione->ID_verifica;
+				
+				if(Rispostamultipla::create([
+						"testo" => $_POST["testo"],
+						"ID_sezione" => $ID_sezione,
+						"ID_verifica" => $ID_verifica,
+						"punteggio" => $_POST["punteggio"],
+						"note" => $_POST["note"] ?? "",
+						"ordine" => $ordine]
+				)){
+					$message->setMessageType(MessageType::Success)
+						->setMessage("Domanda chiusa creata correttamente")
+						->show();
+				}else{
+					$message->setMessageType(MessageType::Error)
+						->setMessage("Errore nel salvataggio della Domanda chiusa")
+						->show();
+				}
+			}
+		}else{
+			if(verifyAllPostVars(["testo", "punteggio"])) {
+				if(Rispostamultipla::edit(
+					$_POST["id"],
+					[
+						"testo" => $_POST["testo"],
+						"punteggio" => $_POST["punteggio"],
+						"note" => $_POST["note"] ?? ""
+					])) {
+					$message->setMessageType(MessageType::Success)
+						->setMessage("Domanda chiusa modificata correttamente")
+						->show();
+				}else{
+					$message->setMessageType(MessageType::Error)
+						->setMessage("Errore nel salvataggio della Domanda chiusa")
+						->show();
+				}
+			}
+		}
+	}
+	
+	function eliminaRispostamultipla(): void {
+		global $message;
+		
+		if(Rispostamultipla::delete($_POST["id"])) {
+			$message->setMessageType(MessageType::Success)
+				->setMessage("Domanda chiusa eliminata correttamente")
+				->show();
+		}else{
+			$message->setMessageType(MessageType::Error)
+				->setMessage("Errore nell'eliminazione della Domanda chiusa")
+				->show();
+		}
+	}
+	
+	function modificaRisposta(): void {
+		global $message;
+		
+		// Se l'id è uguale a 0 aggiungo una nuova risposta aperta
+		if($_POST["id"] == 0){
+			if(verifyAllPostVars(["testo", "ID_rispostamultipla", "punteggio"])) {
+				$ID_rispostamultipla = $_POST["ID_rispostamultipla"];
+				$ordine = Rispostamultipla::getUltimoOrdineRisposta($ID_rispostamultipla);
+				
+				if(Rispostamultipla::createRisposta([
+						"ID_rispostamultipla" => $ID_rispostamultipla,
+						"testo" => $_POST["testo"],
+						"punteggio" => $_POST["punteggio"],
+						"corretto" => ($_POST["corretto"] == "1" ? "1" : "0"),
+						"ordine" => $ordine]
+				)){
+					$message->setMessageType(MessageType::Success)
+						->setMessage("Risposta creata correttamente")
+						->show();
+				}else{
+					$message->setMessageType(MessageType::Error)
+						->setMessage("Errore nel salvataggio della Risposta")
+						->show();
+				}
+			}
+		}else{
+			if(verifyAllPostVars(["testo", "punteggio"])) {
+				if(Rispostamultipla::editRisposta(
+					$_POST["id"],
+					[
+						"testo" => $_POST["testo"],
+						"punteggio" => $_POST["punteggio"],
+						"corretto" => ($_POST["corretto"] == "1" ? "1" : "0"),
+					])) {
+					$message->setMessageType(MessageType::Success)
+						->setMessage("Risposta modificata correttamente")
+						->show();
+				}else{
+					$message->setMessageType(MessageType::Error)
+						->setMessage("Errore nel salvataggio della Risposta")
+						->show();
+				}
+			}
+		}
+	}
+	
+	function eliminaRisposta(): void {
+		global $message;
+		
+		if(Rispostamultipla::deleteRisposta($_POST["id"])) {
+			$message->setMessageType(MessageType::Success)
+				->setMessage("Risposta eliminata correttamente")
+				->show();
+		}else{
+			$message->setMessageType(MessageType::Error)
+				->setMessage("Errore nell'eliminazione della Risposta")
+				->show();
+		}
+	}
+	
 	
 	$typeToFunction = array(
 		"modifica-sezione" => "modificaSezione",
 		"elimina-sezione" => "eliminaSezione",
 		"modifica-verofalso" => "modificaVerofalso",
 		"elimina-verofalso" => "eliminaVerofalso",
+		"modifica-rispostaaperta" => "modificaRispostaaperta",
+		"elimina-rispostaaperta" => "eliminaRispostaaperta",
+		"modifica-rispostamultipla" => "modificaRispostamultipla",
+		"elimina-rispostamultipla" => "eliminaRispostamultipla",
+		"modifica-risposta" => "modificaRisposta",
+		"elimina-risposta" => "eliminaRisposta",
 	);
 	
 	if(verifyAllPostVars(["id", "type"])){

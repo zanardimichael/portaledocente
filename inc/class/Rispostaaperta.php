@@ -67,7 +67,10 @@
 		
 		static function delete($id): bool{
 			global $mysql;
-			return $mysql->delete(static::$sqlTable, "ID='$id'");
+			$rispostaaperta = new Rispostaaperta($id, ["ordine", "ID_sezione"]);
+			$delete = $mysql->delete(static::$sqlTable, "ID='$id'");
+			Sezione::updateOrdineEsercizi($rispostaaperta->ordine, $rispostaaperta->ID_sezione);
+			return $delete;
 		}
 		
 		public function getTimestampCreazioneTime() : int {
@@ -88,8 +91,8 @@
 							</div>
 							<div class="float-end">
 								<div class="btn-group btn-group-sm">
-									<button type="button" class="btn btn-sm btn-primary modifica-esercizio" id-rispostaaperta="'.$this->id.'">Modifica</button>
-									<button type="button" class="btn btn-sm btn-danger elimina-esercizio" id-rispostaaperta="'.$this->id.'">Elimina</button>
+									<button type="button" class="btn btn-sm btn-primary modifica-rispostaaperta" id-rispostaaperta="'.$this->id.'">Modifica</button>
+									<button type="button" class="btn btn-sm btn-danger elimina-rispostaaperta" id-rispostaaperta="'.$this->id.'">Elimina</button>
 									<button type="button" class="btn btn-sm btn-outline-primary ordina-giu-esercizio" id-rispostaaperta="'.$this->id.'"><i class="bi bi-chevron-down"></i></button>
 									<button type="button" class="btn btn-sm btn-outline-primary ordina-su-esercizio" id-rispostaaperta="'.$this->id.'"><i class="bi bi-chevron-up"></i></button>
 								</div>

@@ -69,7 +69,10 @@
 		
 		static function delete($id): bool{
 			global $mysql;
-			return $mysql->delete(static::$sqlTable, "ID='$id'");
+			$verofalso = new Verofalso($id, ["ordine", "ID_sezione"]);
+			$delete = $mysql->delete(static::$sqlTable, "ID='$id'");
+			Sezione::updateOrdineEsercizi($verofalso->ordine, $verofalso->ID_sezione);
+			return $delete;
 		}
 		
 		public function getTimestampCreazioneTime() : int {

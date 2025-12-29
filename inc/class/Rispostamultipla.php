@@ -17,6 +17,7 @@
 		];
 		
 		static $sqlTable = "verifica_rispostamultipla";
+		static $sqlTableRisposte = "verifica_rispostamultipla_risposte";
 		
 		public int $id;
 		public ?int $ID_verifica;
@@ -60,14 +61,37 @@
 			return $mysql->insert(static::$sqlTable, $data);
 		}
 		
+		static function createRisposta($data): bool{
+			global $mysql;
+			return $mysql->insert(static::$sqlTableRisposte, $data);
+		}
+		
 		static function edit($id, $data): bool{
 			global $mysql;
 			return $mysql->update(static::$sqlTable, "ID='$id'", $data);
 		}
 		
+		static function editRisposta($id, $data): bool{
+			global $mysql;
+			return $mysql->update(static::$sqlTableRisposte, "ID='$id'", $data);
+		}
+		
 		static function delete($id): bool{
 			global $mysql;
-			return $mysql->delete(static::$sqlTable, "ID='$id'");
+			$rispostamultipla = new Rispostamultipla($id, ["ordine", "ID_sezione"]);
+			$delete = $mysql->delete(static::$sqlTable, "ID='$id'");
+			Sezione::updateOrdineEsercizi($rispostamultipla->ordine, $rispostamultipla->ID_sezione);
+			return $delete;
+		}
+		
+		static function deleteRisposta($id): bool{
+			global $mysql;
+			return $mysql->delete(static::$sqlTableRisposte, "ID='$id'");
+		}
+		
+		static function existsRisposta($id): bool{
+			global $mysql;
+			return $mysql->select(static::$sqlTableRisposte, "id='$id'", "COUNT(ID) as ids")->fetch_assoc()["ids"] == 1;
 		}
 		
 		public function getTimestampCreazioneTime() : int {
@@ -82,21 +106,25 @@
 			$risposte = $this->getRisposte();
 			$risposte_txt = "";
 			
-			foreach($risposte as $risposta){
-				$risposte_txt .= '
-					<div class="col-12" id-risposta="'.$risposta["id"].'">
+			if(count($risposte) > 0) {
+				foreach ($risposte as $risposta) {
+					$risposte_txt .= '
+					<div class="col-12" id-risposta="' . $risposta["ID"] . '">
 						<div class="card">
 							<div class="card-body p-2">
-								<span class="mt-1 d-inline-block">'.$risposta["testo"].($risposta["corretto"] ? " <b>Corretta</b>": "").'</span>
+								<span class="mt-1 d-inline-block">' . $risposta["testo"] . ($risposta["corretto"] ? " <b>Corretta</b>" : "") . '</span>
 								<div class="float-end">
 									<div class="btn-group btn-group-sm">
-										<button type="button" class="btn btn-sm btn-primary modifica-risposta" id-risposta="'.$risposta["id"].'">Modifica</button>
-										<button type="button" class="btn btn-sm btn-danger elimina-risposta" id-risposta="'.$risposta["id"].'">Elimina</button>
+										<button type="button" class="btn btn-sm btn-primary modifica-risposta" id-risposta="' . $risposta["ID"] . '">Modifica</button>
+										<button type="button" class="btn btn-sm btn-danger elimina-risposta" id-risposta="' . $risposta["ID"] . '">Elimina</button>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>';
+				}
+			}else{
+				$risposte_txt = "Nessuna risposta inserita";
 			}
 			
 			return '
@@ -108,8 +136,8 @@
 							</div>
 							<div class="float-end">
 								<div class="btn-group btn-group-sm">
-									<button type="button" class="btn btn-sm btn-primary modifica-esercizio" id-rispostamultipla="'.$this->id.'">Modifica</button>
-									<button type="button" class="btn btn-sm btn-danger elimina-esercizio" id-rispostamultipla="'.$this->id.'">Elimina</button>
+									<button type="button" class="btn btn-sm btn-primary modifica-rispostamultipla" id-rispostamultipla="'.$this->id.'">Modifica</button>
+									<button type="button" class="btn btn-sm btn-danger elimina-rispostamultipla" id-rispostamultipla="'.$this->id.'">Elimina</button>
 									<button type="button" class="btn btn-sm btn-outline-primary ordina-giu-esercizio" id-rispostamultipla="'.$this->id.'"><i class="bi bi-chevron-down"></i></button>
 									<button type="button" class="btn btn-sm btn-outline-primary ordina-su-esercizio" id-rispostamultipla="'.$this->id.'"><i class="bi bi-chevron-up"></i></button>
 								</div>
@@ -121,7 +149,7 @@
 							<h5 class="mb-3 mt-2">
 								Risposte
 								<div class="float-end">
-									<button type="button" class="btn btn-sm btn-primary">Aggiungi Risposta</button>
+									<button type="button" class="btn btn-sm btn-primary aggiungi-risposta" id-rispostamultipla="'.$this->id.'">Aggiungi Risposta</button>
 								</div>
 							</h5>
 							'.$risposte_txt.'
@@ -141,5 +169,24 @@
 				$risposte_array[] = $row;
 			}
 			return $risposte_array;
+		}
+		
+		static function getUltimoOrdineRisposta(int $id_rispostamultipla): string {
+			global $mysql;
+			$mysql->escape($id_rispostamultipla);
+			return $mysql->select(self::$sqlTableRisposte, "ID_rispostamultipla='$id_rispostamultipla'", "COALESCE(MAX(ordine), 0) as max_ordine")->fetch_assoc()["max_ordine"];
+		}
+		
+		static function getRisposta(int $id): array {
+			global $mysql;
+			$mysql->escape($id);
+			
+			$risposta = $mysql->select(static::$sqlTableRisposte, "ID='$id'");
+			$row = mysqli_fetch_assoc($risposta);
+			if(gettype($row) == "array") {
+				return $row;
+			}
+			
+			return [];
 		}
 	}

@@ -1,23 +1,23 @@
-<div class="modal fade" id="modal-verofalso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-	<form class="needs-validation" novalidate action="" method="post" id="form-verofalso">
+<div class="modal fade" id="modal-esercizio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+	<form class="needs-validation" novalidate action="" method="post" id="form-esercizio">
 		<input type="hidden" name="id">
-		<input type="hidden" name="type" value="modifica-verofalso">
+		<input type="hidden" name="type" value="modifica-esercizio">
 		<input type="hidden" name="ID_sezione">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="modal-verofalso-titolo">Modifica Verofalso</h1>
+					<h1 class="modal-title fs-5" id="modal-esercizio-titolo">Modifica Esercizio</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-12 mb-2">
-							<label for="testo" class="form-label">Testo</label>
+							<label for="titolo" class="form-label">Titolo</label>
 							<input
 								type="text"
 								class="form-control"
-								id="testo"
-								name="testo"
+								id="titolo"
+								name="titolo"
 								value=""
 								maxlength="512"
 								required
@@ -25,19 +25,9 @@
 							<div class="valid-feedback">Va bene!</div>
 						</div>
 						<div class="col-md-12 mb-2">
-							<label class="form-label">Risultato</label>
-							<div class="form-check">
-								<input class="form-check-input" type="radio" name="risultato" id="vero" value="1" checked>
-								<label class="form-check-label" for="vero">
-									Vero
-								</label>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input" type="radio" name="risultato" id="falso" value="0">
-								<label class="form-check-label" for="falso">
-									Falso
-								</label>
-							</div>
+							<label for="testo" class="form-label">Testo</label>
+							<textarea id="testo" class="form-control" name="testo" aria-label="Note" required></textarea>
+							<div class="valid-feedback">Va bene!</div>
 						</div>
 						<div class="col-md-12 mb-2">
 							<label for="punteggio" class="form-label">Punteggio</label>
@@ -70,18 +60,18 @@
 	</form>
 </div>
 
-<div class="modal fade" id="modal-elimina-verofalso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-	<form class="needs-validation" novalidate action="" method="post" id="form-elimina-verofalso">
+<div class="modal fade" id="modal-elimina-esercizio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+	<form class="needs-validation" novalidate action="" method="post" id="form-elimina-esercizio">
 		<input type="hidden" name="id">
-		<input type="hidden" name="type" value="elimina-verofalso">
+		<input type="hidden" name="type" value="elimina-esercizio">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="modal-sezione-titolo">Elimina Verofalso</h1>
+					<h1 class="modal-title fs-5" id="modal-elimina-esercizio-titolo">Elimina Risposta Aperta</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					Sei sicuro di voler eliminare il Vero-Falso?<br/>
+					Sei sicuro di voler eliminare la Domanda a risposta aperta?<br/>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>

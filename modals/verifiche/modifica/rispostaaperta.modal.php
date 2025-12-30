@@ -12,7 +12,7 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-12 mb-2">
-							<label for="titolo" class="form-label">Testo</label>
+							<label for="testo" class="form-label">Testo</label>
 							<input
 								type="text"
 								class="form-control"

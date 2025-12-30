@@ -1,12 +1,12 @@
 <?php
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/inc/class/Rispostaaperta.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/inc/class/Esercizio.php";
 
-class RispostaApertaController extends BaseController {
+class EsercizioController extends BaseController {
     
     public function registerRoutes(Router $router) {
 //        $router->add('GET', '/sezione', [$this, 'index']);
-	    $router->add('GET', '/rispostaaperta/{id}', [$this, 'show']);
+	    $router->add('GET', '/esercizio/{id}', [$this, 'show']);
 //        $router->add('POST', '/sezione', [$this, 'create']);
 //        $router->add('PUT', '/sezione/{id}', [$this, 'update']);
 //        $router->add('PATCH', '/sezione/{id}', [$this, 'patch']);
@@ -18,17 +18,17 @@ class RispostaApertaController extends BaseController {
         
         if(!is_numeric($id)){
             http_response_code(400);
-            echo json_encode(["error" => "ID risposta aperta non valido"]);
+            echo json_encode(["error" => "ID esercizio non valido"]);
             return;
         }
         
-        if (!Verofalso::exists($id)) {
-            $this->error("Risposta aperta non trovata", 404, "NOT_FOUND");
+        if (!Esercizio::exists($id)) {
+            $this->error("Esercizio non trovato", 404, "NOT_FOUND");
         }
         
-        $rispostaaperta = new Rispostaaperta($id);
-		unset($rispostaaperta->verifica);
+        $esercizio = new Esercizio($id);
+		unset($esercizio->verifica);
 		
-        echo json_encode($rispostaaperta);
+        echo json_encode($esercizio);
     }
 }

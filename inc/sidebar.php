@@ -1,6 +1,6 @@
 <?php
 	global $pages;
-	global $current_page;
+	global $page;
 ?>
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
 	<!--begin::Sidebar Brand-->
@@ -28,14 +28,14 @@
 			>
 				<?php
 
-					foreach ($pages as $page => $conf){
-                        if(count(explode("/", $page)) > 1) continue;
+					foreach ($pages as $curr => $conf){
+                        if(count(explode("/", $curr)) > 1) continue;
 						if($conf["separator"]){
 							echo "<li class=\"nav-header\">".strtoupper($conf["title"])."</li>";
 						}else{
 						?>
 						<li class="nav-item">
-							<a href="<?php echo $conf["url"] ?>" class="nav-link <?php if ($current_page == $page){ echo "active"; } ?>">
+							<a href="<?php echo $conf["url"] ?>" class="nav-link <?php if ($page->current_page == $curr){ echo "active"; } ?>">
 								<i class="nav-icon <?php echo $conf["icon"] ?>"></i>
 								<p><?php echo $conf["title"] ?></p>
 							</a>

@@ -4,5 +4,6 @@
 	include "modifica/verofalso.modal.php";
 	include "modifica/rispostaaperta.modal.php";
 	include "modifica/rispostamultipla.modal.php";
+	include "modifica/esercizio.modal.php";
 
 ?>

@@ -69,29 +69,29 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-12 mb-2">
-							<label for="titolo" class="form-label">Testo</label>
+							<label for="testo" class="form-label">Testo</label>
 							<input
-									type="text"
-									class="form-control"
-									id="testo"
-									name="testo"
-									value=""
-									maxlength="512"
-									required
+								type="text"
+								class="form-control"
+								id="testo"
+								name="testo"
+								value=""
+								maxlength="512"
+								required
 							/>
 							<div class="valid-feedback">Va bene!</div>
 						</div>
 						<div class="col-md-12 mb-2">
 							<label for="punteggio" class="form-label">Punteggio</label>
 							<input
-									type="number"
-									class="form-control"
-									id="punteggio"
-									name="punteggio"
-									value=""
-									min="0"
-									max="64"
-									required
+								type="number"
+								class="form-control"
+								id="punteggio"
+								name="punteggio"
+								value=""
+								min="0"
+								max="64"
+								required
 							/>
 							<div class="valid-feedback">Va bene!</div>
 						</div>

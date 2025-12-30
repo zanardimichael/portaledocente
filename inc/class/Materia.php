@@ -12,6 +12,7 @@
 		];
 		
 		static $sqlTable = "materia";
+		static $sqlTableMateriaProfessoreClasse = "materia_professore_classe";
 		
 		public int $id;
 		public string $nome;
@@ -53,6 +54,24 @@
 			return $mysql->delete(static::$sqlTable, "ID='$id'");
 		}
 		
+		/**
+		 * @param int $ID_classe
+		 * @param int $ID_professore
+		 * @param string|array $sql
+		 * @param bool $object
+		 * @return array|Materia[]
+		 */
+		public static function getMaterieClasseProfessore(int $ID_classe, int $ID_professore, string|array $sql = "*", bool $object = true): array {
+			global $mysql;
+			$materie = [];
+			$result = $mysql->select(static::$sqlTableMateriaProfessoreClasse, "ID_classe='$ID_classe' AND ID_professore='$ID_professore'", "ID_materia");
+			
+			while($row = mysqli_fetch_assoc($result)){
+				$materie[] = $object ? new Materia($row["ID_materia"], $sql): $row["ID_materia"];
+			}
+			return $materie;
+		}
+		
 		public function getTimestampCreazioneTime() : int {
 			return strtotime($this->timestamp_creazione);
 		}
@@ -61,8 +80,6 @@
 			return strtotime($this->timestamp_modifica);
 		}
 		
-		
-		
 		/**
 		 * @param bool $object
 		 * @return Classe[]|int[]
@@ -70,7 +87,7 @@
 		public function getClassi(bool $object = false): array {
 			global $mysql;
 			$classi = [];
-			$result = $mysql->select("materia_professore_classe", "ID_materia='$this->id'", "DISTINCT ID_classe");
+			$result = $mysql->select(static::$sqlTableMateriaProfessoreClasse, "ID_materia='$this->id'", "DISTINCT ID_classe");
 			while($row = mysqli_fetch_assoc($result)){
 				$classi[] = $object ? new Classe($row["ID_classe"]) : $row["ID_classe"];
 			}
@@ -83,7 +100,7 @@
 		public function getClassiProfessori(): array {
 			global $mysql;
 			$classi = [];
-			$result = $mysql->select("materia_professore_classe", "ID_materia='$this->id'", ["ID_classe", "ID_professore"]);
+			$result = $mysql->select(static::$sqlTableMateriaProfessoreClasse, "ID_materia='$this->id'", ["ID_classe", "ID_professore"]);
 			while($row = mysqli_fetch_assoc($result)){
 				$classi[$row["ID_classe"]][] = $row["ID_professore"];
 			}

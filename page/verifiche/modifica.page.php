@@ -7,6 +7,9 @@
 	
 	/** @var Message $message */
 	global $message;
+	global $current_prof;
+	global $page;
+	
 	$id = null;
 	if(verifyAllGetVars(["id"])){
 		$id = $_GET["id"];
@@ -21,60 +24,82 @@
 	
 	$verifica = new Verifica($id);
 	$punteggio_generale = 0;
-
+	
+	if($verifica->professore->id != $current_prof->id){
+		$page->setRedirect("/pages/verifiche")->setUnsafe(UnsafeReasons::Unauthorized);
+	}
+	
+	if($page->isSafeToProceed()){
+	
 ?>
 
 <div class="container">
-	<form class="needs-validation" novalidate action="" method="post">
 	<div class="row">
 		<div class="col-12">
 			<div class="card card-info card-outline mb-4">
-				<div class="card-header">
-					<div class="card-title">
-						Modifica Verifica <b><?php echo $verifica->titolo; ?></b>
+				<form class="needs-validation" novalidate action="" method="post" id="form-verifica">
+					<div class="card-header">
+						<div class="card-title">
+							Modifica Verifica <b><?php echo $verifica->titolo; ?></b>
+						</div>
+						<button class="btn btn-info float-end btn-sm" type="submit">Salva Verifica</button>
 					</div>
-					<button class="btn btn-info float-end btn-sm" type="submit">Salva Verifica</button>
-				</div>
-				<input type="hidden" name="id" value="<?php echo $verifica->id; ?>">
-				<div class="card-body">
-					<div class="row g-3">
-						<div class="col-md-12">
-							<label for="titolo" class="form-label">Titolo</label>
-							<input
-									type="text"
-									class="form-control"
-									id="titolo"
-									name="titolo"
-									value="<?php echo $verifica->titolo; ?>"
-									maxlength="4"
-									required
-							/>
-							<div class="valid-feedback">Va bene!</div>
-						</div>
-						<div class="col-md-12">
-							<label for="classe" class="form-label">Classe</label>
-							<select class="form-select" id="classe" name="classe" required>
-								<option selected disabled value="">Scegli...</option>
-								<?php
-									$classi = Classe::getAll(true, ["classe", "sezione"]);
-									
-									foreach ($classi as $classe) {
-										if($classe->id == $verifica->ID_classe) $selected = "selected"; else $selected = "";
-										echo "<option value=\"$classe->id\" $selected>" . $classe->getNomeClasse() . "</option>";
-									}
-								?>
-							</select>
-							<div class="valid-feedback">Va bene!</div>
-						</div>
-						<div class="col-md-12">
-							<div class="input-group">
-								<span class="input-group-text">Note</span>
-								<textarea class="form-control" name="note" aria-label="Note"><?php echo $verifica->note; ?></textarea>
+					<input type="hidden" name="id" value="<?php echo $verifica->id; ?>">
+					<input type="hidden" name="type" value="salva-verifica">
+					<div class="card-body">
+						<div class="row g-3">
+							<div class="col-md-12">
+								<label for="titolo" class="form-label">Titolo</label>
+								<input
+										type="text"
+										class="form-control"
+										id="titolo"
+										name="titolo"
+										value="<?php echo $verifica->titolo; ?>"
+										maxlength="128"
+										required
+								/>
+								<div class="valid-feedback">Va bene!</div>
+							</div>
+							<div class="col-md-12">
+								<label for="classe" class="form-label">Classe</label>
+								<select class="form-select" id="classe" name="classe" required>
+									<option disabled value="">Scegli...</option>
+									<?php
+										$classi = Classe::getAll(true, ["classe", "sezione"]);
+										
+										foreach ($classi as $classe) {
+											if($classe->id == $verifica->ID_classe) $selected = "selected"; else $selected = "";
+											echo "<option value=\"$classe->id\" $selected>" . $classe->getNomeClasse() . "</option>";
+										}
+									?>
+								</select>
+								<div class="valid-feedback">Va bene!</div>
+							</div>
+							<div class="col-md-12">
+								<label for="materia" class="form-label">Materia</label>
+								<select class="form-select" id="materia" name="materia" required>
+									<option disabled value="">Scegli...</option>
+									<?php
+										$materie = Materia::getMaterieClasseProfessore($verifica->ID_classe, $current_prof->id);
+										
+										foreach ($materie as $materia) {
+											if($materia->id == $verifica->ID_materia) $selected = "selected"; else $selected = "";
+											echo "<option value=\"$materia->id\" $selected>" . $materia->nome . "</option>";
+										}
+									?>
+								</select>
+								<div class="valid-feedback">Va bene!</div>
+							</div>
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-text">Note</span>
+									<textarea class="form-control" name="note" aria-label="Note"><?php echo $verifica->note; ?></textarea>
+								</div>
 							</div>
 						</div>
-					
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 		<div class="col-12 mb-2">
@@ -129,8 +154,10 @@
 			</div>
 		</div>
 	</div>
-	</form>
 	<script>
 		let ID_verifica = <?php echo $verifica->id;?>;
 	</script>
 </div>
+<?php
+	}
+?>

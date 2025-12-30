@@ -171,7 +171,7 @@
 			return $risposte_array;
 		}
 		
-		static function getUltimoOrdineRisposta(int $id_rispostamultipla): string {
+		static function getUltimoOrdineRisposta(int $id_rispostamultipla): int {
 			global $mysql;
 			$mysql->escape($id_rispostamultipla);
 			return $mysql->select(self::$sqlTableRisposte, "ID_rispostamultipla='$id_rispostamultipla'", "COALESCE(MAX(ordine), 0) as max_ordine")->fetch_assoc()["max_ordine"];

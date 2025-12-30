@@ -1,17 +1,12 @@
 <?php
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/inc/class/Verofalso.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/inc/class/Rispostamultipla.php";
 
 class RispostaMultiplaController extends BaseController {
     
     public function registerRoutes(Router $router) {
-//        $router->add('GET', '/sezione', [$this, 'index']);
 	    $router->add('GET', '/rispostamultipla/{id}', [$this, 'show']);
 		$router->add('GET', '/rispostamultipla/risposta/{id}', [$this, 'getRisposta']);
-//        $router->add('POST', '/sezione', [$this, 'create']);
-//        $router->add('PUT', '/sezione/{id}', [$this, 'update']);
-//        $router->add('PATCH', '/sezione/{id}', [$this, 'patch']);
-//        $router->add('DELETE', '/sezione/{id}', [$this, 'delete']);
     }
 
     public function show($params): void {

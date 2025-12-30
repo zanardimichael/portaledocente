@@ -1,6 +1,27 @@
 <?php
 	global $message;
 	
+	function salvaVerifica(): void {
+		global $message;
+		
+		if(verifyAllPostVars(["titolo", "id", "materia", "classe"])) {
+			if(Verifica::edit($_POST["id"], [
+				"titolo" => $_POST["titolo"],
+				"ID_materia" => $_POST["materia"],
+				"ID_classe" => $_POST["classe"],
+				"note" => $_POST["note"] ?? "",
+			])){
+				$message->setMessageType(MessageType::Success)
+					->setMessage("Verifica modificata correttamente")
+					->show();
+			}else{
+				$message->setMessageType(MessageType::Error)
+					->setMessage("Errore nel salvataggio della verifica")
+					->show();
+			}
+		}
+	}
+	
 	function modificaSezione(): void {
 		global $message;
 		// Se l'id è uguale a 0 aggiungo una nuova sezione
@@ -244,7 +265,7 @@
 		if($_POST["id"] == 0){
 			if(verifyAllPostVars(["testo", "ID_rispostamultipla", "punteggio"])) {
 				$ID_rispostamultipla = $_POST["ID_rispostamultipla"];
-				$ordine = Rispostamultipla::getUltimoOrdineRisposta($ID_rispostamultipla);
+				$ordine = Rispostamultipla::getUltimoOrdineRisposta($ID_rispostamultipla) + 1;
 				
 				if(Rispostamultipla::createRisposta([
 						"ID_rispostamultipla" => $ID_rispostamultipla,
@@ -297,8 +318,74 @@
 		}
 	}
 	
+	function modificaEsercizio(): void {
+		global $message;
+		
+		// Se l'id è uguale a 0 aggiungo una nuova risposta aperta
+		if($_POST["id"] == 0){
+			if(verifyAllPostVars(["titolo", "testo", "ID_sezione", "punteggio"])) {
+				$ID_sezione = $_POST["ID_sezione"];
+				$sezione = new Sezione($ID_sezione, ["ID_verifica"]);
+				$ID_verifica = $sezione->ID_verifica;
+				$ordine = Sezione::getUltimoOrdineSezione($ID_sezione) + 1;
+				
+				if(Esercizio::create([
+					"ID_sezione" => $ID_sezione,
+					"ID_verifica" => $ID_verifica,
+					"titolo" => $_POST["titolo"],
+					"testo" => $_POST["testo"],
+					"punteggio" => $_POST["punteggio"],
+					"note" => $_POST["note"] ?? "",
+					"ordine" => $ordine]
+				)){
+					$message->setMessageType(MessageType::Success)
+						->setMessage("Esercizio creato correttamente")
+						->show();
+				}else{
+					$message->setMessageType(MessageType::Error)
+						->setMessage("Errore nel salvataggio dell'Esercizio")
+						->show();
+				}
+			}
+		}else{
+			if(verifyAllPostVars(["titolo", "testo", "punteggio"])) {
+				if(Esercizio::edit(
+					$_POST["id"],
+					[
+						"titolo" => $_POST["titolo"],
+						"testo" => $_POST["testo"],
+						"punteggio" => $_POST["punteggio"],
+						"note" => $_POST["note"] ?? "",
+					])) {
+					$message->setMessageType(MessageType::Success)
+						->setMessage("Esercizio modificato correttamente")
+						->show();
+				}else{
+					$message->setMessageType(MessageType::Error)
+						->setMessage("Errore nel salvataggio dell'Esercizio")
+						->show();
+				}
+			}
+		}
+	}
+	
+	function eliminaEsercizio(): void {
+		global $message;
+		
+		if(Esercizio::delete($_POST["id"])) {
+			$message->setMessageType(MessageType::Success)
+				->setMessage("Esercizio eliminato correttamente")
+				->show();
+		}else{
+			$message->setMessageType(MessageType::Error)
+				->setMessage("Errore nell'eliminazione dell'Esercizio")
+				->show();
+		}
+	}
+	
 	
 	$typeToFunction = array(
+		"salva-verifica" => "salvaVerifica",
 		"modifica-sezione" => "modificaSezione",
 		"elimina-sezione" => "eliminaSezione",
 		"modifica-verofalso" => "modificaVerofalso",
@@ -309,8 +396,12 @@
 		"elimina-rispostamultipla" => "eliminaRispostamultipla",
 		"modifica-risposta" => "modificaRisposta",
 		"elimina-risposta" => "eliminaRisposta",
+		"modifica-esercizio" => "modificaEsercizio",
+		"elimina-esercizio" => "eliminaEsercizio",
 	);
 	
 	if(verifyAllPostVars(["id", "type"])){
-		call_user_func($typeToFunction[$_POST["type"]]);
+		if(isset($typeToFunction[$_POST["type"]])) {
+			call_user_func($typeToFunction[$_POST["type"]]);
+		}
 	}

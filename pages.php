@@ -5,9 +5,12 @@
     require_once "./inc/class/Utente.php";
 	require_once "./inc/class/Professore.php";
 	require_once "./inc/class/Message.php";
+	require_once "./inc/class/PageHandler.php";
+	include "inc/pages.config.php";
 
     global $categorie_js;
     global $autori_js;
+	global $pages;
 
     $userId = Utente::verifyLogin();
     if (!$userId) {
@@ -18,6 +21,7 @@
     $utente = new Utente($userId, "*");
 	$current_prof = Professore::getProfessoreByUtenteID($userId);
 	$message = new Message();
+	$page = new PageHandler($_GET["req"] ?? false);
 
     $debug = true;
 
@@ -25,15 +29,8 @@
     if (!$current_page) {
         header("Location: /");
     }
-    $current_page_exploded = explode("/", $current_page);
-    $subpage = false;
-    if (count($current_page_exploded) > 1) {
-        $subpage = true;
-    }
-
-    include "inc/pages.config.php";
-    global $pages;
-
+	
+	if($page->isSafeToProceed()){
 ?>
 <!doctype html>
 <html lang="it">
@@ -61,12 +58,10 @@
                     <div class="col-sm-6">
                         <h3 class="mb-0">
                             <?php
-                                if ($subpage and $pages[$current_page]["back_button"]) {
-                                    $precedent_page_exploded = $current_page_exploded;
-                                    array_pop($precedent_page_exploded);
-                                    echo '<a class="btn p-1 fs-5" href="/pages/'.implode("/", $precedent_page_exploded).'"><i class="bi bi-chevron-left"></i> Indietro</a>';
+                                if ($page->subpage and $page->isBackButtonEnabled()) {
+                                    echo '<a class="btn p-1 fs-5" href="/pages/'.$page->previous_page.'"><i class="bi bi-chevron-left"></i> Indietro</a>';
                                 } else {
-                                    echo $pages[$current_page]["title"];
+                                    echo $page->title;
                                 }
                             ?>
                         </h3>
@@ -75,15 +70,17 @@
                         <ol class="breadcrumb float-sm-end">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <?php
-                                if ($subpage) {
-                                    $incrementing = "";
-                                    for ($i = 0; $i < count($current_page_exploded); $i++) {
-                                        $page = $current_page_exploded[$i];
-                                        $incrementing .= $i == 0 ? $page : "/" . $page;
-                                        echo "<li class=\"breadcrumb-item active\" aria-current=\"page\">" . $pages[$incrementing]["title"] . "</li>";
+                                if ($page->subpage) {
+									$breadcrumb_pages = $page->getPagesBreadcrumb();
+                                    for($i = 0; $i < count($breadcrumb_pages); $i++) {
+										$breadcrumb_page = $breadcrumb_pages[$i];
+                                        $subpage = new PageHandler($breadcrumb_page);
+										$anchor_start = $i != count($breadcrumb_pages) - 1 ? "<a href=\"/pages/$subpage->current_page\">" : "";
+										$anchor_end = $i != count($breadcrumb_pages) - 1 ? "</a>": "";
+                                        echo "<li class=\"breadcrumb-item active\" aria-current=\"page\">$anchor_start" . $subpage->title . "$anchor_end</li>";
                                     }
                                 } else {
-                                    echo "<li class=\"breadcrumb-item active\" aria-current=\"page\">" . $pages[$current_page]["title"] . "</li>";
+                                    echo "<li class=\"breadcrumb-item active\" aria-current=\"page\">" . $page->title . "</li>";
                                 }
 
                             ?>
@@ -100,8 +97,8 @@
             <!--begin::Container-->
             <div class="container-fluid">
                 <?php
-                    include "page/$current_page.page.php";
-                    include "modals/$current_page.modal.php";
+                    include "page/$page->current_page.page.php";
+                    include "modals/$page->current_page.modal.php";
                 ?>
             </div>
             <!--end::Container-->
@@ -121,27 +118,33 @@
     let updateSuccess = false;
 </script>
 <?php
-    include "inc/script.php";
-
-    if(verifyAllGetVars(["createSuccess"])){
-        echo "<script> createSuccess = true; </script>";
-    }elseif(verifyAllGetVars(["deleteSuccess"])){
-        echo "<script> deleteSuccess = true; </script>";
-    }elseif(verifyAllGetVars(["updateSuccess"])){
-        echo "<script> updateSuccess = true; </script>";
-    }
+		include "inc/script.php";
+		
+		echo "<script type='text/javascript'> let ID_professore = $current_prof->id; </script>\n";
 	
-	/** @var ?Message $message */
-	global $message;
-	echo $message->render(true);
-
-    if ($pages[$current_page]["script_js"]) {
-        foreach ($pages[$current_page]["script_js"] as $script) {
-            echo "<script src=\"$script?v=$versione\"></script>";
-        }
-    } else {
-        echo "<script src=\"/js/pages/$current_page.js?v=$versione\"></script>";
-    }
+		if(verifyAllGetVars(["createSuccess"])){
+			echo "<script> createSuccess = true; </script>";
+		}elseif(verifyAllGetVars(["deleteSuccess"])){
+			echo "<script> deleteSuccess = true; </script>";
+		}elseif(verifyAllGetVars(["updateSuccess"])){
+			echo "<script> updateSuccess = true; </script>";
+		}
+		
+		
+		
+		global $message;
+		echo $message->render(true);
+	
+		if ($page->getPageScripts()) {
+			foreach ($page->getPageScripts() as $script) {
+				echo "<script src=\"$script?v=$versione\"></script>\n";
+			}
+		} else {
+			echo "<script src=\"/js/pages/$page->current_page.js?v=$versione\"></script>";
+		}
+	}
+	
+	echo $page->renderRedirect();
 ?>
 <!--end::Script-->
 </body>

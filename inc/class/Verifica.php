@@ -100,7 +100,7 @@
 			global $mysql;
 			$array = [];
 			
-			$result = $mysql->select(Sezione::$sqlTable, "ID_verifica ORDER BY ordine ASC", "id");
+			$result = $mysql->select(Sezione::$sqlTable, "ID_verifica='$this->id' ORDER BY ordine ASC", "id");
 			while($row = mysqli_fetch_assoc($result)){
 				$array[] = $object ? new Sezione($row["id"]) : $row["id"];
 			}

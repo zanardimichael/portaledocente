@@ -111,11 +111,25 @@
 			"back_button" => true,
 			"script_js" => [
 				"/js/pages/verifiche/modifica.js",
+				"/js/pages/verifiche/materie.js",
 				"/js/pages/verifiche/modifica/sezione.js",
 				"/js/pages/verifiche/modifica/verofalso.js",
 				"/js/pages/verifiche/modifica/rispostaaperta.js",
 				"/js/pages/verifiche/modifica/rispostamultipla.js",
 				"/js/pages/verifiche/modifica/esercizio.js"
 			]
+		],
+		"verifiche/nuova" => [
+			"url" => "/pages/verifiche/nuova",
+			"title" => "Nuova Verifica",
+			"back_button" => true,
+			"script_js" => [
+				"/js/pages/verifiche/materie.js",
+			]
+		],
+		"verifiche/elimina" => [
+			"url" => "/pages/verifiche/elimina",
+			"title" => "Elimina Verifica",
+			"back_button" => true,
 		],
 	];

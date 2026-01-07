@@ -14,22 +14,32 @@
 	if(verifyAllGetVars(["id"])){
 		$id = $_GET["id"];
 	}else{
-		echo "<script> location.href = \"/pages/verifiche\"</script>";
-		exit();
+		$page->setRedirect("/pages/verifiche")
+			->setUnsafe(UnsafeReasons::Redirect);
 	}
 	
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		include "modifica/postHandler.php";
 	}
 	
-	$verifica = new Verifica($id);
-	$punteggio_generale = 0;
-	
-	if($verifica->professore->id != $current_prof->id){
-		$page->setRedirect("/pages/verifiche")->setUnsafe(UnsafeReasons::Unauthorized);
+	if(verifyAllGetVars(["createSuccess"])){
+		$page->message->setMessage("Verifica creata correttamente")
+			->setMessageType(MessageType::Success)
+			->show();
 	}
 	
 	if($page->isSafeToProceed()){
+		$verifica = new Verifica($id);
+		$punteggio_generale = 0;
+	
+	
+		if($verifica->professore->id != $current_prof->id){
+			$page->setRedirect("/pages/verifiche")
+				->setUnsafe(UnsafeReasons::Unauthorized);
+		}
+	
+		if($page->isSafeToProceed()){
+		
 	
 ?>
 
@@ -108,10 +118,11 @@
 		</div>
 		<?php
 			$sezioni = $verifica->getSezioni();
+			$page->addJavascriptVariable("ordine_sezione_max",  count($sezioni));
 			for($i = 0; $i < count($sezioni); $i++) {
 				$sezione = $sezioni[$i];
 				?>
-				<div class="col-12" id-sezione="<?php echo $sezione->id; ?>">
+				<div class="col-12 sezione" id-sezione="<?php echo $sezione->id; ?>" ordine="<?php echo $sezione->ordine; ?>">
 					<div class="card card-info card-outline mb-4">
 						<div class="card-header">
 							<div class="card-title">
@@ -120,8 +131,8 @@
 							<div class="float-end">
 								<div class="btn-group btn-group-sm">
 									<button type="button" class="btn btn-sm btn-primary modifica-sezione" id-sezione="<?php echo $sezione->id; ?>">Modifica sezione</button>
-									<button type="button" class="btn btn-sm btn-outline-primary ordina-giu-esercizio" id-sezione="<?php echo $sezione->id; ?>" <?php if($i == count($sezioni)-1) echo "disabled"; ?>><i class="bi bi-chevron-down"></i></button>
-									<button type="button" class="btn btn-sm btn-outline-primary ordina-su-esercizio" id-sezione="<?php echo $sezione->id; ?>" <?php if($i == 0) echo "disabled"; ?>><i class="bi bi-chevron-up"></i></button>
+									<button type="button" class="btn btn-sm btn-outline-primary ordina-giu-sezione" id-sezione="<?php echo $sezione->id; ?>" <?php if($i == count($sezioni)-1) echo "disabled"; ?>><i class="bi bi-chevron-down"></i></button>
+									<button type="button" class="btn btn-sm btn-outline-primary ordina-su-sezione" id-sezione="<?php echo $sezione->id; ?>" <?php if($i == 0) echo "disabled"; ?>><i class="bi bi-chevron-up"></i></button>
 								</div>
 							</div>
 						</div>
@@ -131,8 +142,9 @@
 								<?php
 									$domande_array = $sezione->getDomande();
 									$domande = $domande_array["domande"];
+									$ordine_max = count($domande);
 									for($j = 1; $j <= count($domande); $j++) {
-										echo $domande[$j]->render();
+										echo $domande[$j]->render($j, $ordine_max);
 									}
 									$punteggio_generale += $domande_array["punteggio"];
 								?>
@@ -159,5 +171,6 @@
 	</script>
 </div>
 <?php
+		}
 	}
 ?>

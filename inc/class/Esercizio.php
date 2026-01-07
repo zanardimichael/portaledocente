@@ -83,9 +83,12 @@
 			return strtotime($this->timestamp_modifica);
 		}
 		
-		public function render(): string {
+		public function render($ordine, $ordine_max): string {
+			$disabled_su = $ordine == 1 ? "disabled" : "";
+			$disabled_giu = $ordine == $ordine_max ? "disabled" : "";
+			
 			return '
-				<div class="col-12 esercizio" id-esercizio="'.$this->id.'">
+				<div class="col-12 esercizio" id-esercizio="'.$this->id.'" ordine="'.$this->ordine.'">
 					<div class="card card-success card-outline">
 						<div class="card-header">
 							<div class="card-title">
@@ -95,8 +98,8 @@
 								<div class="btn-group btn-group-sm">
 									<button type="button" class="btn btn-sm btn-primary modifica-esercizio" id-esercizio="'.$this->id.'">Modifica</button>
 									<button type="button" class="btn btn-sm btn-danger elimina-esercizio" id-esercizio="'.$this->id.'">Elimina</button>
-									<button type="button" class="btn btn-sm btn-outline-primary ordina-giu-esercizio" id-esercizio="'.$this->id.'"><i class="bi bi-chevron-down"></i></button>
-									<button type="button" class="btn btn-sm btn-outline-primary ordina-su-esercizio" id-esercizio="'.$this->id.'"><i class="bi bi-chevron-up"></i></button>
+									<button type="button" class="btn btn-sm btn-outline-primary ordina-giu-esercizio" '.$disabled_giu.' id-esercizio="'.$this->id.'"><i class="bi bi-chevron-down"></i></button>
+									<button type="button" class="btn btn-sm btn-outline-primary ordina-su-esercizio" '.$disabled_su.' id-esercizio="'.$this->id.'"><i class="bi bi-chevron-up"></i></button>
 								</div>
 							</div>
 						</div>
@@ -109,5 +112,17 @@
 						</div>
 					</div>
 				</div>';
+		}
+		
+		public function renderLatex(): string {
+			$text = "$this->titolo\n";
+			file_put_contents("./tmp/".$this->id.".html", $this->testo);
+			
+			exec("pandoc ./tmp/".$this->id.".html -o ./tmp/".$this->id.".tex");
+			
+			$text .= file_get_contents("./tmp/".$this->id.".tex");
+			$text = str_replace("\\tightlist", "", $text);
+			
+			return $text;
 		}
 	}

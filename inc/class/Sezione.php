@@ -68,6 +68,17 @@
 			return $delete;
 		}
 		
+		public function invertiOrdineConSuccessivo(): bool{
+			global $mysql;
+			
+			$prossima_sezione_sql = $mysql->select(static::$sqlTable, "ordine='".($this->ordine+1)."' LIMIT 1", "id");
+			if(!$prossima_sezione_sql) return false;
+			$prossima_sezione_id = $prossima_sezione_sql->fetch_assoc()["id"];
+			$prossima_sezione = new Sezione($prossima_sezione_id, ["ordine"]);
+			return $prossima_sezione->setData("ordine", $this->ordine) &&
+				$this->setData("ordine", $this->ordine+1);
+		}
+		
 		/**
 		 * @param int $ID_verifica
 		 * @return int
@@ -158,5 +169,34 @@
 			global $mysql;
 			
 			$mysql->update(Sezione::$sqlTable, "ordine > $ordineRimosso AND ID_verifica='$ID_verifica'", "ordine=ordine-1");
+		}
+		
+		public function invertiOrdineEsercizioConSuccessivo($ordine_esercizio): bool {
+			global $mysql;
+			$ordine_successivo = $ordine_esercizio+1;
+			
+			$verofalso = $mysql->update(Verofalso::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
+				"ordine = (case when ordine = '$ordine_esercizio' then '$ordine_successivo' when ordine = '$ordine_successivo' then '$ordine_esercizio' end)", false);
+			$rispostamultipla = $mysql->update(Rispostamultipla::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
+				"ordine = (case when ordine = '$ordine_esercizio' then '$ordine_successivo' when ordine = '$ordine_successivo' then '$ordine_esercizio' end)", false);
+			$rispostaaperta = $mysql->update(Rispostaaperta::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
+				"ordine = (case when ordine = '$ordine_esercizio' then '$ordine_successivo' when ordine = '$ordine_successivo' then '$ordine_esercizio' end)", false);
+			$esercizio = $mysql->update(Esercizio::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
+				"ordine = (case when ordine = '$ordine_esercizio' then '$ordine_successivo' when ordine = '$ordine_successivo' then '$ordine_esercizio' end)", false);
+			
+			return true;
+		}
+		
+		public function renderLatex(): string {
+			$domande = $this->getDomande();
+			
+			$testo_sezione = "\n\section*{".$this->titolo."}\n";
+			foreach ($domande["domande"] as $domanda){
+				$testo_sezione .= $domanda->renderLatex();
+			}
+			
+			$testo_sezione .= "\n\n\begin{flushright}\\textbf{Punteggio:} \underline{\hspace{1cm}}/".$domande["punteggio"]."\\end{flushright}\n";
+			
+			return $testo_sezione;
 		}
 	}

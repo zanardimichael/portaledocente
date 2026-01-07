@@ -49,23 +49,82 @@ $(document).ready(() => {
 		}
 	});
 
-	$("#form-verifica #classe").on("change", () => {
+	$(".ordina-giu-sezione, .ordina-su-sezione").on("click", (e) => {
+		let id_sezione = $(e.currentTarget).attr("id-sezione");
+		let sezione = $(".sezione[id-sezione="+id_sezione+"]");
+		let giu = $(e.currentTarget).hasClass("ordina-giu-sezione");
+		let ordine = parseInt(sezione.attr("ordine"));
+		let precedente = sezione;
+		let successivo = $(".sezione[ordine="+(ordine+1)+"]");
+
+		if(!giu){
+			precedente = $(".sezione[ordine="+(ordine-1)+"]");
+			successivo = sezione;
+			id_sezione = precedente.attr("id-sezione");
+		}else{
+			ordine++;
+		}
+		console.log(ordine);
 
 		$.ajax({
-			url: "/api/materia/"+$("#form-verifica [name=classe] option:selected").val()+"/"+ID_professore,
-			method: "GET",
+			url: "/api/sezione/"+id_sezione+"/invertiordine",
+			method: "PATCH",
 			dataType: "json",
-			success: (response) => {
-				let materia_el = $("#form-verifica [name=materia]");
-				materia_el.html("<option selected disabled value=\"\">Scegli...</option>");
-				for(let i = 0; i < response.length; i++) {
-					let option = $("<option></option>");
-					option.val(response[i].id);
-					option.text(response[i].nome);
-					materia_el.append(option);
+			success: function (data) {
+				if(data.result) {
+					successivo.find("button.ordina-giu-sezione, button.ordina-su-sezione").prop("disabled", false);
+					precedente.find("button.ordina-giu-sezione, button.ordina-su-sezione").prop("disabled", false);
+					successivo.attr("ordine", ordine-1);
+					precedente.attr("ordine", ordine);
+					//se il precedente ha ordine == 1
+					if(ordine == 2) successivo.find("button.ordina-su-sezione").prop("disabled", true);
+					if(ordine == ordine_sezione_max) precedente.find("button.ordina-giu-sezione").prop("disabled", true);
+					successivo.insertBefore(precedente);
 				}
 			}
 		})
+	});
+
+	$(".ordina-su-esercizio, .ordina-giu-esercizio").on("click", (e) => {
+		let id_sezione = $(e.currentTarget).parents(".sezione").attr("id-sezione");
+		let giu = $(e.currentTarget).hasClass("ordina-giu-esercizio");
+		let esercizio = $(e.currentTarget).parents(".esercizio");
+		let ordine = parseInt(esercizio.attr("ordine"));
+
+		let precedente = esercizio;
+		let successivo = $(".sezione[id-sezione="+id_sezione+"] .esercizio[ordine="+(ordine+1)+"]");
+
+		if(!giu) {
+			precedente = $(".sezione[id-sezione="+id_sezione+"] .esercizio[ordine="+(ordine-1)+"]");
+			successivo = esercizio;
+			ordine--;
+		}
+
+		let max_esercizi = $(".sezione[id-sezione="+id_sezione+"] .esercizio").length;
+
+		console.log("Giu", giu);
+		console.log("Precedente", precedente);
+		console.log("Successivo", successivo);
+		console.log(ordine);
+
+		$.ajax({
+			url: "/api/sezione/" + id_sezione + "/invertiOrdineEsercizio/" + ordine,
+			method: "PATCH",
+			dataType: "json",
+			success: function (data) {
+				console.log(data);
+				if (data.result) {
+					successivo.find("button.ordina-giu-esercizio, button.ordina-su-esercizio").prop("disabled", false);
+					precedente.find("button.ordina-giu-esercizio, button.ordina-su-esercizio").prop("disabled", false);
+					successivo.attr("ordine", ordine);
+					precedente.attr("ordine", ordine+1);
+					//se il precedente ha ordine == 1
+					if(ordine == 1) successivo.find("button.ordina-su-esercizio").prop("disabled", true);
+					if(ordine == max_esercizi-1) precedente.find("button.ordina-giu-esercizio").prop("disabled", true);
+					successivo.insertBefore(precedente);
+				}
+			}
+		});
 	});
 
 

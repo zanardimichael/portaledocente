@@ -69,9 +69,11 @@
 			return $array;
 		}
 		
-		static function create($data): bool{
+		static function create($data): int|string|false {
 			global $mysql;
-			return $mysql->insert(static::$sqlTable, $data);
+			if($mysql->insert(static::$sqlTable, $data))
+				return $mysql->getInsertId();
+			return false;
 		}
 		
 		static function edit($id, $data): bool{
@@ -105,5 +107,52 @@
 				$array[] = $object ? new Sezione($row["id"]) : $row["id"];
 			}
 			return $array;
+		}
+		
+		public function getLatex(): string{
+			$latex = "\documentclass{article}
+
+\usepackage[italian]{babel}
+\usepackage{float}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{enumitem,amssymb}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\def\classe{".$this->classe->getNomeClasse()."}
+\def\data{//2026}
+\def\materia{".$this->materia->nome."}
+\def\as{".$this->classe->anno."/".($this->classe->anno+1)."}
+
+\begin{document}
+
+\pagestyle{fancy}
+\\fancyhead[LO]{Nome:\hspace{2.5cm}Cognome:\hspace{2.5cm}Data: \data}
+\\fancyhead[RO]{Verifica \materia\:\classe\\\\ A.S. \as}
+
+\\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+";
+			
+			$sezioni = $this->getSezioni();
+			
+			foreach($sezioni as $ordine => $sezione){
+				
+				$testo_sezione = $sezione->renderLatex();
+				
+				$latex .= $testo_sezione;
+			}
+			
+			$latex .= "\\end{document}";
+			
+			return $latex;
 		}
 	}

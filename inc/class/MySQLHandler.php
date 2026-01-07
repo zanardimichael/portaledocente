@@ -44,7 +44,7 @@
 		 * @param string|array $data può essere un array associativo: ["nome" => "Mario", "cognome" => "Rossi"] oppure direttamente una stringa
 		 * @return bool
 		 */
-		public function update(string $table, string $where, array|string $data): bool {
+		public function update(string $table, string $where, array|string $data, bool $escape = true): bool|mysqli_result {
 			$data_update = "";
 			if(gettype($data) == "array") {
 				foreach ($data as $key => $value) {
@@ -52,7 +52,7 @@
 				}
 				$data_update = substr($data_update, 0, -2);
 			}else{
-				$data_update = $this->connection->real_escape_string($data);
+				$data_update = $escape ? $this->connection->real_escape_string($data): $data;
 			}
 			$result = $this->query("UPDATE $table SET $data_update WHERE $where");
 			if($this->connection->error){
@@ -110,5 +110,9 @@
 		public function logError($error, $errno, $vars = "") {
 			$vars = $this->connection->real_escape_string($vars);
 			$this->query("INSERT INTO log_error (errorCode, errorMessage, errorStackTrace, requestVars) VALUES ('$error', '$errno', '', '$vars') ");
+		}
+		
+		public function getInsertId(): int|string {
+			return $this->connection->insert_id;
 		}
 	}

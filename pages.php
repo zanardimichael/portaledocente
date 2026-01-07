@@ -20,8 +20,9 @@
     /** @var Utente $utente Utente attivo */
     $utente = new Utente($userId, "*");
 	$current_prof = Professore::getProfessoreByUtenteID($userId);
-	$message = new Message();
 	$page = new PageHandler($_GET["req"] ?? false);
+	$message = $page->message;
+	$page->addJavascriptVariable("ID_professore", $current_prof->id);
 
     $debug = true;
 
@@ -112,28 +113,12 @@
 </div>
 <!--end::App Wrapper-->
 <!--begin::Script-->
-<script>
-    let createSuccess = false;
-    let deleteSuccess = false;
-    let updateSuccess = false;
-</script>
 <?php
 		include "inc/script.php";
 		
-		echo "<script type='text/javascript'> let ID_professore = $current_prof->id; </script>\n";
-	
-		if(verifyAllGetVars(["createSuccess"])){
-			echo "<script> createSuccess = true; </script>";
-		}elseif(verifyAllGetVars(["deleteSuccess"])){
-			echo "<script> deleteSuccess = true; </script>";
-		}elseif(verifyAllGetVars(["updateSuccess"])){
-			echo "<script> updateSuccess = true; </script>";
-		}
+		echo $page->renderJavascriptVariables();
 		
-		
-		
-		global $message;
-		echo $message->render(true);
+		echo $page->message->render(true);
 	
 		if ($page->getPageScripts()) {
 			foreach ($page->getPageScripts() as $script) {

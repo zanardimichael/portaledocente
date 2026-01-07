@@ -16,6 +16,7 @@
 		public bool $subpage = false;
 		
 		public string $title;
+		public Message $message;
 		
 		public string $previous_page = "";
 		public array $unsafeReasons = [
@@ -24,9 +25,12 @@
 			UnsafeReasons::Unauthorized => false,
 		];
 		
+		public $javascriptVariables = array();
+		
 		public function __construct($current_page) {
 			global $pages;
 			$this->current_page = $current_page;
+			$this->message = new Message();
 			
 			if(isset($pages[$this->current_page])) {
 				
@@ -95,5 +99,24 @@
 		
 		public function setUnsafe(string $unsafeReason): void {
 			$this->unsafeReasons[$unsafeReason] = true;
+		}
+		
+		public function addJavascriptVariable(string $key, mixed $value): void {
+			$this->javascriptVariables[$key] = $value;
+		}
+		
+		public function renderJavascriptVariables(): string {
+			$script = "<script type='text/javascript'>\n";
+			foreach($this->javascriptVariables as $variableName => $variableValue) {
+				if(gettype($variableValue) == "string") {
+					$variableValue = "'" . $variableValue . "'";
+				}
+				if(gettype($variableValue) == "array") {
+					$variableValue = json_encode($variableValue);
+				}
+				$script .= "let $variableName = $variableValue;\n";
+			}
+			$script .= "</script>\n";
+			return $script;
 		}
 	}

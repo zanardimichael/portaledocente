@@ -2,6 +2,14 @@
 	
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verifica.php";
 	
+	global $page;
+	
+	if(verifyAllGetVars(["deleteSuccess"])){
+		$page->message->setMessage("Verifica eliminata correttamente")
+			->setMessageType(MessageType::Success)
+			->show();
+	}
+	
 	$verifiche = Verifica::getAll(true);
 ?>
 
@@ -21,9 +29,10 @@
 					<td><?php echo $verifica->classe->getNomeClasse(); ?></td>
 					<td><?php echo $verifica->materia->nome; ?></td>
 					<td>
-						<a class="btn btn-success" href="/pages/verifiche/visualizza?id=<?php echo $verifica->id; ?>"><i class="bi bi-search"></i></a>
+						<!--<a class="btn btn-success" href="/pages/verifiche/visualizza?id=<?php echo $verifica->id; ?>"><i class="bi bi-search"></i></a>-->
 						<a class="btn btn-primary" href="/pages/verifiche/modifica?id=<?php echo $verifica->id; ?>"><i class="bi bi-pencil-square"></i></a>
 						<a class="btn btn-danger" href="/pages/verifiche/elimina?id=<?php echo $verifica->id; ?>"><i class="bi bi-trash"></i></a>
+						<a class="btn btn-success" href="/download.php?type=verifica_latex&id=<?php echo $verifica->id; ?>"><i class="bi bi-download"></i></a>
 					</td>
 				</tr>
 				<?php

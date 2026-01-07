@@ -1,8 +1,8 @@
 <?php
-	global $message;
+	global $page;
 	
 	function salvaVerifica(): void {
-		global $message;
+		global $page;
 		
 		if(verifyAllPostVars(["titolo", "id", "materia", "classe"])) {
 			if(Verifica::edit($_POST["id"], [
@@ -11,11 +11,11 @@
 				"ID_classe" => $_POST["classe"],
 				"note" => $_POST["note"] ?? "",
 			])){
-				$message->setMessageType(MessageType::Success)
+				$page->message->setMessageType(MessageType::Success)
 					->setMessage("Verifica modificata correttamente")
 					->show();
 			}else{
-				$message->setMessageType(MessageType::Error)
+				$page->message->setMessageType(MessageType::Error)
 					->setMessage("Errore nel salvataggio della verifica")
 					->show();
 			}
@@ -23,17 +23,17 @@
 	}
 	
 	function modificaSezione(): void {
-		global $message;
+		global $page;
 		// Se l'id è uguale a 0 aggiungo una nuova sezione
 		if($_POST["id"] == 0){
 			if(verifyAllPostVars(["titolo", "ID_verifica"])) {
 				$ordine = Sezione::getUltimoOrdineVerifica($_POST["ID_verifica"]) + 1;
 				if(Sezione::create(["titolo" => $_POST["titolo"], "ordine" => $ordine, "ID_verifica" => $_POST["ID_verifica"]])){
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Sezione creata correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della sezione")
 						->show();
 				}
@@ -41,11 +41,11 @@
 		}else{
 			if(verifyAllPostVars(["titolo"])) {
 				if(Sezione::edit($_POST["id"], ["titolo" => $_POST["titolo"]])) {
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Sezione modificata correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della sezione")
 						->show();
 				}
@@ -54,21 +54,21 @@
 	}
 	
 	function eliminaSezione(): void {
-		global $message;
+		global $page;
 		
 		if(Sezione::delete($_POST["id"])) {
-			$message->setMessageType(MessageType::Success)
+			$page->message->setMessageType(MessageType::Success)
 				->setMessage("Sezione eliminata correttamente")
 				->show();
 		}else{
-			$message->setMessageType(MessageType::Error)
+			$page->message->setMessageType(MessageType::Error)
 				->setMessage("Errore nell'eliminazione della sezione")
 				->show();
 		}
 	}
 	
 	function modificaVerofalso(): void {
-		global $message;
+		global $page;
 		
 		// Se l'id è uguale a 0 aggiungo un nuovo verofalso
 		if($_POST["id"] == 0){
@@ -87,11 +87,11 @@
 					"note" => $_POST["note"] ?? "",
 					"ordine" => $ordine]
 				)){
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Vero-Falso creato correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio del Vero-Falso")
 						->show();
 				}
@@ -106,11 +106,11 @@
 						"punteggio" => $_POST["punteggio"],
 						"note" => $_POST["note"] ?? ""
 					])) {
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Vero-Falso modificato correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio del Vero-Falso")
 						->show();
 				}
@@ -119,21 +119,21 @@
 	}
 	
 	function eliminaVerofalso(): void {
-		global $message;
+		global $page;
 		
 		if(Verofalso::delete($_POST["id"])) {
-			$message->setMessageType(MessageType::Success)
+			$page->message->setMessageType(MessageType::Success)
 				->setMessage("Vero-Falso eliminato correttamente")
 				->show();
 		}else{
-			$message->setMessageType(MessageType::Error)
+			$page->message->setMessageType(MessageType::Error)
 				->setMessage("Errore nell'eliminazione del Vero-Falso")
 				->show();
 		}
 	}
 	
 	function modificaRispostaaperta(): void {
-		global $message;
+		global $page;
 		
 		// Se l'id è uguale a 0 aggiungo una nuova risposta aperta
 		if($_POST["id"] == 0){
@@ -151,11 +151,11 @@
 						"note" => $_POST["note"] ?? "",
 						"ordine" => $ordine]
 				)){
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Domanda aperta creata correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Domanda aperta")
 						->show();
 				}
@@ -169,11 +169,11 @@
 						"punteggio" => $_POST["punteggio"],
 						"note" => $_POST["note"] ?? ""
 					])) {
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Domanda aperta modificata correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Domanda aperta")
 						->show();
 				}
@@ -182,21 +182,21 @@
 	}
 	
 	function eliminaRispostaaperta(): void {
-		global $message;
+		global $page;
 		
 		if(Rispostaaperta::delete($_POST["id"])) {
-			$message->setMessageType(MessageType::Success)
+			$page->message->setMessageType(MessageType::Success)
 				->setMessage("Domanda aperta eliminata correttamente")
 				->show();
 		}else{
-			$message->setMessageType(MessageType::Error)
+			$page->message->setMessageType(MessageType::Error)
 				->setMessage("Errore nell'eliminazione della Domanda aperta")
 				->show();
 		}
 	}
 	
 	function modificaRispostamultipla(): void {
-		global $message;
+		global $page;
 		
 		// Se l'id è uguale a 0 aggiungo una nuova risposta aperta
 		if($_POST["id"] == 0){
@@ -214,11 +214,11 @@
 						"note" => $_POST["note"] ?? "",
 						"ordine" => $ordine]
 				)){
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Domanda chiusa creata correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Domanda chiusa")
 						->show();
 				}
@@ -232,11 +232,11 @@
 						"punteggio" => $_POST["punteggio"],
 						"note" => $_POST["note"] ?? ""
 					])) {
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Domanda chiusa modificata correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Domanda chiusa")
 						->show();
 				}
@@ -245,21 +245,21 @@
 	}
 	
 	function eliminaRispostamultipla(): void {
-		global $message;
+		global $page;
 		
 		if(Rispostamultipla::delete($_POST["id"])) {
-			$message->setMessageType(MessageType::Success)
+			$page->message->setMessageType(MessageType::Success)
 				->setMessage("Domanda chiusa eliminata correttamente")
 				->show();
 		}else{
-			$message->setMessageType(MessageType::Error)
+			$page->message->setMessageType(MessageType::Error)
 				->setMessage("Errore nell'eliminazione della Domanda chiusa")
 				->show();
 		}
 	}
 	
 	function modificaRisposta(): void {
-		global $message;
+		global $page;
 		
 		// Se l'id è uguale a 0 aggiungo una nuova risposta aperta
 		if($_POST["id"] == 0){
@@ -274,11 +274,11 @@
 						"corretto" => ($_POST["corretto"] == "1" ? "1" : "0"),
 						"ordine" => $ordine]
 				)){
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Risposta creata correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Risposta")
 						->show();
 				}
@@ -292,11 +292,11 @@
 						"punteggio" => $_POST["punteggio"],
 						"corretto" => ($_POST["corretto"] == "1" ? "1" : "0"),
 					])) {
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Risposta modificata correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Risposta")
 						->show();
 				}
@@ -305,21 +305,21 @@
 	}
 	
 	function eliminaRisposta(): void {
-		global $message;
+		global $page;
 		
 		if(Rispostamultipla::deleteRisposta($_POST["id"])) {
-			$message->setMessageType(MessageType::Success)
+			$page->message->setMessageType(MessageType::Success)
 				->setMessage("Risposta eliminata correttamente")
 				->show();
 		}else{
-			$message->setMessageType(MessageType::Error)
+			$page->message->setMessageType(MessageType::Error)
 				->setMessage("Errore nell'eliminazione della Risposta")
 				->show();
 		}
 	}
 	
 	function modificaEsercizio(): void {
-		global $message;
+		global $page;
 		
 		// Se l'id è uguale a 0 aggiungo una nuova risposta aperta
 		if($_POST["id"] == 0){
@@ -338,11 +338,11 @@
 					"note" => $_POST["note"] ?? "",
 					"ordine" => $ordine]
 				)){
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Esercizio creato correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio dell'Esercizio")
 						->show();
 				}
@@ -357,11 +357,11 @@
 						"punteggio" => $_POST["punteggio"],
 						"note" => $_POST["note"] ?? "",
 					])) {
-					$message->setMessageType(MessageType::Success)
+					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Esercizio modificato correttamente")
 						->show();
 				}else{
-					$message->setMessageType(MessageType::Error)
+					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio dell'Esercizio")
 						->show();
 				}
@@ -370,14 +370,14 @@
 	}
 	
 	function eliminaEsercizio(): void {
-		global $message;
+		global $page;
 		
 		if(Esercizio::delete($_POST["id"])) {
-			$message->setMessageType(MessageType::Success)
+			$page->message->setMessageType(MessageType::Success)
 				->setMessage("Esercizio eliminato correttamente")
 				->show();
 		}else{
-			$message->setMessageType(MessageType::Error)
+			$page->message->setMessageType(MessageType::Error)
 				->setMessage("Errore nell'eliminazione dell'Esercizio")
 				->show();
 		}

@@ -104,6 +104,7 @@ $(document).ready(function () {
 	$(".modifica-risposta").on("click", (e) => {
 		let button = e.currentTarget;
 		let id = $(button).attr("id-risposta");
+        let id_rispostamultipla = $(button).parents(".esercizio").attr("id-rispostamultipla");
 
 		modal_risposta_init();
 
@@ -114,6 +115,7 @@ $(document).ready(function () {
 			success: function (data) {
 				$("#form-risposta [name=testo]").val(data.testo);
 				$("#form-risposta [name=id]").val(id);
+                $("#form-risposta [name=ID_rispostamultipla]").val(id_rispostamultipla);
 				$("#form-risposta [name=corretto]").prop("checked", data.corretto == true);
 				$("#form-risposta [name=punteggio]").val(data.punteggio);
 				$("#form-risposta [name=type]").val("modifica-risposta");

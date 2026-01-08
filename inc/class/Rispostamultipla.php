@@ -130,7 +130,7 @@
 			}
 			
 			return '
-				<div class="col-12 esercizio" id-rispostamultipla="'.$this->id.'" ordine="'.$this->ordine.'">
+				<div class="col-12 esercizio" id="esercizio-'.$this->id.'" id-rispostamultipla="'.$this->id.'" ordine="'.$this->ordine.'">
 					<div class="card card-success card-outline">
 						<div class="card-header">
 							<div class="card-title">

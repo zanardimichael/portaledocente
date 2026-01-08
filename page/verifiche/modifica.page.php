@@ -39,7 +39,7 @@
 		}
 	
 		if($page->isSafeToProceed()){
-		
+            $page->addJavascriptVariable("ID_verifica", $verifica->id);
 	
 ?>
 
@@ -148,6 +148,7 @@
 									}
 									$punteggio_generale += $domande_array["punteggio"];
 								?>
+                                <div class="col-12"><div class="float-end"><button type="button" class="btn btn-sm btn-primary aggiungi-esercizio" id-sezione="<?php echo $sezione->id; ?>">Aggiungi esercizio</button></div></div>
 							</div>
 						</div>
 						<div class="card-footer">
@@ -166,9 +167,6 @@
 			</div>
 		</div>
 	</div>
-	<script>
-		let ID_verifica = <?php echo $verifica->id;?>;
-	</script>
 </div>
 <?php
 		}

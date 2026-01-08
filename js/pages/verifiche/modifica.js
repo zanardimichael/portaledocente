@@ -127,6 +127,14 @@ $(document).ready(() => {
 		});
 	});
 
+    if(typeof redirect_url !== 'undefined'){
+        if(redirect_url.charAt(0) == "#"){
+            location.hash = redirect_url;
+        }else{
+            location.href = redirect_url;
+        }
+    }
+
 
 		// Example starter JavaScript for disabling form submissions if there are invalid fields
 	(() => {

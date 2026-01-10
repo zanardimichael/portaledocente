@@ -17,14 +17,17 @@
 <div class="row">
 	<table class="table table-striped" id="verifiche-table" style="max-height: 1000px;">
 		<thead>
-		<tr><th>Titolo</th><th>Classe</th><th>Materia</th><th style="width: 15%;">Azioni</th></tr>
+		<tr><th></th><th>ID</th><th>Titolo</th><th>Classe</th><th>Materia</th><th style="width: 15%;">Azioni</th></tr>
 		</thead>
 		<tbody>
 		<?php
 			
 			foreach($verifiche as $verifica){
+				if($verifica->ID_verifica != null) continue;
 				?>
 				<tr>
+					<td></td>
+					<td><?php echo $verifica->id; ?></td>
 					<td><?php echo $verifica->titolo; ?></td>
 					<td><?php echo $verifica->classe->getNomeClasse(); ?></td>
 					<td><?php echo $verifica->materia->nome; ?></td>

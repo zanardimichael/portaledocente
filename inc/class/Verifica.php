@@ -94,6 +94,18 @@
 			return strtotime($this->timestamp_modifica);
 		}
 		
+		public function getSottoverifiche(bool $object = true, $sql = "*"): array {
+			global $mysql;
+			$verifiche_array = array();
+			
+			$verifiche = $mysql->select(Verifica::$sqlTable, "ID_verifica='$this->id'", "id");
+			
+			while($row = mysqli_fetch_assoc($verifiche)){
+				$verifiche_array[] = $object ? new Verifica($row["id"]) : $row["id"];
+			}
+			return $verifiche_array;
+		}
+		
 		/**
 		 * @param bool $object
 		 * @return Sezione[]|int[]

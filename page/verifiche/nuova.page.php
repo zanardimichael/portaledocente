@@ -3,7 +3,7 @@
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verifica.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Sezione.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verofalso.php";
-	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Rispostamultipla.php";
+	require_once $_SERVER['DOCUMENT_ROOT'] . "/inc/class/RispostaMultipla.php";
 	
 	global $current_prof;
 	global $page;

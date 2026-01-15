@@ -1,6 +1,6 @@
 <?php
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/inc/class/Rispostaaperta.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/class/RispostaAperta.php";
 
 class RispostaApertaController extends BaseController {
     
@@ -26,7 +26,7 @@ class RispostaApertaController extends BaseController {
             $this->error("Risposta aperta non trovata", 404, "NOT_FOUND");
         }
         
-        $rispostaaperta = new Rispostaaperta($id);
+        $rispostaaperta = new RispostaAperta($id);
 		unset($rispostaaperta->verifica);
 		
         echo json_encode($rispostaaperta);

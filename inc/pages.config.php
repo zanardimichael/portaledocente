@@ -132,4 +132,18 @@
 			"title" => "Elimina Verifica",
 			"back_button" => true,
 		],
+		"correzioni" => [
+			"url" => "/pages/correzioni",
+			"title" => "Correzioni",
+			"icon" => "bi bi-check2-square",
+			"back_button" => true,
+		],
+		"correzioni/correzione" => [
+			"url" => "/pages/correzioni/correzione",
+			"title" => "Correzione Verifica",
+			"back_button" => true,
+			"script_js" => [
+				"/js/pages/correzioni/correzione.js",
+			]
+		],
 	];

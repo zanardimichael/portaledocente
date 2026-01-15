@@ -1,6 +1,6 @@
 <?php
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/inc/class/Rispostamultipla.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/class/RispostaMultipla.php";
 
 class RispostaMultiplaController extends BaseController {
     
@@ -18,11 +18,11 @@ class RispostaMultiplaController extends BaseController {
             return;
         }
         
-        if (!Rispostamultipla::exists($id)) {
+        if (!RispostaMultipla::exists($id)) {
             $this->error("Risposta multipla non trovata", 404, "NOT_FOUND");
         }
         
-        $rispostamultipla = new Rispostamultipla($id);
+        $rispostamultipla = new RispostaMultipla($id);
 		unset($rispostamultipla->verifica);
 		
         echo json_encode($rispostamultipla);
@@ -37,10 +37,10 @@ class RispostaMultiplaController extends BaseController {
 			return;
 		}
 		
-		if (!Rispostamultipla::existsRisposta($id)) {
+		if (!RispostaMultipla::existsRisposta($id)) {
 			$this->error("Risposta non trovata", 404, "NOT_FOUND");
 		}
 		
-		echo json_encode(Rispostamultipla::getRisposta($id));
+		echo json_encode(RispostaMultipla::getRisposta($id));
 	}
 }

@@ -164,3 +164,29 @@
 | ordine              | tinyint(3)   |
 | timestamp_modifica  | timestamp    |
 | timestamp_creazione | timestamp    |
+
+### correzione
+
+| name                | type         | altro                                                      | indice  |
+|---------------------|--------------|------------------------------------------------------------|---------|
+| ID                  | int(11)      | auto_increment                                             | primary |
+| ID_verifica         | int(11)      |
+| note                | varchar(64)  |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |
+
+### correzione_domanda
+
+| name                | type         | altro                                                      | indice  |
+|---------------------|--------------|------------------------------------------------------------|---------|
+| ID                  | int(11)      | auto_increment                                             | primary |
+| ID_correzione       | int(11)      |
+| ID_alunno           | int(11)      |
+| ID_esercizio        | int(11)      |
+| tipologia_esercizio | varchar(64)  |
+| parziale            | boolean      |
+| punteggio           | float        |
+| valore              | varchar(512) |
+| note                | varchar(64)  |
+| timestamp_modifica  | timestamp    |
+| timestamp_creazione | timestamp    |

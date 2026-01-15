@@ -41,7 +41,15 @@ abstract class Base {
 			$this->$key = $value;
 		}
 	}
-
+	
+	public function __get(string $name) {
+		if(in_array($name, static::$sqlNames)){
+			$this->getData([$name]);
+			return $this->$name;
+		}
+		return null;
+	}
+	
 	public function setData(string $name, string $value): bool{
 		global $mysql;
 		

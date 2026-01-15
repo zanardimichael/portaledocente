@@ -146,7 +146,7 @@
 				$ordine = Sezione::getUltimoOrdineSezione($ID_sezione) + 1;
 				$ID_verifica = $sezione->ID_verifica;
 				
-				if(Rispostaaperta::create([
+				if(RispostaAperta::create([
 						"testo" => $_POST["testo"],
 						"ID_sezione" => $ID_sezione,
 						"ID_verifica" => $ID_verifica,
@@ -167,7 +167,7 @@
 			}
 		}else{
 			if(verifyAllPostVars(["testo", "punteggio"])) {
-				if(Rispostaaperta::edit(
+				if(RispostaAperta::edit(
 					$_POST["id"],
 					[
 						"testo" => $_POST["testo"],
@@ -190,7 +190,7 @@
 	function eliminaRispostaaperta(): void {
 		global $page;
 		
-		if(Rispostaaperta::delete($_POST["id"])) {
+		if(RispostaAperta::delete($_POST["id"])) {
 			$page->message->setMessageType(MessageType::Success)
 				->setMessage("Domanda aperta eliminata correttamente")
 				->show();
@@ -212,7 +212,7 @@
 				$ordine = Sezione::getUltimoOrdineSezione($ID_sezione) + 1;
 				$ID_verifica = $sezione->ID_verifica;
 				
-				if(Rispostamultipla::create([
+				if(RispostaMultipla::create([
 						"testo" => $_POST["testo"],
 						"ID_sezione" => $ID_sezione,
 						"ID_verifica" => $ID_verifica,
@@ -233,7 +233,7 @@
 			}
 		}else{
 			if(verifyAllPostVars(["testo", "punteggio"])) {
-				if(Rispostamultipla::edit(
+				if(RispostaMultipla::edit(
 					$_POST["id"],
 					[
 						"testo" => $_POST["testo"],
@@ -256,7 +256,7 @@
 	function eliminaRispostamultipla(): void {
 		global $page;
 		
-		if(Rispostamultipla::delete($_POST["id"])) {
+		if(RispostaMultipla::delete($_POST["id"])) {
 			$page->message->setMessageType(MessageType::Success)
 				->setMessage("Domanda chiusa eliminata correttamente")
 				->show();
@@ -274,9 +274,9 @@
 		if($_POST["id"] == 0){
 			if(verifyAllPostVars(["testo", "ID_rispostamultipla", "punteggio"])) {
 				$ID_rispostamultipla = $_POST["ID_rispostamultipla"];
-				$ordine = Rispostamultipla::getUltimoOrdineRisposta($ID_rispostamultipla) + 1;
+				$ordine = RispostaMultipla::getUltimoOrdineRisposta($ID_rispostamultipla) + 1;
 				
-				if(Rispostamultipla::createRisposta([
+				if(RispostaMultipla::createRisposta([
 						"ID_rispostamultipla" => $ID_rispostamultipla,
 						"testo" => $_POST["testo"],
 						"punteggio" => $_POST["punteggio"],
@@ -296,7 +296,7 @@
 		}else{
 			if(verifyAllPostVars(["testo", "punteggio"])) {
                 $ID_rispostamultipla = $_POST["ID_rispostamultipla"];
-				if(Rispostamultipla::editRisposta(
+				if(RispostaMultipla::editRisposta(
 					$_POST["id"],
 					[
 						"testo" => $_POST["testo"],
@@ -319,7 +319,7 @@
 	function eliminaRisposta(): void {
 		global $page;
 		
-		if(Rispostamultipla::deleteRisposta($_POST["id"])) {
+		if(RispostaMultipla::deleteRisposta($_POST["id"])) {
 			$page->message->setMessageType(MessageType::Success)
 				->setMessage("Risposta eliminata correttamente")
 				->show();

@@ -1,6 +1,7 @@
 <?php
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Base.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verifica.php";
+	require_once $_SERVER['DOCUMENT_ROOT'].'/inc/class/CorrezioneDomanda.php';
 	
 	class Verofalso extends Base {
 		
@@ -111,6 +112,72 @@
 						</div>
 					</div>
 				</div>';
+		}
+		
+		public function renderCorrezione(CorrezioneDomanda $correzioneDomanda): string {
+			$risposta_prevista = $this->risultato ? "Vero" : "Falso";
+			
+			$card_info = intval($correzioneDomanda->valore) == $this->risultato ? "card-success" : "card-danger";
+			$checked_vero = $correzioneDomanda->valore == "1" ? "checked" : "";
+			$checked_falso = $correzioneDomanda->valore == "0" ? "checked" : "";
+			
+			$punteggio_parziale = "";
+			$checked_parziale = "";
+			if($correzioneDomanda->parziale){
+				$checked_parziale = "checked";
+				$punteggio_parziale = $correzioneDomanda->punteggio;
+			}
+			
+			return '<div class="card '.$card_info.' card-outline verofalso" id-verofalso="'.$this->id.'">
+				<div class="card-header">
+					Vero-Falso
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 mb-2">
+							<p>'.$this->testo.'</p>
+							<label class="form-label">Risposta</label>
+							<div class="form-check">
+								<input class="form-check-input verofalso-radio" type="radio" name="risultato" id="vero-verofalso-'.$this->id.'" value="1" '.$checked_vero.'>
+								<label class="form-check-label" for="vero-verofalso-'.$this->id.'">
+									Vero
+								</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input verofalso-radio" type="radio" name="risultato" id="falso-verofalso-'.$this->id.'" value="0" '.$checked_falso.'>
+								<label class="form-check-label" for="falso-verofalso-'.$this->id.'">
+									Falso
+								</label>
+							</div>
+							<div class="mt-2">Risposta prevista: '.$risposta_prevista.'</div>
+						</div>
+						<div class="col-sm-12 col-md-6 mb-2">
+							<label class="form-label">Parziale</label>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="parziale-verofalso-'.$this->id.'" '.$checked_parziale.'>
+								<label class="form-check-label" for="parziale-verofalso-'.$this->id.'">
+									Specifica punteggio parziale
+								</label>
+							</div>
+							<hr>
+							<label class="form-label" for="punteggio-parziale-verofalso-'.$this->id.'">Punteggio Parziale</label>
+							<input
+								type="number"
+								class="form-control"
+								id="punteggio-verofalso-'.$this->id.'"
+								name="punteggio"
+								value="'.$punteggio_parziale.'"
+								min="1"
+								max="64"
+								required
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer">
+					Punteggio: <div class="risulato-verofalso-'.$this->id.'">
+				</div>
+			</div>';
 		}
 		
 		public function renderLatex(): string{

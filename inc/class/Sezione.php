@@ -2,8 +2,8 @@
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Base.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verifica.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verofalso.php";
-	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Rispostamultipla.php";
-	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Rispostaaperta.php";
+	require_once $_SERVER['DOCUMENT_ROOT'] . "/inc/class/RispostaMultipla.php";
+	require_once $_SERVER['DOCUMENT_ROOT'] . "/inc/class/RispostaAperta.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Esercizio.php";
 	
 	class Sezione extends Base {
@@ -132,16 +132,16 @@
 				$array["punteggio"] += $verofalso_object->punteggio;
 			}
 			
-			$rispostamultipla = $mysql->select(Rispostamultipla::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
+			$rispostamultipla = $mysql->select(RispostaMultipla::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
 			while($row = mysqli_fetch_assoc($rispostamultipla)){
-				$rispostamultipla_object = new Rispostamultipla($row["id"]);
+				$rispostamultipla_object = new RispostaMultipla($row["id"]);
 				$array["domande"][$row["ordine"]] = $rispostamultipla_object;
 				$array["punteggio"] += $rispostamultipla_object->punteggio;
 			}
 			
-			$rispostaaperta = $mysql->select(Rispostaaperta::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
+			$rispostaaperta = $mysql->select(RispostaAperta::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["id", "ordine"]);
 			while($row = mysqli_fetch_assoc($rispostaaperta)){
-				$rispostaaperta_object = new Rispostaaperta($row["id"]);
+				$rispostaaperta_object = new RispostaAperta($row["id"]);
 				$array["domande"][$row["ordine"]] = $rispostaaperta_object;
 				$array["punteggio"] += $rispostaaperta_object->punteggio;
 			}
@@ -160,8 +160,8 @@
 			global $mysql;
 			
 			$mysql->update(Verofalso::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
-			$mysql->update(Rispostamultipla::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
-			$mysql->update(Rispostaaperta::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
+			$mysql->update(RispostaMultipla::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
+			$mysql->update(RispostaAperta::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
 			$mysql->update(Esercizio::$sqlTable, "ordine > $ordineRimosso AND ID_sezione='$ID_sezione'", "ordine=ordine-1");
 		}
 		
@@ -177,9 +177,9 @@
 			
 			$verofalso = $mysql->update(Verofalso::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
 				"ordine = (case when ordine = '$ordine_esercizio' then '$ordine_successivo' when ordine = '$ordine_successivo' then '$ordine_esercizio' end)", false);
-			$rispostamultipla = $mysql->update(Rispostamultipla::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
+			$rispostamultipla = $mysql->update(RispostaMultipla::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
 				"ordine = (case when ordine = '$ordine_esercizio' then '$ordine_successivo' when ordine = '$ordine_successivo' then '$ordine_esercizio' end)", false);
-			$rispostaaperta = $mysql->update(Rispostaaperta::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
+			$rispostaaperta = $mysql->update(RispostaAperta::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
 				"ordine = (case when ordine = '$ordine_esercizio' then '$ordine_successivo' when ordine = '$ordine_successivo' then '$ordine_esercizio' end)", false);
 			$esercizio = $mysql->update(Esercizio::$sqlTable, "ordine IN ('$ordine_esercizio', '$ordine_successivo') AND ID_sezione='$this->id'",
 				"ordine = (case when ordine = '$ordine_esercizio' then '$ordine_successivo' when ordine = '$ordine_successivo' then '$ordine_esercizio' end)", false);

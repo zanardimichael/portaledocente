@@ -2,7 +2,7 @@
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Base.php";
 	require_once $_SERVER['DOCUMENT_ROOT']."/inc/class/Verifica.php";
 	
-	class Rispostamultipla extends Base {
+	class RispostaMultipla extends Base {
 		
 		static $sqlNames = [
 			"id",
@@ -44,14 +44,14 @@
 		/**
 		 * @param bool $object
 		 * @param string|array $sql
-		 * @return Rispostamultipla[]
+		 * @return RispostaMultipla[]
 		 */
 		static function getAll(bool $object = false, string|array $sql = "*"): array {
 			global $mysql;
 			$array = [];
 			$result = $mysql->select(static::$sqlTable, "", "id");
 			while($row = mysqli_fetch_assoc($result)){
-				$object ? $array[] = new Rispostamultipla($row["id"], $sql) : $array[] = $row["id"];
+				$object ? $array[] = new RispostaMultipla($row["id"], $sql) : $array[] = $row["id"];
 			}
 			return $array;
 		}
@@ -78,7 +78,7 @@
 		
 		static function delete($id): bool{
 			global $mysql;
-			$rispostamultipla = new Rispostamultipla($id, ["ordine", "ID_sezione"]);
+			$rispostamultipla = new RispostaMultipla($id, ["ordine", "ID_sezione"]);
 			$delete = $mysql->delete(static::$sqlTable, "ID='$id'");
 			Sezione::updateOrdineEsercizi($rispostamultipla->ordine, $rispostamultipla->ID_sezione);
 			return $delete;

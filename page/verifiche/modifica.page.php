@@ -39,7 +39,7 @@
 		}
 	
 		if($page->isSafeToProceed()){
-            $page->addJavascriptVariable("ID_verifica", $verifica->id);
+            $page->setJavascriptVariable("ID_verifica", $verifica->id);
 	
 ?>
 
@@ -118,7 +118,7 @@
 		</div>
 		<?php
 			$sezioni = $verifica->getSezioni();
-			$page->addJavascriptVariable("ordine_sezione_max",  count($sezioni));
+			$page->setJavascriptVariable("ordine_sezione_max",  count($sezioni));
 			for($i = 0; $i < count($sezioni); $i++) {
 				$sezione = $sezioni[$i];
 				?>

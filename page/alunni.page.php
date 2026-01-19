@@ -9,7 +9,7 @@
 <div class="row">
 	<table class="table table-striped" id="alunni-table" style="max-height: 1000px;">
 		<thead>
-		<tr><th>Classe</th><th>Nome</th><th style="width: 15%;">Azioni</th></tr>
+		<tr><th>Classe</th><th>Nome</th><th>Cognome</th><th style="width: 15%;">Azioni</th></tr>
 		</thead>
 		<tbody>
 		<?php
@@ -18,7 +18,8 @@
 				?>
 				<tr>
 					<td><?php echo $alunno->classe->getNomeClasse(); ?></td>
-					<td><?php echo $alunno->getNomeCognome(); ?></td>
+					<td><?php echo $alunno->nome; ?></td>
+					<td><?php echo $alunno->cognome; ?></td>
 					<td>
 						<a class="btn btn-success" href="/pages/alunni/visualizza?id=<?php echo $alunno->id; ?>"><i class="bi bi-search"></i></a>
 						<a class="btn btn-primary" href="/pages/alunni/modifica?id=<?php echo $alunno->id; ?>"><i class="bi bi-pencil-square"></i></a>

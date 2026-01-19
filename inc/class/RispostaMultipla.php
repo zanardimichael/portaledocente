@@ -21,9 +21,17 @@
 		
 		public int $id;
 		public ?int $ID_verifica;
-		public Verifica $verifica;
+		public Verifica $verifica {
+			get {
+				return new Verifica($this->ID_verifica);
+			}
+		}
 		public ?int $ID_sezione;
-		public Sezione $sezione;
+		public Sezione $sezione {
+			get {
+				return new Sezione($this->ID_verifica);
+			}
+		}
 		public string $testo;
 		public ?string $note;
 		public int $punteggio;
@@ -33,12 +41,6 @@
 		
 		public function __construct(?int $id, $sql = "*"){
 			parent::__construct($id, $sql);
-			if(isset($this->ID_verifica)){
-				$this->verifica = new Verifica($this->ID_verifica);
-			}
-			if(isset($this->ID_sezione)){
-				$this->sezione = new Sezione($this->ID_sezione);
-			}
 		}
 		
 		/**
@@ -162,6 +164,82 @@
 				</div>';
 		}
 		
+		public function renderCorrezione(CorrezioneDomanda $correzioneDomanda): string {
+			$valori = [];
+			if($correzioneDomanda->valore != ""){
+				$valori = explode(",", $correzioneDomanda->valore);
+			}
+			$risposte_html = "";
+			$risposte = $this->getRisposte();
+			$risposte_corrette = [];
+			$punteggio = 0;
+			foreach ($risposte as $risposta) {
+				$selected = in_array($risposta["ID"], $valori) ? "checked" : "";
+				$risposte_html .= '
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" name="risposta-multipla-'.$this->id.'" id="risposta-multipla-'.$this->id.'-'.$risposta["ID"].'" '.$selected.'>
+						<label class="form-check-label" for="risposta-multipla-'.$this->id.'-'.$risposta["ID"].'">
+							'.$risposta["testo"].'
+						</label>
+					</div>';
+			}
+			
+			$punteggio = $this->getPunteggioCorrezione($correzioneDomanda);
+			$checked_parziale = $correzioneDomanda->parziale ? "checked" : ""; // Se parziale è selezionato la checkbox deve essere selezionata
+			$punteggio_parziale = $correzioneDomanda->parziale ? $correzioneDomanda->punteggio : ""; // Se parziale è selezionato il punteggio deve essere inserito nell'input
+			$input_punteggio_parziale = $correzioneDomanda->parziale ? "" : "disabled"; // Se parziale è selezionato l'input deve essere attivo altrimenti deve essere disabilitato
+			
+			$card_info = "card-warning";
+			if($punteggio == 0){
+				$card_info = "card-danger";
+			}else if($punteggio == $this->punteggio){
+				$card_info = "card-success";
+			}else if($correzioneDomanda->valore == ""){
+				$card_info = "card-info";
+			}
+			
+			return '<div class="card '.$card_info.' card-outline mb-2">
+					<div class="card-header">
+						Risposta Multipla
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-12 col-md-6 mb-2">
+								<p>'.$this->testo.'</p>
+								<label class="form-label">Risposte</label>
+								'.$risposte_html.'
+							</div>
+							<div class="col-sm-12 col-md-6 mb-2">
+								<label class="form-label">Parziale</label>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="parziale-risposta-multipla-'.$this->id.'" '.$checked_parziale.'>
+									<label class="form-check-label" for="parziale-risposta-multipla-'.$this->id.'">
+										Specifica punteggio parziale
+									</label>
+								</div>
+								<hr>
+								<label class="form-label" for="punteggio-parziale-risposta-multipla-'.$this->id.'">Punteggio Parziale</label>
+								<input
+										type="number"
+										class="form-control"
+										id="punteggio-parziale-risposta-multipla-'.$this->id.'"
+										name="punteggio"
+										value="'.$punteggio_parziale.'"
+										step="0.1"
+										min="0"
+										max="64"
+										required
+										'.$input_punteggio_parziale.'
+								/>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer">
+						Punteggio: <span class="risulato-risposta-multipla-'.$this->id.'">'.$punteggio.'</span>
+					</div>
+				</div>';
+		}
+		
 		public function renderLatex(): string {
 			$testo = "$this->testo
 			\begin{todolist}\n";
@@ -186,6 +264,43 @@
 			return $risposte_array;
 		}
 		
+		public function getRisposteCorrette($object = true): array{
+			global $mysql;
+			
+			$risposte_array = [];
+			$risposte = $mysql->select("verifica_rispostamultipla_risposte", "ID_rispostamultipla='$this->id' AND corretto=1");
+			while($row = mysqli_fetch_assoc($risposte)){
+				$risposte_array[] = $row["ID"];
+			}
+			return $risposte_array;
+		}
+		
+		public function getPunteggioCorrezione(CorrezioneDomanda $correzioneDomanda): float {
+			$punteggio = 0;
+			if(!$correzioneDomanda->parziale) {
+				$valori = [];
+				if ($correzioneDomanda->valore != "") {
+					$valori = explode(",", $correzioneDomanda->valore);
+				}
+				$risposte = $this->getRisposte();
+				$risposte_corrette = $this->getRisposteCorrette(false);
+				
+				$error = false;
+				foreach ($risposte as $risposta) {
+					if (in_array($risposta["ID"], $valori) && !$risposta["corretto"]) {
+						$error = true;
+					} else if (in_array($risposta["ID"], $valori) && $risposta["corretto"]) {
+						$punteggio += $this->punteggio / count($risposte_corrette);
+					}
+				}
+				if ($error)
+					$punteggio = 0;
+			}else{
+				return $correzioneDomanda->punteggio;
+			}
+			return $punteggio;
+		}
+		
 		static function getUltimoOrdineRisposta(int $id_rispostamultipla): int {
 			global $mysql;
 			$mysql->escape($id_rispostamultipla);
@@ -198,7 +313,7 @@
 			
 			$risposta = $mysql->select(static::$sqlTableRisposte, "ID='$id'");
 			$row = mysqli_fetch_assoc($risposta);
-			if(gettype($row) == "array") {
+			if (gettype($row) == "array") {
 				return $row;
 			}
 			

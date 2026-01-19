@@ -91,7 +91,7 @@
 						->setMessage("Vero-Falso creato correttamente")
 						->show();
                     $id = $GLOBALS["mysql"]->getInsertId();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$id");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$id");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio del Vero-Falso")
@@ -111,7 +111,7 @@
 					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Vero-Falso modificato correttamente")
 						->show();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$_POST[id]");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$_POST[id]");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio del Vero-Falso")
@@ -158,7 +158,7 @@
 						->setMessage("Domanda aperta creata correttamente")
 						->show();
                     $id = $GLOBALS["mysql"]->getInsertId();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$id");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$id");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Domanda aperta")
@@ -177,7 +177,7 @@
 					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Domanda aperta modificata correttamente")
 						->show();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$_POST[id]");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$_POST[id]");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Domanda aperta")
@@ -224,7 +224,7 @@
 						->setMessage("Domanda chiusa creata correttamente")
 						->show();
                     $id = $GLOBALS["mysql"]->getInsertId();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$id");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$id");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Domanda chiusa")
@@ -243,7 +243,7 @@
 					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Domanda chiusa modificata correttamente")
 						->show();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$_POST[id]");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$_POST[id]");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Domanda chiusa")
@@ -286,7 +286,7 @@
 					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Risposta creata correttamente")
 						->show();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$ID_rispostamultipla");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$ID_rispostamultipla");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Risposta")
@@ -306,7 +306,7 @@
 					$page->message->setMessageType(MessageType::Success)
 						->setMessage("Risposta modificata correttamente")
 						->show();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$ID_rispostamultipla");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$ID_rispostamultipla");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio della Risposta")
@@ -354,7 +354,7 @@
 						->setMessage("Esercizio creato correttamente")
 						->show();
                     $id = $GLOBALS["mysql"]->getInsertId();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$id");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$id");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio dell'Esercizio")
@@ -375,7 +375,7 @@
 						->setMessage("Esercizio modificato correttamente")
 						->show();
                     $id = $GLOBALS["mysql"]->getInsertId();
-                    $page->addJavascriptVariable("redirect_url", "#esercizio-$_POST[id]");
+                    $page->setJavascriptVariable("redirect_url", "#esercizio-$_POST[id]");
 				}else{
 					$page->message->setMessageType(MessageType::Error)
 						->setMessage("Errore nel salvataggio dell'Esercizio")

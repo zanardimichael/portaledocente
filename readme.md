@@ -33,6 +33,7 @@
 |---------------------|-------------|-------------------------------------|---------|
 | ID                  | int(11)     | auto_increment                      | primary |
 | ID_classe           | int(11)     |
+| mumero_registro     | int(11)     |
 | nome                | varchar(64) |
 | cognome             | varchar(64) |
 | email               | varchar(64) |

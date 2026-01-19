@@ -119,6 +119,35 @@
 			return strtotime($this->timestamp_modifica);
 		}
 		
+		public function getPunteggioSezione(): int {
+			global $mysql;
+			$punteggio = 0;
+			
+			$verofalso = $mysql->select(Verofalso::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["punteggio"]);
+			while($row = mysqli_fetch_assoc($verofalso)){
+				$punteggio += $row["punteggio"];
+			}
+			
+			$rispostamultipla = $mysql->select(RispostaMultipla::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["punteggio"]);
+			while($row = mysqli_fetch_assoc($rispostamultipla)){
+				$punteggio += $row["punteggio"];
+			}
+			
+			$rispostaaperta = $mysql->select(RispostaAperta::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["punteggio"]);
+			while($row = mysqli_fetch_assoc($rispostaaperta)){
+				$punteggio += $row["punteggio"];
+			}
+			
+			$esercizio = $mysql->select(Esercizio::$sqlTable, "ID_sezione='$this->id' ORDER BY ordine ASC", ["punteggio"]);
+			while($row = mysqli_fetch_assoc($esercizio)){
+				$punteggio += $row["punteggio"];
+			}
+			return $punteggio;
+		}
+		
+		/**
+		 * @return array L'array è composto da due sottochiavi "domande" con un array di esercizi e "punteggio" con il punteggio totale della sezione.
+		 */
 		public function getDomande(): array {
 			global $mysql;
 			

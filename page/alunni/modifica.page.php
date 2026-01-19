@@ -7,6 +7,7 @@
 	if ($_SERVER['REQUEST_METHOD'] == 'POST' and verifyAllPostVars(["classe", "nome", "cognome", "email"])) {
 		$data = array(
 			"ID_classe" => $_POST["classe"],
+			"numero_registro" => $_POST["numero_registro"],
 			"nome" => $_POST["nome"],
 			"cognome" => $_POST["cognome"],
 			"email" => $_POST["email"]
@@ -48,6 +49,20 @@
 				<input type="hidden" name="id" value="<?php echo $id;?>">
 				<div class="card-body">
 					<div class="row g-3">
+						<div class="col-12">
+							<label class="form-label" for="numero_registro">Numero di Registro</label>
+							<input
+								type="number"
+								class="form-control"
+								id="numero_registro"
+								name="numero_registro"
+								value="<?php echo $alunno->numero_registro; ?>"
+								min="1"
+								step="1"
+								max="40"
+								required
+							/>
+						</div>
 						<div class="col-md-6">
 							<label for="nome" class="form-label">Nome</label>
 							<input

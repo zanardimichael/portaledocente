@@ -117,7 +117,10 @@
 		public function renderCorrezione(CorrezioneDomanda $correzioneDomanda): string {
 			$risposta_prevista = $this->risultato ? "Vero" : "Falso";
 			
-			$card_info = intval($correzioneDomanda->valore) == $this->risultato ? "card-success" : "card-danger";
+			$card_info = "card-info";
+			if($correzioneDomanda->valore != "") {
+				$card_info = intval($correzioneDomanda->valore) == $this->risultato ? "card-success" : "card-danger";
+			}
 			$checked_vero = $correzioneDomanda->valore == "1" ? "checked" : "";
 			$checked_falso = $correzioneDomanda->valore == "0" ? "checked" : "";
 			
@@ -128,7 +131,16 @@
 				$punteggio_parziale = $correzioneDomanda->punteggio;
 			}
 			
-			return '<div class="card '.$card_info.' card-outline verofalso" id-verofalso="'.$this->id.'">
+			$punteggio = 0;
+			if($card_info == "card-success"){
+				$punteggio = $this->punteggio;
+				if($correzioneDomanda->parziale != ""){
+					$punteggio = $correzioneDomanda->punteggio;
+				}
+			}
+			$input_punteggio_parziale = $correzioneDomanda->parziale ? "" : "disabled";
+			
+			return '<div class="card '.$card_info.' card-outline verofalso mb-2" id-verofalso="'.$this->id.'">
 				<div class="card-header">
 					Vero-Falso
 				</div>
@@ -138,13 +150,13 @@
 							<p>'.$this->testo.'</p>
 							<label class="form-label">Risposta</label>
 							<div class="form-check">
-								<input class="form-check-input verofalso-radio" type="radio" name="risultato" id="vero-verofalso-'.$this->id.'" value="1" '.$checked_vero.'>
+								<input class="form-check-input verofalso-radio" type="radio" name="risultato-verofalso-'.$this->id.'" id="vero-verofalso-'.$this->id.'" value="1" '.$checked_vero.'>
 								<label class="form-check-label" for="vero-verofalso-'.$this->id.'">
 									Vero
 								</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input verofalso-radio" type="radio" name="risultato" id="falso-verofalso-'.$this->id.'" value="0" '.$checked_falso.'>
+								<input class="form-check-input verofalso-radio" type="radio" name="risultato-verofalso-'.$this->id.'" id="falso-verofalso-'.$this->id.'" value="0" '.$checked_falso.'>
 								<label class="form-check-label" for="falso-verofalso-'.$this->id.'">
 									Falso
 								</label>
@@ -164,18 +176,20 @@
 							<input
 								type="number"
 								class="form-control"
-								id="punteggio-verofalso-'.$this->id.'"
+								id="punteggio-parziale-verofalso-'.$this->id.'"
 								name="punteggio"
 								value="'.$punteggio_parziale.'"
-								min="1"
+								min="0"
+								step="0.1"
 								max="64"
 								required
+								'.$input_punteggio_parziale.'
 							/>
 						</div>
 					</div>
 				</div>
 				<div class="card-footer">
-					Punteggio: <div class="risulato-verofalso-'.$this->id.'">
+					Punteggio: <span class="risulato-verofalso-'.$this->id.'">'.$punteggio.'</span>
 				</div>
 			</div>';
 		}

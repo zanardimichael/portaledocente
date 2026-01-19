@@ -22,7 +22,7 @@
 	$current_prof = Professore::getProfessoreByUtenteID($userId);
 	$page = new PageHandler($_GET["req"] ?? false);
 	$message = $page->message;
-	$page->addJavascriptVariable("ID_professore", $current_prof->id);
+	$page->setJavascriptVariable("ID_professore", $current_prof->id);
 
     $debug = true;
 

@@ -5,6 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/inc/class/Alunno.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST' and verifyAllPostVars(["classe", "nome", "cognome", "email"])) {
 	$data = array(
 		"id_classe" => $_POST["classe"],
+		"numero_registro" => $_POST["numero_registro"],
 		"nome" => $_POST["nome"],
 		"cognome" => $_POST["cognome"],
 		"email" => $_POST["email"]
@@ -38,6 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' and verifyAllPostVars(["classe", "nome"
 			<form class="needs-validation" novalidate action="" method="post">
 				<div class="card-body">
 					<div class="row g-3">
+						<div class="col-12">
+							<label class="form-label" for="numero_registro">Numero di Registro</label>
+							<input
+								type="number"
+								class="form-control"
+								id="numero_registro"
+								name="numero_registro"
+								min="1"
+								step="1"
+								max="40"
+								required
+							/>
+						</div>
 						<div class="col-md-6">
 							<label for="nome" class="form-label">Nome</label>
 							<input

@@ -8,6 +8,7 @@
 		static $sqlNames = [
 			"id",
 			"ID_classe",
+			"numero_registro",
 			"nome",
 			"cognome",
 			"note",
@@ -19,6 +20,7 @@
 		
 		public int $id;
 		public int $ID_classe;
+		public int $numero_registro;
 		public string $nome;
 		public string $cognome;
 		public string $email;
@@ -77,5 +79,75 @@
 		
 		public function getNomeCognome() : string {
 			return $this->nome." ".$this->cognome;
+		}
+		
+		public function getNextAlunno(): false|Alunno {
+			if(self::getLastAlunnoClasse($this->ID_classe, false) == $this->id){
+				return false;
+			}
+			global $mysql;
+			
+			$alunno = false;
+			$numero_registro = $this->numero_registro;
+			do {
+				$numero_registro++;
+				$result = $mysql->select(static::$sqlTable, "numero_registro=$numero_registro", "ID");
+				if($result->num_rows > 0){
+					return new Alunno($result->fetch_object()->ID);
+				}
+				if($numero_registro > 40){
+					$alunno = true;
+					return false;
+				}
+			} while(!$alunno);
+			return false;
+		}
+		
+		public function getPreviousAlunno(): false|Alunno {
+			if(self::getFirstAlunnoClasse($this->ID_classe, false) == $this->id){
+				return false;
+			}
+			global $mysql;
+			
+			$alunno = false;
+			$numero_registro = $this->numero_registro;
+			do {
+				$numero_registro--;
+				$result = $mysql->select(static::$sqlTable, "numero_registro=$numero_registro", "ID");
+				if($result->num_rows > 0){
+					return new Alunno($result->fetch_object()->ID);
+				}
+				if($numero_registro == 0){
+					$alunno = true;
+					return false;
+				}
+			} while(!$alunno);
+			return false;
+		}
+		
+		static function getLastAlunnoClasse(int $ID_classe, $object = true) : int|Alunno {
+			global $mysql;
+			
+			if(Classe::exists($ID_classe)) {
+				$result = $mysql->select(static::$sqlTable, "ID_classe=$ID_classe ORDER BY numero_registro DESC LIMIT 1", "ID");
+				if($result->num_rows > 0){
+					$row = $result->fetch_assoc();
+					return $object ? new Alunno($row["ID"]) : $row["ID"];
+				}
+			}
+			return 0;
+		}
+		
+		static function getFirstAlunnoClasse(int $ID_classe, $object = true) : int|Alunno {
+			global $mysql;
+			
+			if(Classe::exists($ID_classe)) {
+				$result = $mysql->select(static::$sqlTable, "ID_classe=$ID_classe ORDER BY numero_registro ASC LIMIT 1", "ID");
+				if($result->num_rows > 0){
+					$row = $result->fetch_assoc();
+					return $object ? new Alunno($row["ID"]) : $row["ID"];
+				}
+			}
+			return 0;
 		}
 	}

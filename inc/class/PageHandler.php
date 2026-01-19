@@ -25,7 +25,8 @@
 			UnsafeReasons::Unauthorized => false,
 		];
 		
-		public $javascriptVariables = array();
+		public array $javascriptVariables = [];
+		public array $globalVariables = [];
 		
 		public function __construct($current_page) {
 			global $pages;
@@ -101,8 +102,16 @@
 			$this->unsafeReasons[$unsafeReason] = true;
 		}
 		
-		public function addJavascriptVariable(string $key, mixed $value): void {
+		public function setJavascriptVariable(string $key, mixed $value): void {
 			$this->javascriptVariables[$key] = $value;
+		}
+		
+		public function setGlobalVariable(string $key, mixed $value): void {
+			$this->globalVariables[$key] = $value;
+		}
+		
+		public function getGlobalVariable(string $key) {
+			return $this->globalVariables[$key] ?? null;
 		}
 		
 		public function renderJavascriptVariables(): string {

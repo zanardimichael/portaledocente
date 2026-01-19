@@ -92,4 +92,58 @@
 			$esercizio = new $this->tipologia_esercizio($this->ID_esercizio);
 			return $esercizio->renderCorrezione($this);
 		}
+		
+		/**
+		 * @param Object $esercizio
+		 * @return CorrezioneDomanda|null
+		 */
+		static function getCorrezioneDomandaFromEsercizio(Object $esercizio, int $ID_alunno): ?CorrezioneDomanda {
+			global $mysql;
+			global $page;
+			
+			$tipologia_esercizio = get_class($esercizio);
+			if(!in_array($tipologia_esercizio, Verifica::$classiEsercizi)){
+				return null;
+			}
+			
+			$result = $mysql->select(static::$sqlTable, "ID_esercizio='$esercizio->id' AND ID_alunno='$ID_alunno' AND tipologia_esercizio='$tipologia_esercizio'", "ID");
+			if($result->num_rows === 0){
+				return new CorrezioneDomanda(CorrezioneDomanda::create([
+					"ID_esercizio" => $esercizio->id,
+					"ID_alunno" => $page->getGlobalVariable("ID_alunno"),
+					"ID_correzione" => $page->getGlobalVariable("ID_correzione"),
+					"tipologia_esercizio" => $tipologia_esercizio,
+					"parziale" => 0,
+					"punteggio" => 0,
+					"valore" => "",
+					"note" => ""
+				]));
+			}else{
+				$row = $result->fetch_assoc();
+				return new CorrezioneDomanda($row["ID"]);
+			}
+		}
+		
+		public function getPunteggio() {
+			$punteggio = 0;
+			if($this->parziale){
+				$punteggio = $this->punteggio;
+			}else{
+				if($this->valore != ""){
+					$esercizio = new $this->tipologia_esercizio($this->ID_esercizio);
+					if($this->tipologia_esercizio == "RispostaMultipla") {
+						$punteggio = $esercizio->getPunteggioCorrezione($this);
+					}elseif($this->tipologia_esercizio == "Verofalso"){
+						if ($this->valore == $esercizio->risultato) {
+							$punteggio = $esercizio->punteggio;
+						}
+					}else{
+						if ($this->valore) {
+							$punteggio = $esercizio->punteggio;
+						}
+					}
+				}
+			}
+			return $punteggio;
+		}
 	}

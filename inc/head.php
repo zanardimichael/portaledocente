@@ -56,4 +56,5 @@
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/toastify.min.css" rel="stylesheet">
 	<link href="/css/summernote-bs5.min.css" rel="stylesheet">
+	<link href="/css/override.css" rel="stylesheet"/>
 </head>

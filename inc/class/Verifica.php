@@ -21,6 +21,12 @@
 		];
 		
 		static $sqlTable = "verifica";
+		static $classiEsercizi = [
+			"Verofalso",
+			"RispostaAperta",
+			"RispostaMultipla",
+			"Esercizio"
+		];
 		
 		public int $id;
 		public int $ID_professore;
@@ -92,6 +98,15 @@
 		
 		public function getTimestampModificaTime() : int {
 			return strtotime($this->timestamp_modifica);
+		}
+		
+		public function getPunteggioVerifica(): int {
+			$sezioni = $this->getSezioni();
+			$punteggio = 0;
+			foreach($sezioni as $sezione){
+				$punteggio += $sezione->getPunteggioSezione();
+			}
+			return $punteggio;
 		}
 		
 		public function getSottoverifiche(bool $object = true, $sql = "*"): array {

@@ -112,4 +112,81 @@
 		public function renderLatex(): string {
 			return "\n\\textbf{Rispondi alle domanda:} \\\\\n$this->testo";
 		}
+		
+		public function renderCorrezione(CorrezioneDomanda $correzioneDomanda): string {
+			$checked_corretto = $correzioneDomanda->valore ? "checked" : "";
+			$checked_errato = $correzioneDomanda->valore == 0 ? "checked" : "";
+			
+			$punteggio = 0;
+			if($correzioneDomanda->valore) $punteggio = $this->punteggio;
+			if($correzioneDomanda->parziale){
+				$punteggio = $correzioneDomanda->punteggio;
+			}
+			
+			$checked_parziale = $correzioneDomanda->parziale ? "checked" : ""; // Se parziale è selezionato la checkbox deve essere selezionata
+			$punteggio_parziale = $correzioneDomanda->parziale ? $correzioneDomanda->punteggio : ""; // Se parziale è selezionato il punteggio deve essere inserito nell'input
+			$input_punteggio_parziale = $correzioneDomanda->parziale ? "" : "disabled"; // Se parziale è selezionato l'input deve essere attivo altrimenti deve essere disabilitato
+			
+			$card_info = "card-warning";
+			if($correzioneDomanda->valore == ""){
+				$card_info = "card-info";
+			}else if($punteggio == $this->punteggio){
+				$card_info = "card-success";
+			}else if($punteggio == 0){
+				$card_info = "card-danger";
+			}
+			
+			return '
+				<div class="card '.$card_info.' card-outline mb-2">
+					<div class="card-header">
+						Risposta Aperta
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-12 col-md-6 mb-2">
+								<p>'.$this->testo.'</p>
+								<label class="form-label">Risposta</label>
+								<div class="form-check">
+									<input class="form-check-input verofalso-radio" type="radio" name="risultato-verofalso-'.$this->id.'" id="vero-risposta-aperta-'.$this->id.'" value="1" '.$checked_corretto.'>
+									<label class="form-check-label" for="vero-risposta-aperta-'.$this->id.'">
+										Corretta (punteggio pieno)
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input verofalso-radio" type="radio" name="risultato-verofalso-'.$this->id.'" id="falso-risposta-aperta-'.$this->id.'" value="0" '.$checked_errato.'>
+									<label class="form-check-label" for="falso-risposta-aperta-'.$this->id.'">
+										Completamente Errata (0 punti)
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6 mb-2">
+								<label class="form-label">Parziale</label>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="parziale-risposta-aperta-'.$this->id.'" '.$checked_parziale.'>
+									<label class="form-check-label" for="parziale-risposta-aperta-'.$this->id.'">
+										Specifica punteggio parziale
+									</label>
+								</div>
+								<hr>
+								<label class="form-label" for="punteggio-parziale-risposta-aperta-'.$this->id.'">Punteggio Parziale</label>
+								<input
+										type="number"
+										class="form-control"
+										id="punteggio-parziale-risposta-aperta-'.$this->id.'"
+										name="punteggio"
+										value="'.$punteggio_parziale.'"
+										step="0.1"
+										min="0"
+										max="64"
+										required
+										'.$input_punteggio_parziale.'
+								/>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer">
+						Punteggio: <span class="risulato-risposta-aperta-'.$this->id.'">'.$punteggio.'</span>
+					</div>
+				</div>';
+		}
 	}

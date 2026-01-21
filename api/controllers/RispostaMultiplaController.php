@@ -7,6 +7,7 @@ class RispostaMultiplaController extends BaseController {
     public function registerRoutes(Router $router) {
 	    $router->add('GET', '/rispostamultipla/{id}', [$this, 'show']);
 		$router->add('GET', '/rispostamultipla/risposta/{id}', [$this, 'getRisposta']);
+	    $router->add('PATCH', '/rispostamultipla/correzione/{id}', [$this, 'correzione']);
     }
 
     public function show($params): void {
@@ -23,7 +24,6 @@ class RispostaMultiplaController extends BaseController {
         }
         
         $rispostamultipla = new RispostaMultipla($id);
-		unset($rispostamultipla->verifica);
 		
         echo json_encode($rispostamultipla);
     }
@@ -42,5 +42,31 @@ class RispostaMultiplaController extends BaseController {
 		}
 		
 		echo json_encode(RispostaMultipla::getRisposta($id));
+	}
+	
+	public function correzione($params): void {
+		$id = $params['id'] ?? null;
+		
+		if(!is_numeric($id)){
+			http_response_code(400);
+			echo json_encode(["error" => "ID correzione non valido"]);
+			return;
+		}
+		
+		if (!CorrezioneDomanda::exists($id)) {
+			$this->error("Correzione risposta multipla non trovata", 404, "NOT_FOUND");
+		}
+		$_PATCH = [];
+		parse_str(file_get_contents('php://input'), $_PATCH);
+		
+		CorrezioneDomanda::edit($id, [
+			"valore" => implode(",", $_PATCH["risposta_multipla"] ?? []),
+			"parziale" => $_PATCH["parziale"] ?? 0,
+			"punteggio" => $_PATCH["punteggio"] ?? 0,
+		]);
+		
+		$correzione_domanda = new CorrezioneDomanda($id);
+		
+		echo json_encode(["punteggio" => $correzione_domanda->getPunteggio()]);
 	}
 }

@@ -114,6 +114,10 @@
 			return $this->globalVariables[$key] ?? null;
 		}
 		
+		public function getRequestMethod(): string {
+			return $_SERVER["REQUEST_METHOD"];
+		}
+		
 		public function renderJavascriptVariables(): string {
 			$script = "<script type='text/javascript'>\n";
 			foreach($this->javascriptVariables as $variableName => $variableValue) {

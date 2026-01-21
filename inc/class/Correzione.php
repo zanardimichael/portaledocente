@@ -25,6 +25,8 @@
 			"timestamp_creazione"
 		];
 		
+		static $sqlTableAlunni = "correzione_alunno";
+		
 		public function __construct(?int $id, array|string $sql = "*") {
 			parent::__construct($id, $sql);
 		}
@@ -75,5 +77,77 @@
 		
 		public function getTimestampDataVerifica() : string {
 			return strtotime($this->data_verifica);
+		}
+		
+		public function getVotoAlunno(int $ID_alunno) : int {
+			global $mysql;
+			$punteggio_verifica = $this->verifica->getPunteggioVerifica();
+			$punteggio_alunno = $this->getPunteggioAlunno($ID_alunno);
+			
+			return floor($punteggio_alunno / $punteggio_verifica * 20) / 2;
+		}
+		
+		public function getPunteggioAlunno(int $ID_alunno) : int {
+			global $mysql;
+			$punteggio = 0;
+			
+			$result = $mysql->select(CorrezioneDomanda::$sqlTable, "ID_correzione='$this->ID' AND ID_alunno='$ID_alunno'");
+			while($row = mysqli_fetch_assoc($result)){
+				$domanda = new CorrezioneDomanda($row["ID"]);
+				$punteggio += $domanda->getPunteggio();
+			}
+			return $punteggio;
+		}
+		
+		/**
+		 * @param bool $object
+		 * @return int[]|Alunno[]
+		 */
+		public function getAlunni(bool $object = true): array {
+			global $mysql;
+			$alunni = [];
+			
+			$return = $mysql->select(static::$sqlTableAlunni, "ID_correzione='$this->ID'", "ID_alunno");
+			
+			while($row = mysqli_fetch_assoc($return)){
+				$alunni[] = $object ? new Alunno($row["ID_alunno"]) : $row["ID_alunno"];
+			}
+			
+			return $alunni;
+		}
+		
+		/**
+		 * @param bool $object
+		 * @return int[]|Alunno[]
+		 */
+		public function getAlunniNonSelezionati(bool $object = true): array {
+			global $mysql;
+			$alunni = [];
+			$classe = $this->verifica->classe;
+			$alunni_selezionati = $this->getAlunni(false);
+			$alunni_selezionati_sql = implode(", ", $alunni_selezionati);
+			$sql = "ID NOT IN ($alunni_selezionati_sql) AND ID_classe='$classe->id'";
+			if($alunni_selezionati_sql == ""){
+				$sql = "ID_classe='$classe->id'";
+			}
+			
+			$return = $mysql->select(Alunno::$sqlTable, $sql, "ID");
+			
+			while($row = mysqli_fetch_assoc($return)){
+				$alunni[] = $object ? new Alunno($row["ID"]) : $row["ID"];
+			}
+			
+			return $alunni;
+		}
+		
+		public function addAlunni(array $ids): bool {
+			global $mysql;
+			$values = "";
+			foreach($ids as $ID_alunno){
+				$values .= " ('$this->ID', '$ID_alunno'),";
+			}
+			$values = substr($values, 0, -1);
+			
+			return $mysql->insert(static::$sqlTableAlunni, "(ID_correzione, ID_alunno) VALUES ".$values);
 		}
 	}

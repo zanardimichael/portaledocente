@@ -146,4 +146,12 @@
 				"/js/pages/correzioni/correzione.js",
 			]
 		],
+		"correzioni/alunni" => [
+			"url" => "/pages/correzioni/alunni",
+			"title" => "Selezione Alunno",
+			"back_button" => true,
+			"script_js" => [
+				"/js/pages/correzioni/alunni.js",
+			]
+		],
 	];

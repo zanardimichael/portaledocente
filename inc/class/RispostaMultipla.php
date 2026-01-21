@@ -177,7 +177,7 @@
 				$selected = in_array($risposta["ID"], $valori) ? "checked" : "";
 				$risposte_html .= '
 					<div class="form-check">
-						<input class="form-check-input" type="checkbox" value="" name="risposta-multipla-'.$this->id.'" id="risposta-multipla-'.$this->id.'-'.$risposta["ID"].'" '.$selected.'>
+						<input class="form-check-input" type="checkbox" value="'.$risposta["ID"].'" name="risposta_multipla[]" id="risposta-multipla-'.$this->id.'-'.$risposta["ID"].'" '.$selected.'>
 						<label class="form-check-label" for="risposta-multipla-'.$this->id.'-'.$risposta["ID"].'">
 							'.$risposta["testo"].'
 						</label>
@@ -198,7 +198,8 @@
 				$card_info = "card-info";
 			}
 			
-			return '<div class="card '.$card_info.' card-outline mb-2">
+			return '<form action="/api/rispostamultipla/correzione/'.$correzioneDomanda->id.'" id="'.$correzioneDomanda->id.'">
+				<div class="card '.$card_info.' card-outline mb-2" id="correzione-'.$correzioneDomanda->id.'">
 					<div class="card-header">
 						Risposta Multipla
 					</div>
@@ -212,7 +213,7 @@
 							<div class="col-sm-12 col-md-6 mb-2">
 								<label class="form-label">Parziale</label>
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="" id="parziale-risposta-multipla-'.$this->id.'" '.$checked_parziale.'>
+									<input class="form-check-input" type="checkbox" value="1" name="parziale" id="parziale-risposta-multipla-'.$this->id.'" '.$checked_parziale.'>
 									<label class="form-check-label" for="parziale-risposta-multipla-'.$this->id.'">
 										Specifica punteggio parziale
 									</label>
@@ -237,7 +238,7 @@
 					<div class="card-footer">
 						Punteggio: <span class="risulato-risposta-multipla-'.$this->id.'">'.$punteggio.'</span>
 					</div>
-				</div>';
+				</div></form>';
 		}
 		
 		public function renderLatex(): string {

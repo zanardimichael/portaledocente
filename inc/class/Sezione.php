@@ -50,9 +50,13 @@
 			return $array;
 		}
 		
-		static function create($data): bool{
+		static function create($data): int|false {
 			global $mysql;
-			return $mysql->insert(static::$sqlTable, $data);
+			$return = $mysql->insert(static::$sqlTable, $data);
+			if($return){
+				return $mysql->getInsertId();
+			}
+			return false;
 		}
 		
 		static function edit($id, $data): bool{

@@ -64,20 +64,25 @@
 		
 		/**
 		 * @param string $table
-		 * @param array $data deve essere un array associativo: ["nome" => "Mario", "cognome" => "Rossi"]
+		 * @param array|string $data deve essere un array associativo: ["nome" => "Mario", "cognome" => "Rossi"] oppure una stringa già comprendente (colonne) VALUES (...)
 		 * @return int|false se diverso da falso ritorna l'id della nuova riga
 		 */
-		public function insert(string $table, array $data): int|false {
-			$names_array = [];
-			$values_array = [];
-			foreach($data as $key => $value){
-				$names_array[] = $this->connection->real_escape_string($key);
-				$values_array[] = "'".$this->connection->real_escape_string($value)."'";
+		public function insert(string $table, array|string $data): int|false {
+			if(gettype($data) == "array") {
+				$names_array = [];
+				$values_array = [];
+				foreach ($data as $key => $value) {
+					$names_array[] = $this->connection->real_escape_string($key);
+					$values_array[] = "'" . $this->connection->real_escape_string($value) . "'";
+				}
+				$names = implode(",", $names_array);
+				$values = implode(",", $values_array);
+				
+				$this->query("INSERT INTO $table ($names) VALUES ($values)");
+			}else {
+				$this->query("INSERT INTO $table $data");
 			}
-			$names = implode(",", $names_array);
-			$values = implode(",", $values_array);
 			
-			$this->query("INSERT INTO $table ($names) VALUES ($values)");
 			if($this->connection->error){
 				$this->logError($this->connection->error, $this->connection->errno);
 				return false;

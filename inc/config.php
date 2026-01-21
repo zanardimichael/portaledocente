@@ -3,7 +3,7 @@
 	$prod = true;
 	$debug = true;
 
-	$versione = "0.6.4";
+	$versione = "0.6.5";
 
 	if($debug){
 		ini_set("display_errors", "1");

@@ -124,7 +124,7 @@
 			$checked_vero = $correzioneDomanda->valore == "1" ? "checked" : "";
 			$checked_falso = $correzioneDomanda->valore == "0" ? "checked" : "";
 			
-			$punteggio_parziale = "";
+			$punteggio_parziale = "0";
 			$checked_parziale = "";
 			if($correzioneDomanda->parziale){
 				$checked_parziale = "checked";
@@ -140,7 +140,8 @@
 			}
 			$input_punteggio_parziale = $correzioneDomanda->parziale ? "" : "disabled";
 			
-			return '<div class="card '.$card_info.' card-outline verofalso mb-2" id-verofalso="'.$this->id.'">
+			return '<form action="/api/verofalso/correzione/'.$correzioneDomanda->id.'" id="'.$correzioneDomanda->id.'">
+			<div class="card '.$card_info.' card-outline verofalso mb-2" id="correzione-'.$correzioneDomanda->id.'" id-verofalso="'.$this->id.'">
 				<div class="card-header">
 					Vero-Falso
 				</div>
@@ -150,13 +151,13 @@
 							<p>'.$this->testo.'</p>
 							<label class="form-label">Risposta</label>
 							<div class="form-check">
-								<input class="form-check-input verofalso-radio" type="radio" name="risultato-verofalso-'.$this->id.'" id="vero-verofalso-'.$this->id.'" value="1" '.$checked_vero.'>
+								<input class="form-check-input verofalso-radio" type="radio" name="valore" id="vero-verofalso-'.$this->id.'" value="1" '.$checked_vero.'>
 								<label class="form-check-label" for="vero-verofalso-'.$this->id.'">
 									Vero
 								</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input verofalso-radio" type="radio" name="risultato-verofalso-'.$this->id.'" id="falso-verofalso-'.$this->id.'" value="0" '.$checked_falso.'>
+								<input class="form-check-input verofalso-radio" type="radio" name="valore" id="falso-verofalso-'.$this->id.'" value="0" '.$checked_falso.'>
 								<label class="form-check-label" for="falso-verofalso-'.$this->id.'">
 									Falso
 								</label>
@@ -166,7 +167,7 @@
 						<div class="col-sm-12 col-md-6 mb-2">
 							<label class="form-label">Parziale</label>
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" value="" id="parziale-verofalso-'.$this->id.'" '.$checked_parziale.'>
+								<input class="form-check-input parziale" name="parziale" type="checkbox" value="1" id="parziale-verofalso-'.$this->id.'" '.$checked_parziale.'>
 								<label class="form-check-label" for="parziale-verofalso-'.$this->id.'">
 									Specifica punteggio parziale
 								</label>
@@ -175,7 +176,7 @@
 							<label class="form-label" for="punteggio-parziale-verofalso-'.$this->id.'">Punteggio Parziale</label>
 							<input
 								type="number"
-								class="form-control"
+								class="form-control punteggio-parziale"
 								id="punteggio-parziale-verofalso-'.$this->id.'"
 								name="punteggio"
 								value="'.$punteggio_parziale.'"
@@ -191,7 +192,8 @@
 				<div class="card-footer">
 					Punteggio: <span class="risulato-verofalso-'.$this->id.'">'.$punteggio.'</span>
 				</div>
-			</div>';
+			</div>
+			</form>';
 		}
 		
 		public function renderLatex(): string{

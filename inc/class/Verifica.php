@@ -170,16 +170,60 @@
 ";
 			
 			$sezioni = $this->getSezioni();
-			
 			foreach($sezioni as $ordine => $sezione){
-				
 				$testo_sezione = $sezione->renderLatex();
-				
 				$latex .= $testo_sezione;
 			}
-			
 			$latex .= "\\end{document}";
 			
 			return $latex;
+		}
+		
+		public function copyFromVerificaMadre(): void {
+			$verifica_madre = $this->verifica;
+			$sezioni = $verifica_madre->getSezioni();
+			
+			foreach($sezioni as $sezione){
+				$domande = $sezione->getDomande();
+				$nuova_sezione = Sezione::create([
+					"ID_verifica" => $this->id,
+					"titolo" => $sezione->titolo,
+					"ordine" => $sezione->ordine
+				]);
+				
+				foreach($domande["domande"] as $domanda){
+					$class = get_class($domanda);
+					print_r($domanda);
+					$data = [
+						"ID_verifica" => $this->id,
+						"ID_sezione" => $nuova_sezione,
+						"testo" => $domanda->testo,
+						"ordine" => $domanda->ordine,
+						"punteggio" => $domanda->punteggio,
+						"note" => $domanda->note,
+					];
+					switch($class){
+						case "Verofalso":
+							$data["risultato"] = $domanda->risultato ? "1": "0";
+							break;
+						case "RispostaMultipla":
+							$risposte = $domanda->getRisposte();
+							foreach ($risposte as $risposta){
+								RispostaMultipla::createRisposta([
+									"ID_rispostamultipla" => $risposta->id,
+									"testo" => $risposta["testo"],
+									"corretto" => $risposta["corretto"] ? "1": "0",
+									"punteggio" => $risposta["punteggio"],
+									"ordine" => $risposta["ordine"],
+								]);
+							}
+							break;
+						case "Esercizio":
+							$data["titolo"] = $domanda->titolo;
+							break;
+					}
+					$class::create($data);
+				}
+			}
 		}
 	}

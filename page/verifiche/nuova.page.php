@@ -15,7 +15,7 @@
 		$ID_classe = $_POST["classe"];
 		$ID_materia = $_POST["materia"];
 		
-		if($_POST["ID_verifica"] != "" && Verifica::exists($_POST["ID_verifica"])){
+		if(isset($_POST["ID_verifica"]) && Verifica::exists($_POST["ID_verifica"])){
 			$verifica = new Verifica($_POST["ID_verifica"]);
 			
 			$ID_classe = $verifica->ID_classe;
@@ -27,13 +27,19 @@
 			"ID_classe" => $ID_classe,
 			"ID_materia" => $ID_materia,
 			"ID_professore" => $current_prof->id,
-			"ID_verifica" => $_POST["ID_verifica"] ?? null,
 			"ordine" => 1,
 			"note" => $_POST["note"] ?? ""
 		);
 		
+		if(isset($_POST["ID_verifica"]))
+			$data["ID_verifica"] = $_POST["ID_verifica"];
+		
 		$id = Verifica::create($data);
 		if($id){
+			if(isset($_POST["ID_verifica"])){
+				$verifica = new Verifica($id);
+				$verifica->copyFromVerificaMadre();
+			}
 			$page->setRedirect("/pages/verifiche/modifica?id=".$id."&createSuccess")
 				->setUnsafe(UnsafeReasons::Redirect);
 		}else{
@@ -68,7 +74,7 @@
 						</div>
 					</div>
 					<input type="hidden" name="id">
-					<input type="hidden" name="ID_verifica" value="<?php echo $ID_verifica; ?>">
+					<?php if($ID_verifica != "") echo '<input type="hidden" name="ID_verifica" value="'.$ID_verifica.'">'; ?>
 					<div class="card-body">
 						<div class="row g-3">
 							<div class="col-md-12">

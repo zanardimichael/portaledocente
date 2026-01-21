@@ -90,8 +90,8 @@ if($page->isSafeToProceed()) {
 	}
 ?>
 	
-	<div class="card">
-		<div class="card-header">
+	<div class="card" id="voto-outer">
+		<div class="card-header" id="voto-inner">
 			<div class="card-title">
 				Voto: <span class="<?php echo $colore_voto; ?>"><?php echo $voto; ?></span>
 			</div>

@@ -136,8 +136,8 @@
 				$card_info = "card-danger";
 			}
 			
-			return '
-				<div class="card '.$card_info.' card-outline mb-2">
+			return '<form action="/api/rispostaaperta/correzione/'.$correzioneDomanda->id.'" id="'.$correzioneDomanda->id.'">
+				<div class="card '.$card_info.' card-outline mb-2" id="correzione-'.$correzioneDomanda->id.'">
 					<div class="card-header">
 						Risposta Aperta
 					</div>
@@ -147,13 +147,13 @@
 								<p>'.$this->testo.'</p>
 								<label class="form-label">Risposta</label>
 								<div class="form-check">
-									<input class="form-check-input verofalso-radio" type="radio" name="risultato-verofalso-'.$this->id.'" id="vero-risposta-aperta-'.$this->id.'" value="1" '.$checked_corretto.'>
+									<input class="form-check-input verofalso-radio" type="radio" name="valore" id="vero-risposta-aperta-'.$this->id.'" value="1" '.$checked_corretto.'>
 									<label class="form-check-label" for="vero-risposta-aperta-'.$this->id.'">
 										Corretta (punteggio pieno)
 									</label>
 								</div>
 								<div class="form-check">
-									<input class="form-check-input verofalso-radio" type="radio" name="risultato-verofalso-'.$this->id.'" id="falso-risposta-aperta-'.$this->id.'" value="0" '.$checked_errato.'>
+									<input class="form-check-input verofalso-radio" type="radio" name="valore" id="falso-risposta-aperta-'.$this->id.'" value="0" '.$checked_errato.'>
 									<label class="form-check-label" for="falso-risposta-aperta-'.$this->id.'">
 										Completamente Errata (0 punti)
 									</label>
@@ -162,7 +162,7 @@
 							<div class="col-sm-12 col-md-6 mb-2">
 								<label class="form-label">Parziale</label>
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="" id="parziale-risposta-aperta-'.$this->id.'" '.$checked_parziale.'>
+									<input class="form-check-input" type="checkbox" value="1" name="parziale" id="parziale-risposta-aperta-'.$this->id.'" '.$checked_parziale.'>
 									<label class="form-check-label" for="parziale-risposta-aperta-'.$this->id.'">
 										Specifica punteggio parziale
 									</label>
@@ -187,6 +187,6 @@
 					<div class="card-footer">
 						Punteggio: <span class="risulato-risposta-aperta-'.$this->id.'">'.$punteggio.'</span>
 					</div>
-				</div>';
+				</div></form>';
 		}
 	}

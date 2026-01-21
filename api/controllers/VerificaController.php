@@ -5,16 +5,12 @@ require_once $_SERVER["DOCUMENT_ROOT"]."/inc/class/Verifica.php";
 class VerificaController extends BaseController {
     
     public function registerRoutes(Router $router) {
-//        $router->add('GET', '/sezione', [$this, 'index']);
 	    $router->add('GET', '/verifica/{id}', [$this, 'show']);
 		$router->add('GET', '/sottoverifica/{id}', [$this, 'sottoverifica']);
-//        $router->add('POST', '/sezione', [$this, 'create']);
-//        $router->add('PUT', '/sezione/{id}', [$this, 'update']);
-//        $router->add('PATCH', '/sezione/{id}', [$this, 'patch']);
-//        $router->add('DELETE', '/sezione/{id}', [$this, 'delete']);
     }
 
     public function show($params): void {
+	    $this->requireAuth();
         $id = $params['id'] ?? null;
         
         if(!is_numeric($id)){
@@ -33,6 +29,7 @@ class VerificaController extends BaseController {
     }
 	
 	public function sottoverifica($params): void {
+		$this->requireAuth();
 		$id = $params['id'] ?? null;
 		
 		if(!is_numeric($id)){

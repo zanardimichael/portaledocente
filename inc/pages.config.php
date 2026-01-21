@@ -142,16 +142,20 @@
 			"url" => "/pages/correzioni/correzione",
 			"title" => "Correzione Verifica",
 			"back_button" => true,
-			"script_js" => [
-				"/js/pages/correzioni/correzione.js",
-			]
 		],
 		"correzioni/alunni" => [
 			"url" => "/pages/correzioni/alunni",
 			"title" => "Selezione Alunno",
 			"back_button" => true,
-			"script_js" => [
-				"/js/pages/correzioni/alunni.js",
-			]
+		],
+		"correzioni/nuova" => [
+			"url" => "/pages/correzioni/nuova",
+			"title" => "Nuova Correzione",
+			"back_button" => true,
+		],
+		"correzioni/elimina" => [
+			"url" => "/pages/correzioni/elimina",
+			"title" => "Elimina Correzione",
+			"back_button" => true,
 		],
 	];

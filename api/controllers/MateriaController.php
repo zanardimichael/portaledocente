@@ -10,6 +10,7 @@ class MateriaController extends BaseController {
     }
 
     public function show($params): void {
+	    $this->requireAuth();
         $id = $params['id'] ?? null;
         
         if(!is_numeric($id)){
@@ -28,6 +29,7 @@ class MateriaController extends BaseController {
     }
 	
 	public function classiProfessori($params): void {
+		$this->requireAuth();
 		$id_classe = $params['id_classe'] ?? null;
 		$id_professore = $params['id_professore'] ?? null;
 		

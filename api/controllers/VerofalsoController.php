@@ -11,6 +11,7 @@ class VerofalsoController extends BaseController {
     }
 
     public function show($params): void {
+	    $this->requireAuth();
         $id = $params['id'] ?? null;
         
         if(!is_numeric($id)){
@@ -30,6 +31,7 @@ class VerofalsoController extends BaseController {
     }
 	
 	public function correzione($params): void {
+		$this->requireAuth();
 		$id = $params['id'] ?? null;
 		
 		if(!is_numeric($id)){

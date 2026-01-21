@@ -11,6 +11,7 @@ class RispostaMultiplaController extends BaseController {
     }
 
     public function show($params): void {
+	    $this->requireAuth();
         $id = $params['id'] ?? null;
         
         if(!is_numeric($id)){
@@ -29,6 +30,7 @@ class RispostaMultiplaController extends BaseController {
     }
 	
 	public function getRisposta($params): void {
+		$this->requireAuth();
 		$id = $params['id'] ?? null;
 		
 		if(!is_numeric($id)){
@@ -45,6 +47,7 @@ class RispostaMultiplaController extends BaseController {
 	}
 	
 	public function correzione($params): void {
+		$this->requireAuth();
 		$id = $params['id'] ?? null;
 		
 		if(!is_numeric($id)){

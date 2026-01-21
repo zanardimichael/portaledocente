@@ -21,8 +21,8 @@ if($page->isSafeToProceed()) {
 	$verifica = $correzione->verifica;
 	$alunno = new Alunno($page->getGlobalVariable("ID_alunno"));
 	
-	$prossimo_alunno = $alunno->getNextAlunno();
-	$alunno_precedente = $alunno->getPreviousAlunno();
+	$prossimo_alunno = $correzione->getNextAlunno($alunno->id);
+	$alunno_precedente = $correzione->getPreviousAlunno($alunno->id);
 	
 	$prossimo_alunno_attivo = !$prossimo_alunno ? "disabled" : "";
 	$alunno_precedente_attivo = !$alunno_precedente ? "disabled" : "";

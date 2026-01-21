@@ -112,14 +112,13 @@
 			$alunno = false;
 			$numero_registro = $this->numero_registro;
 			do {
+				if($numero_registro == 0){
+					return false;
+				}
 				$numero_registro--;
 				$result = $mysql->select(static::$sqlTable, "numero_registro=$numero_registro", "ID");
 				if($result->num_rows > 0){
 					return new Alunno($result->fetch_object()->ID);
-				}
-				if($numero_registro == 0){
-					$alunno = true;
-					return false;
 				}
 			} while(!$alunno);
 			return false;

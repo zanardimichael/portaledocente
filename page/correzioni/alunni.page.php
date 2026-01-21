@@ -10,9 +10,9 @@
 			$alunni = explode(",", $_POST["alunni"]);
 			$correzione = new Correzione($id);
 			if($correzione->addAlunni($alunni)){
-				$page->message->setMessageType(MessageType::Success)->setMessage("Alunno/i aggiunto/i con successo");
+				$page->message->setMessageType(MessageType::Success)->setMessage("Alunno/i aggiunto/i con successo")->show();
 			}else{
-				$page->message->setMessageType(MessageType::Error)->setMessage("Errore nell'inserimento");
+				$page->message->setMessageType(MessageType::Error)->setMessage("Errore nell'inserimento")->show();
 			}
 			$page->setGlobalVariable("ID_correzione", $correzione->id);
 			$page->setJavascriptVariable("ID_correzione", $correzione->id);
@@ -31,6 +31,10 @@
 		}else{
 			$page->setRedirect("/")->setUnsafe(UnsafeReasons::Redirect);
 		}
+	}
+	
+	if(verifyAllGetVars(["createSuccess"])){
+		$page->message->setMessage("Correzione creata con successo, inserisci gli alunni della verifica")->setMessageType(MessageType::Success)->show();
 	}
 	
 	if($page->isSafeToProceed()) {

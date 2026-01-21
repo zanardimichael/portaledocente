@@ -5,17 +5,13 @@ require_once $_SERVER["DOCUMENT_ROOT"]."/inc/class/Sezione.php";
 class SezioneController extends BaseController {
     
     public function registerRoutes(Router $router) {
-//        $router->add('GET', '/sezione', [$this, 'index']);
 	    $router->add('GET', '/sezione/{id}', [$this, 'show']);
 	    $router->add('PATCH', '/sezione/{id_sezione}/invertiordine', [$this, 'invertiOrdine']);
 	    $router->add('PATCH', '/sezione/{id_sezione}/invertiOrdineEsercizio/{ordine_esercizio}', [$this, 'invertiOrdineEsercizio']);
-//        $router->add('POST', '/sezione', [$this, 'create']);
-//        $router->add('PUT', '/sezione/{id}', [$this, 'update']);
-//        $router->add('PATCH', '/sezione/{id}', [$this, 'patch']);
-//        $router->add('DELETE', '/sezione/{id}', [$this, 'delete']);
     }
 
     public function show($params): void {
+	    $this->requireAuth();
         $id = $params['id'] ?? null;
         
         if(!is_numeric($id)){
@@ -35,6 +31,7 @@ class SezioneController extends BaseController {
     }
 	
 	public function invertiOrdine($params): void {
+		$this->requireAuth();
 		$id_sezione = $params['id_sezione'] ?? null;
 		
 		if(!is_numeric($id_sezione)){
@@ -50,6 +47,7 @@ class SezioneController extends BaseController {
 	}
 	
 	public function invertiOrdineEsercizio($params): void {
+		$this->requireAuth();
 		$id_sezione = $params['id_sezione'] ?? null;
 		$ordine_esercizio = $params['ordine_esercizio'] ?? null;
 		

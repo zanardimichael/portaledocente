@@ -128,16 +128,17 @@
 			<div class="card-body">
 				<table class="table table-striped" id="alunni-table" style="max-height: 1000px;">
 					<thead>
-						<tr><th>Classe</th><th>Nome</th></tr>
+						<tr><th>Numero di Registro</th><th>Classe</th><th>Nome</th></tr>
 					</thead>
 					<tbody>
 					<?php
 						$alunni = $classe->getAlunni(true);
-						foreach($alunni as $classe){
+						foreach($alunni as $alunno){
 							?>
 							<tr>
-								<td><?php echo $classe->classe->getNomeClasse(); ?></td>
-								<td><?php echo $classe->getNomeCognome(); ?></td>
+								<td><?php echo $alunno->numero_registro; ?></td>
+								<td><?php echo $alunno->classe->getNomeClasse(); ?></td>
+								<td><?php echo $alunno->getNomeCognome(); ?></td>
 							</tr>
 							<?php
 						}

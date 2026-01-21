@@ -49,7 +49,7 @@
 			<div class="card-body">
 				<table class="table table-striped" id="alunni-table" style="max-height: 1000px;">
 					<thead>
-					<tr><th>Nome</th><th>Note</th></tr>
+					<tr><th>Numero di Registro</th><th>Nome</th><th>Note</th></tr>
 					</thead>
 					<tbody>
 					<?php
@@ -57,6 +57,7 @@
 						foreach($alunni as $alunno){
 							?>
 							<tr>
+								<td><?php echo $alunno->numero_registro; ?></td>
 								<td><?php echo $alunno->getNomeCognome(); ?></td>
 								<td><?php echo $alunno->note; ?></td>
 							</tr>

@@ -150,4 +150,36 @@
 			
 			return $mysql->insert(static::$sqlTableAlunni, "(ID_correzione, ID_alunno) VALUES ".$values);
 		}
+		
+		public function getNextAlunno(int $ID_alunno): Alunno|false {
+			$alunni = $this->getAlunni(false);
+			
+			if(count($alunni) == 1){
+				return false;
+			}else{
+				$index = array_search($ID_alunno, $alunni);
+				if($index !== false){
+					if($index != count($alunni) - 1){
+						return new Alunno($alunni[$index + 1]);
+					}
+				}
+			}
+			return false;
+		}
+		
+		public function getPreviousAlunno(int $ID_alunno): Alunno|false {
+			$alunni = $this->getAlunni(false);
+			
+			if(count($alunni) == 1){
+				return false;
+			}else{
+				$index = array_search($ID_alunno, $alunni);
+				if($index !== false){
+					if($index != 0){
+						return new Alunno($alunni[$index - 1]);
+					}
+				}
+			}
+			return false;
+		}
 	}

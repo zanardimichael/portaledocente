@@ -9,6 +9,7 @@ class AlunnoController extends BaseController {
     }
 
     public function alunniClasse($params): void {
+	    $this->requireAuth();
         $id = $params['id'] ?? null;
         
         if(!is_numeric($id)){

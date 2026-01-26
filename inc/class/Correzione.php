@@ -87,7 +87,7 @@
 			return floor($punteggio_alunno / $punteggio_verifica * 20) / 2;
 		}
 		
-		public function getPunteggioAlunno(int $ID_alunno) : int {
+		public function getPunteggioAlunno(int $ID_alunno) : float {
 			global $mysql;
 			$punteggio = 0;
 			

@@ -22,6 +22,9 @@ require_once $_SERVER["DOCUMENT_ROOT"]."/inc/mysql.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."/inc/utils.php";
 require_once "Router.php";
 require_once "BaseController.php";
+global $api;
+
+$api = true;
 
 // Initialize Router
 $router = new Router();

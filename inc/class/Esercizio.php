@@ -141,7 +141,7 @@
 			$input_punteggio_parziale = $correzioneDomanda->parziale ? "" : "disabled"; // Se parziale è selezionato l'input deve essere attivo altrimenti deve essere disabilitato
 			
 			$card_info = "card-warning";
-			if($correzioneDomanda->valore == ""){
+			if($correzioneDomanda->valore == "" and $correzioneDomanda->parziale == 0){
 				$card_info = "card-info";
 			}else if($punteggio == $this->punteggio){
 				$card_info = "card-success";

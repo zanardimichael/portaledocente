@@ -29,8 +29,8 @@
 		return array_all($vars, fn($var) => isset($_GET[$var]));
 	}
 
-	function exception_handler($e) {
-		global $db_host, $db_user, $db_pass, $db_schema;
+	function exception_handler($e): void {
+		global $db_host, $db_user, $db_pass, $db_schema, $debug, $api, $page;
 		$connection = mysqli_connect($db_host, $db_user, $db_pass, $db_schema);
 
 		$errorCode = mysqli_escape_string($connection, $e->getCode());
@@ -42,11 +42,15 @@
 
 		mysqli_query($connection, "INSERT INTO log_error (errorCode, errorMessage, errorStackTrace, requestVars) VALUES ('$errorCode', '$errorMessage', '$errorStackTrace', '$requestVars')");
 
-		print(json_encode([
-			"errorCode" => $errorCode,
-			"errorMessage" => $errorMessage,
-			"errorStackTrace" => $errorStackTrace,
-		]));
+		if($debug || $api) {
+			print(json_encode([
+				"errorCode" => $errorCode,
+				"errorMessage" => $errorMessage,
+				"errorStackTrace" => $errorStackTrace,
+			]));
+		}elseif($page instanceof PageHandler){
+			$page->message->setMessage("Errore generico, si prega di contattare l'amministratore")->setMessageType(MessageType::Error)->show();
+		}
 	}
 
 	set_exception_handler('exception_handler');

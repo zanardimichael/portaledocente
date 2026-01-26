@@ -15,6 +15,11 @@ $(document).ready(function () {
 					parent_form.find("input").on("change", inputChange);
 					parent_form.find(".parziale").on("change", parzialeChange);
 					$("#voto-outer").load(" #voto-inner");
+
+					let sezione = parent_form.parents(".sezione");
+					let id_sezione = sezione.attr("id-sezione");
+
+					sezione.find(".footer-sezione").load(" #punteggio-sezione-"+id_sezione)
 				});
 			}
 		})

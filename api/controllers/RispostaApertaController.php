@@ -19,7 +19,7 @@ class RispostaApertaController extends BaseController {
             return;
         }
         
-        if (!Verofalso::exists($id)) {
+        if (!RispostaAperta::exists($id)) {
             $this->error("Risposta aperta non trovata", 404, "NOT_FOUND");
         }
         

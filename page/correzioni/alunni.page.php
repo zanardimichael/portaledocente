@@ -41,6 +41,9 @@
 		$correzione = new Correzione($page->getGlobalVariable("ID_correzione"));
 		$alunni = $correzione->getAlunni();
 		$punteggio_verifica = $correzione->verifica->getPunteggioVerifica();
+		
+		$somma_voti = 0;
+		$numero_voti = 0;
 ?>
 
 
@@ -60,6 +63,9 @@
 				}
 				if($voto == 0){
 					$voto = "--";
+				}else{
+					$somma_voti += $voto;
+					$numero_voti++;
 				}
 				?>
 				<tr>
@@ -74,6 +80,12 @@
 			}
 		?>
 		</tbody>
+		<tfoot>
+			<th></th>
+			<th>Media: <?php echo $numero_voti != 0 ? $somma_voti/$numero_voti: "--"; ?></th>
+			<th></th>
+			<th></th>
+		</tfoot>
 	</table>
 </div>
 

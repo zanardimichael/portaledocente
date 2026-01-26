@@ -56,6 +56,8 @@ if($page->isSafeToProceed()) {
 	foreach($sezioni as $sezione){
 		$domande = $sezione->getDomande();
 		
+		$punteggio_sezione = 0;
+		
 		?>
 		<div class="col-12 sezione" id-sezione="<?php echo $sezione->id; ?>" ordine="<?php echo $sezione->ordine; ?>">
 			<div class="card card-info card-outline mb-4">
@@ -70,11 +72,15 @@ if($page->isSafeToProceed()) {
 					foreach($domande["domande"] as $domanda){
 						$correzione_domanda = CorrezioneDomanda::getCorrezioneDomandaFromEsercizio($domanda, $page->getGlobalVariable("ID_alunno"));
 						
-						$punteggio_finale += $correzione_domanda->getPunteggio();
+						$punteggio_sezione += $correzione_domanda->getPunteggio();
 						echo $correzione_domanda->render();
 					}
 				
+					$punteggio_finale += $punteggio_sezione;
 				?>
+				</div>
+				<div class="card-footer footer-sezione">
+					<div id="punteggio-sezione-<?php echo $sezione->id; ?>">Punteggio Sezione: <?php echo $punteggio_sezione; ?></div>
 				</div>
 			</div>
 		</div>

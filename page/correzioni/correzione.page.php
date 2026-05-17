@@ -88,7 +88,7 @@ if($page->isSafeToProceed()) {
 	}
 	
 	$punteggio_verifica = $verifica->getPunteggioVerifica();
-	$voto = floor($punteggio_finale / $punteggio_verifica * 20) / 2;
+	$voto = $correzione->getVotoAlunno($alunno->id);
 	
 	$colore_voto = "text-success";
 	if($voto < 6){
@@ -103,6 +103,20 @@ if($page->isSafeToProceed()) {
 			</div>
 			<div class="float-end">Punteggio: <?php echo $punteggio_finale."/".$punteggio_verifica; ?></div>
 		</div>
+	</div>
+
+
+	<div class="mt-2">
+		<a <?php echo $alunno_precedente_url; ?>>
+			<button class="btn btn-light p-1 fs-6" style="background-color: var(--bs-gray-300);" <?php echo $alunno_precedente_attivo; ?>>
+				<i class="bi bi-chevron-left"></i>Alunno precedente
+			</button>
+		</a>
+		<a <?php echo $prossimo_alunno_url; ?>>
+			<button class="btn btn-light p-1 fs-6 float-end" style="background-color: var(--bs-gray-300);" <?php echo $prossimo_alunno_attivo; ?>>
+				Alunno successivo<i class="bi bi-chevron-right"></i>
+			</button>
+		</a>
 	</div>
 
 <?php

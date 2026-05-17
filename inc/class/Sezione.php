@@ -223,12 +223,13 @@
 		public function renderLatex(): string {
 			$domande = $this->getDomande();
 			
-			$testo_sezione = "\n\section*{".$this->titolo."}\n";
+			$testo_sezione = "\n\section*{".$this->titolo."}\n
+				\begin{enumerate}\n";
 			foreach ($domande["domande"] as $domanda){
-				$testo_sezione .= $domanda->renderLatex();
+				$testo_sezione .= "\t\item {".$domanda->renderLatex()."}\n";
 			}
 			
-			$testo_sezione .= "\n\n\begin{flushright}\\textbf{Punteggio:} \underline{\hspace{1cm}}/".$domande["punteggio"]."\\end{flushright}\n";
+			$testo_sezione .= "\\end{enumerate}\n\n\begin{flushright}\\textbf{Punteggio:} \underline{\hspace{1cm}}/".$domande["punteggio"]."\\end{flushright}\n";
 			
 			return $testo_sezione;
 		}

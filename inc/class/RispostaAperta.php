@@ -110,7 +110,7 @@
 		}
 		
 		public function renderLatex(): string {
-			return "\n\\textbf{Rispondi alle domanda:} \\\\\n$this->testo";
+			return "\n$this->testo";
 		}
 		
 		public function renderCorrezione(CorrezioneDomanda $correzioneDomanda): string {

@@ -46,7 +46,6 @@
 	/>
 	<!--end::Third Party Plugin(Bootstrap Icons)-->
 	<!--begin::Required Plugin(AdminLTE)-->
-	<link rel="stylesheet" href="/css/adminlte.css"/>
 	<!--end::Required Plugin(AdminLTE)-->
 
 	<link href="/css/datatables/dataTables.dataTables.min.css" rel="stylesheet">
@@ -56,5 +55,6 @@
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/toastify.min.css" rel="stylesheet">
 	<link href="/css/summernote-bs5.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/adminlte.css"/>
 	<link href="/css/override.css" rel="stylesheet"/>
 </head>

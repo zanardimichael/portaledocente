@@ -73,6 +73,14 @@
 			return $pages[$this->current_page]["back_button"] ?? false;
 		}
 		
+		public function getBackPage(): string {
+			global $pages;
+			if(is_string($pages[$this->current_page]["back_button"])) {
+				return $pages[$this->current_page]["back_button"];
+			}
+			return $this->previous_page;
+		}
+		
 		public function getPagesBreadcrumb(): array {
 			global $pages;
 			$array = [];

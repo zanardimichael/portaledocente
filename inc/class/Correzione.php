@@ -79,12 +79,11 @@
 			return strtotime($this->data_verifica);
 		}
 		
-		public function getVotoAlunno(int $ID_alunno) : int {
-			global $mysql;
+		public function getVotoAlunno(int $ID_alunno) : float {
 			$punteggio_verifica = $this->verifica->getPunteggioVerifica();
 			$punteggio_alunno = $this->getPunteggioAlunno($ID_alunno);
 			
-			return floor($punteggio_alunno / $punteggio_verifica * 20) / 2;
+			return round($punteggio_alunno / $punteggio_verifica * 20) / 2;
 		}
 		
 		public function getPunteggioAlunno(int $ID_alunno) : float {

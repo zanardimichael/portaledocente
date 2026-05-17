@@ -60,7 +60,7 @@
                         <h3 class="mb-0">
                             <?php
                                 if ($page->subpage and $page->isBackButtonEnabled()) {
-                                    echo '<a class="btn p-1 fs-5" href="/pages/'.$page->previous_page.'"><i class="bi bi-chevron-left"></i> Indietro</a>';
+                                    echo '<a class="btn p-1 fs-5" href="/pages/'.$page->getBackPage().'"><i class="bi bi-chevron-left"></i> Indietro</a>';
                                 } else {
                                     echo $page->title;
                                 }

@@ -1,6 +1,7 @@
 {
     "require": {
         "google/apiclient": "^2.18",
-        "google/cloud-recaptcha-enterprise": "^2.2"
+        "google/cloud-recaptcha-enterprise": "^2.2",
+        "spomky-labs/otphp": "^11.4"
     }
 }

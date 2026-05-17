@@ -141,7 +141,7 @@
 		"correzioni/correzione" => [
 			"url" => "/pages/correzioni/correzione",
 			"title" => "Correzione Verifica",
-			"back_button" => true,
+			"back_button" => "correzioni/alunni?id=".($_GET["id"] ?? ""),
 		],
 		"correzioni/alunni" => [
 			"url" => "/pages/correzioni/alunni",

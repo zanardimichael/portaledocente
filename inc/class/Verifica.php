@@ -193,7 +193,6 @@
 				
 				foreach($domande["domande"] as $domanda){
 					$class = get_class($domanda);
-					print_r($domanda);
 					$data = [
 						"ID_verifica" => $this->id,
 						"ID_sezione" => $nuova_sezione,
@@ -208,9 +207,17 @@
 							break;
 						case "RispostaMultipla":
 							$risposte = $domanda->getRisposte();
+							$domanda_nuova = RispostaMultipla::create([
+								"ID_verifica" => $this->id,
+								"ID_sezione" => $nuova_sezione,
+								"testo" => $domanda->testo,
+								"ordine" => $domanda->ordine,
+								"note" => $domanda->note,
+								"punteggio" => $domanda->punteggio,
+							]);
 							foreach ($risposte as $risposta){
 								RispostaMultipla::createRisposta([
-									"ID_rispostamultipla" => $risposta->id,
+									"ID_rispostamultipla" => $domanda_nuova,
 									"testo" => $risposta["testo"],
 									"corretto" => $risposta["corretto"] ? "1": "0",
 									"punteggio" => $risposta["punteggio"],
@@ -222,7 +229,7 @@
 							$data["titolo"] = $domanda->titolo;
 							break;
 					}
-					$class::create($data);
+					$class != "RispostaMultipla" ? $class::create($data) : false;
 				}
 			}
 		}

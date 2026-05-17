@@ -69,7 +69,7 @@
 				}
 				?>
 				<tr>
-					<td><?php echo $alunno->getNomeCognome(); ?></td>
+					<td><?php echo $alunno->getCognomeNome(); ?></td>
 					<td class="fs-5 <?php echo $colore_voto;?>"><?php echo $voto; ?></td>
 					<td><?php echo $correzione->getPunteggioAlunno($alunno->id)."/".$punteggio_verifica; ?></td>
 					<td>
@@ -82,7 +82,7 @@
 		</tbody>
 		<tfoot>
 			<th></th>
-			<th>Media: <?php echo $numero_voti != 0 ? $somma_voti/$numero_voti: "--"; ?></th>
+			<th>Media: <?php echo $numero_voti != 0 ? round($somma_voti/$numero_voti, 2): "--"; ?></th>
 			<th></th>
 			<th></th>
 		</tfoot>

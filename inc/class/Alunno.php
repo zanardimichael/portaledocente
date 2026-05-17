@@ -81,6 +81,10 @@
 			return $this->nome." ".$this->cognome;
 		}
 		
+		public function getCognomeNome() : string {
+			return $this->cognome." ".$this->nome;
+		}
+		
 		public function getNextAlunno(): false|Alunno {
 			if(self::getLastAlunnoClasse($this->ID_classe, false) == $this->id){
 				return false;

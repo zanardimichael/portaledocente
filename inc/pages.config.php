@@ -158,4 +158,20 @@
 			"title" => "Elimina Correzione",
 			"back_button" => true,
 		],
+		"statistiche" => [
+			"url" => "/pages/statistiche",
+			"title" => "Statistiche",
+			"icon" => "bi bi-bar-chart-line",
+			"script_js" => [
+				"/js/pages/statistiche.js"
+			]
+		],
+		"statistiche/dettaglio" => [
+			"url" => "/pages/statistiche/dettaglio",
+			"title" => "Dettaglio Verifica",
+			"back_button" => true,
+			"script_js" => [
+				"/js/pages/statistiche/dettaglio.js"
+			]
+		],
 	];

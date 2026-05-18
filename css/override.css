@@ -3,3 +3,12 @@
 .form-check-input[type=radio], .form-check-input[type=checkbox] {
     border-color: #646464;
 }
+
+.ai-analysis-result table {
+    border-collapse: collapse;
+}
+
+.ai-analysis-result table td, .ai-analysis-result table th {
+    padding: 4px;
+    border: 1px solid black;
+}

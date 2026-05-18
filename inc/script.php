@@ -47,3 +47,5 @@
 <script src="/js/toastify.min.js?v=<?php echo $versione; ?>"></script>
 <script src="/js/summernote-bs5.min.js?v=<?php echo $versione; ?>"></script>
 <script src="/js/default.pages.js?v=<?php echo $versione; ?>"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+

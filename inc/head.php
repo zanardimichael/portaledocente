@@ -2,6 +2,7 @@
 
 	global $pages;
 	global $current_page;
+	global $versione;
 	if(!$current_page) $current_page = "dashboard";
 ?>
 <head>
@@ -56,5 +57,5 @@
     <link href="/css/toastify.min.css" rel="stylesheet">
 	<link href="/css/summernote-bs5.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="/css/adminlte.css"/>
-	<link href="/css/override.css" rel="stylesheet"/>
+	<link href="/css/override.css?v=<?php echo $versione; ?>" rel="stylesheet"/>
 </head>

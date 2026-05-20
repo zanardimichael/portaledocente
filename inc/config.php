@@ -3,7 +3,7 @@
 	$prod = true;
 	$debug = true;
 	$api = false;
-	$versione = "0.9.0";
+	$versione = "0.9.1";
 
 	if($debug){
 		ini_set("display_errors", "1");

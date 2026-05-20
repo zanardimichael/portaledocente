@@ -5,9 +5,6 @@
 ?>
 <div class="row mb-4">
 	<div class="col-12">
-		<div class="d-flex justify-content-between align-items-center">
-			<h2 class="text-primary fw-bold">Statistiche e Analisi AI</h2>
-		</div>
 		<p class="text-muted">
 			In questa sezione puoi visualizzare le verifiche effettuate e accedere alla pagina di dettaglio per generare o consultare l'analisi dell'Intelligenza Artificiale sugli errori più comuni.
 			Espandi una riga per visualizzare le correzioni collegate alla verifica principale e alle eventuali sottoverifiche.

@@ -12,3 +12,7 @@
     padding: 4px;
     border: 1px solid black;
 }
+
+html[data-bs-theme=dark] div.dt-container .dt-paging .dt-paging-button {
+    color: #fff !important;
+}
